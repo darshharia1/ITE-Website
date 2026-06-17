@@ -1,0 +1,512 @@
+/* =====================================================
+   ITE Startup Launch Pad — Premium Stylesheet
+   ===================================================== */
+
+/* ── Base & Reset ─────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --indigo: #4F46E5;
+  --indigo-light: #6366F1;
+  --emerald: #10B981;
+  --amber: #F59E0B;
+  --obsidian: #0F172A;
+  --graphite: #1E293B;
+  --radius: 12px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Screen Routing ───────────────────────────────── */
+.screen:not(.active) { display: none !important; }
+.screen.active { display: block !important; }
+#screen-admin.active,
+#screen-auth.active,
+#screen-onboarding.active { display: flex !important; }
+
+/* ── Typography ───────────────────────────────────── */
+.font-syne { font-family: 'Syne', sans-serif; }
+.font-800 { font-weight: 800; }
+
+/* ── Animations ───────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes float-delayed {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+
+@keyframes bounce-in {
+  0%   { transform: scale(0.3); opacity: 0; }
+  50%  { transform: scale(1.05); }
+  70%  { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-float { animation: float 4s ease-in-out infinite; }
+.animate-float-delayed { animation: float-delayed 5s ease-in-out infinite 1s; }
+.animate-fade-in { animation: fadeIn 0.5s ease forwards; }
+.animate-fade-in-up { animation: fadeInUp 0.5s ease forwards; }
+.animate-pulse-slow { animation: pulse 3s ease-in-out infinite; }
+
+/* ── Landing: Step cards ──────────────────────────── */
+.step-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.step-card:hover .step-number {
+  background: var(--indigo);
+  color: white;
+}
+
+/* ── Auth: Role Tabs ──────────────────────────────── */
+.role-tab {
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+.role-tab.active {
+  background: white;
+  color: var(--indigo);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+}
+
+/* ── Onboarding: Skill Chips ──────────────────────── */
+.skill-chip {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #E2E8F0;
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  user-select: none;
+}
+.skill-chip:hover {
+  border-color: var(--indigo);
+  color: var(--indigo);
+  background: #EEF2FF;
+  transform: translateY(-1px);
+}
+.skill-chip.selected {
+  border-color: var(--indigo);
+  background: #EEF2FF;
+  color: var(--indigo);
+  font-weight: 600;
+}
+.skill-chip.selected::before {
+  content: '✓';
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ── Onboarding: Role Cards ───────────────────────── */
+.role-card {
+  padding: 20px;
+  border-radius: var(--radius);
+  border: 2px solid #E2E8F0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: white;
+}
+.role-card:hover {
+  border-color: var(--indigo);
+  background: #EEF2FF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+}
+.role-card.selected {
+  border-color: var(--indigo);
+  background: #EEF2FF;
+}
+.role-card .role-emoji { font-size: 28px; margin-bottom: 10px; }
+.role-card .role-name { font-size: 15px; font-weight: 700; color: var(--obsidian); margin-bottom: 4px; }
+.role-card .role-desc { font-size: 12px; color: #64748B; line-height: 1.5; }
+
+/* ── Invitation Card Interactions ─────────────────── */
+.invitation-card {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.invitation-card.accepted {
+  border-color: #10B981;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.03), rgba(16, 185, 129, 0.08));
+  animation: bounce-in 0.4s ease;
+}
+.invitation-card.rejected {
+  opacity: 0.4;
+  transform: scale(0.96);
+  pointer-events: none;
+}
+.invitation-card.removing {
+  animation: fadeInUp 0.4s ease reverse forwards;
+}
+
+/* ── CEO: Filter Pills ────────────────────────────── */
+.filter-pill {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filter-pill.active {
+  background: var(--indigo);
+  color: white;
+  border-color: var(--indigo);
+}
+
+/* ── Student Search Cards ─────────────────────────── */
+.student-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #E2E8F0;
+  background: white;
+  transition: all 0.2s ease;
+  animation: fadeInUp 0.3s ease forwards;
+}
+.student-card:hover {
+  border-color: #4F46E5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
+}
+.student-card.invited {
+  border-color: #10B981;
+  background: rgba(16, 185, 129, 0.04);
+}
+
+/* ── Milestone Radial Wheels ──────────────────────── */
+.milestone-item {
+  transition: all 0.3s ease;
+}
+.milestone-item:hover {
+  transform: scale(1.05);
+}
+
+/* ── Admin: Nav Buttons ───────────────────────────── */
+.admin-nav-btn {
+  transition: all 0.2s ease;
+  border-radius: 10px;
+}
+.admin-nav-btn.active {
+  background: rgba(79, 70, 229, 0.15);
+  color: #818CF8;
+  font-weight: 600;
+}
+.admin-nav-btn.active svg {
+  color: #818CF8;
+}
+
+/* ── Teams Table ──────────────────────────────────── */
+.teams-table tr {
+  transition: background 0.15s ease;
+}
+.teams-table tr:hover {
+  background: #F8FAFC;
+}
+
+/* ── Status Pills ─────────────────────────────────── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pill-emerald { background: #ECFDF5; color: #059669; }
+.pill-indigo  { background: #EEF2FF; color: #4338CA; }
+.pill-amber   { background: #FFFBEB; color: #D97706; }
+.pill-red     { background: #FEF2F2; color: #DC2626; }
+.pill-slate   { background: #F1F5F9; color: #475569; }
+.pill-purple  { background: #F5F3FF; color: #7C3AED; }
+
+/* ── Submission Review Cards ──────────────────────── */
+.submission-review-card {
+  transition: all 0.2s ease;
+}
+.submission-review-card.approved {
+  border-color: #10B981;
+  background: rgba(16, 185, 129, 0.04);
+}
+.submission-review-card.changes-requested {
+  border-color: #F59E0B;
+  background: rgba(245, 158, 11, 0.04);
+}
+
+/* ── Progress Bars ────────────────────────────────── */
+.progress-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: #E2E8F0;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Toast ────────────────────────────────────────── */
+#toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ── Glassmorphism ────────────────────────────────── */
+.glass {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.7);
+}
+.glass-dark {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(15, 23, 42, 0.8);
+}
+
+/* ── Scrollbar Styling ────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+/* ── Radial gradient utility ──────────────────────── */
+.bg-gradient-radial {
+  background-image: radial-gradient(var(--tw-gradient-stops));
+}
+
+/* ── Loading Skeleton ─────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 768px) {
+  #screen-admin .admin-nav-btn span { display: none; }
+  aside.w-64 { width: 72px; }
+  main.ml-64 { margin-left: 72px; }
+  .admin-nav-btn { justify-content: center; }
+}
+
+/* ── Dark Mode Overrides ──────────────────────────── */
+.dark .role-tab.active {
+  background: var(--slate-700, #334155);
+  color: var(--indigo-light, #6366F1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.dark .skill-chip {
+  background: var(--slate-800, #1E293B);
+  border-color: var(--slate-700, #334155);
+  color: var(--slate-300, #CBD5E1);
+}
+.dark .skill-chip:hover {
+  border-color: var(--indigo, #4F46E5);
+  background: rgba(79, 70, 229, 0.15);
+  color: var(--indigo-light, #6366F1);
+}
+.dark .skill-chip.selected {
+  border-color: var(--indigo, #4F46E5);
+  background: rgba(79, 70, 229, 0.25);
+  color: var(--indigo-light, #6366F1);
+}
+
+.dark .role-card {
+  background: var(--slate-800, #1E293B);
+  border-color: var(--slate-700, #334155);
+}
+.dark .role-card:hover, .dark .role-card.selected {
+  border-color: var(--indigo, #4F46E5);
+  background: rgba(79, 70, 229, 0.15);
+}
+.dark .role-card .role-name {
+  color: white;
+}
+.dark .role-card .role-desc {
+  color: var(--slate-400, #94A3B8);
+}
+
+.dark .student-card {
+  background: var(--slate-800, #1E293B);
+  border-color: var(--slate-700, #334155);
+}
+.dark .student-card:hover {
+  border-color: var(--indigo, #4F46E5);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+.dark .student-card.invited {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: #10B981;
+}
+
+.dark .admin-nav-btn.active {
+  background: rgba(79, 70, 229, 0.2);
+  color: #818CF8;
+}
+
+.dark .teams-table tr:hover {
+  background: var(--slate-800, #1E293B);
+}
+
+.dark .pill-slate { background: var(--slate-700, #334155); color: var(--slate-300, #CBD5E1); }
+.dark .pill-indigo { background: rgba(79, 70, 229, 0.15); color: var(--indigo-light, #6366F1); }
+.dark .pill-emerald { background: rgba(16, 185, 129, 0.15); color: var(--emerald-light, #34D399); }
+.dark .pill-amber { background: rgba(245, 158, 11, 0.15); color: var(--amber-light, #FCD34D); }
+.dark .pill-purple { background: rgba(124, 58, 237, 0.15); color: #A78BFA; }
+.dark .pill-red { background: rgba(220, 38, 38, 0.15); color: #F87171; }
+
+/* ── Dashboard Global Dark Mode Overrides ─────────── */
+.dark #screen-student-ceo,
+.dark #screen-admin,
+.dark #startup-modal,
+.dark #mentor-modal {
+  background-color: var(--obsidian) !important;
+}
+.dark #startup-modal-panel,
+.dark #mentor-modal-card,
+.dark #toast > div {
+  background-color: var(--slate-800, #1E293B) !important;
+  border-color: var(--slate-700, #334155) !important;
+}
+.dark #screen-student-ceo .text-obsidian,
+.dark #screen-admin .text-obsidian,
+.dark #startup-modal-panel .text-obsidian,
+.dark #mentor-modal-card .text-obsidian {
+  color: white !important;
+}
+.dark #screen-student-ceo .text-slate-700,
+.dark #screen-admin .text-slate-700,
+.dark #startup-modal-panel .text-slate-700,
+.dark #mentor-modal-card .text-slate-700,
+.dark #toast .text-slate-700 {
+  color: var(--slate-200, #E2E8F0) !important;
+}
+.dark #screen-student-ceo .text-slate-600,
+.dark #screen-admin .text-slate-600,
+.dark #startup-modal-panel .text-slate-600,
+.dark #mentor-modal-card .text-slate-600 {
+  color: var(--slate-300, #CBD5E1) !important;
+}
+.dark #screen-student-ceo .text-slate-500,
+.dark #screen-admin .text-slate-500,
+.dark #startup-modal-panel .text-slate-500,
+.dark #mentor-modal-card .text-slate-500 {
+  color: var(--slate-400, #94A3B8) !important;
+}
+.dark #screen-student-ceo .text-slate-400,
+.dark #screen-admin .text-slate-400,
+.dark #startup-modal-panel .text-slate-400,
+.dark #mentor-modal-card .text-slate-400 {
+  color: var(--slate-500, #64748B) !important;
+}
+
+.dark #screen-student-ceo .bg-white,
+.dark #screen-admin .bg-white,
+.dark #startup-modal-panel .bg-white,
+.dark #mentor-modal-card .bg-white {
+  background-color: var(--slate-800, #1E293B) !important;
+}
+.dark #screen-student-ceo .border-slate-200,
+.dark #screen-admin .border-slate-200,
+.dark #startup-modal-panel .border-slate-200,
+.dark #mentor-modal-card .border-slate-200 {
+  border-color: var(--slate-700, #334155) !important;
+}
+.dark #screen-student-ceo .border-slate-100,
+.dark #screen-admin .border-slate-100,
+.dark #startup-modal-panel .border-slate-100,
+.dark #mentor-modal-card .border-slate-100 {
+  border-color: var(--slate-800, #1E293B) !important;
+}
+.dark #screen-student-ceo .bg-slate-50,
+.dark #screen-admin .bg-slate-50,
+.dark #startup-modal-panel .bg-slate-50,
+.dark #mentor-modal-card .bg-slate-50 {
+  background-color: rgba(30, 41, 59, 0.5) !important;
+}
+.dark #screen-student-ceo .bg-slate-100,
+.dark #screen-admin .bg-slate-100,
+.dark #startup-modal-panel .bg-slate-100,
+.dark #mentor-modal-card .bg-slate-100 {
+  background-color: var(--slate-800, #1E293B) !important;
+}
+
+.dark #screen-student-ceo input,
+.dark #screen-admin input,
+.dark #screen-student-ceo select,
+.dark #screen-admin select,
+.dark #screen-student-ceo textarea,
+.dark #screen-admin textarea,
+.dark #startup-modal-panel input,
+.dark #startup-modal-panel textarea {
+  background-color: var(--slate-900, #0F172A) !important;
+  border-color: var(--slate-700, #334155) !important;
+  color: white !important;
+}
+.dark #screen-student-ceo input::placeholder,
+.dark #screen-admin input::placeholder,
+.dark #screen-student-ceo textarea::placeholder,
+.dark #screen-admin textarea::placeholder,
+.dark #startup-modal-panel input::placeholder,
+.dark #startup-modal-panel textarea::placeholder {
+  color: var(--slate-500, #64748B) !important;
+}
+
+.dark #screen-student-ceo .hover\:bg-slate-50:hover,
+.dark #screen-admin .hover\:bg-slate-50:hover,
+.dark #startup-modal-panel .hover\:bg-slate-50:hover,
+.dark #mentor-modal-card .hover\:bg-slate-50:hover {
+  background-color: var(--slate-700, #334155) !important;
+}
+

@@ -1,0 +1,2314 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ITE Startup Launch Pad — Ignite. Build. Launch.</title>
+  <meta name="description" content="ITE Startup Launch Pad: A structured entrepreneurship program connecting 80+ students, 15-20 teams, and 7 expert mentors to transform ideas into startups." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#0F172A',
+            graphite: '#1E293B',
+            indigo: { DEFAULT: '#4F46E5', light: '#6366F1', dark: '#3730A3' },
+            emerald: { DEFAULT: '#10B981', light: '#34D399' },
+            amber: { DEFAULT: '#F59E0B', light: '#FCD34D' },
+            ice: '#F8FAFC',
+            slate: { 50: '#F8FAFC', 100: '#F1F5F9', 200: '#E2E8F0', 300: '#CBD5E1', 400: '#94A3B8', 500: '#64748B', 600: '#475569', 700: '#334155', 800: '#1E293B', 900: '#0F172A' }
+          },
+          fontFamily: { inter: ['DM Sans', 'sans-serif'], syne: ['Plus Jakarta Sans', 'sans-serif'] },
+          borderRadius: { xl: '12px', '2xl': '16px', '3xl': '24px' },
+          boxShadow: {
+            'soft': '0 2px 15px -3px rgba(0,0,0,0.07), 0 10px 20px -2px rgba(0,0,0,0.04)',
+            'glow': '0 0 30px rgba(79,70,229,0.15)',
+            'glow-emerald': '0 0 30px rgba(16,185,129,0.15)',
+            'card': '0 1px 3px rgba(0,0,0,0.05), 0 4px 6px rgba(0,0,0,0.03)',
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+  <style>
+    /* CRITICAL ROUTING CSS (Inlined to prevent cache issues) */
+    .screen:not(.active) { display: none !important; }
+    .screen.active { display: block !important; }
+    #screen-admin.active,
+    #screen-auth.active,
+    #screen-onboarding.active { display: flex !important; }
+  </style>
+  <link rel="stylesheet" href="styles.css?v=3" />
+</head>
+<body class="font-inter bg-white dark:bg-obsidian text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300">
+
+  <!-- ============================================================ -->
+  <!-- SCREEN ROUTER (JS controlled) -->
+  <!-- ============================================================ -->
+
+  <!-- SCREEN 1: LANDING PAGE -->
+  <div id="screen-landing" class="screen active">
+    <!-- NAV -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-obsidian/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
+      <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shadow-glow">
+            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <span class="font-syne font-800 text-lg text-obsidian dark:text-white tracking-tight transition-colors">ITE Launch<span class="text-indigo-500">Pad</span></span>
+        </div>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="#how-it-works" class="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-obsidian dark:hover:text-white transition-colors">How It Works</a>
+          <a href="#stats" class="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-obsidian dark:hover:text-white transition-colors">Program Stats</a>
+          <a href="#mentors" class="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-obsidian dark:hover:text-white transition-colors">Mentors</a>
+        </div>
+        <div class="flex items-center gap-4">
+          <!-- Theme Toggle -->
+          <button onclick="toggleTheme()" class="w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors active:scale-95" aria-label="Toggle Dark Mode">
+            <svg id="theme-icon-light" class="w-4 h-4 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            <svg id="theme-icon-dark" class="w-4 h-4 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          </button>
+          
+          <button onclick="navigate('screen-auth')" class="px-5 py-2 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-all shadow-glow hover:shadow-lg active:scale-95">
+            Get Started →
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="min-h-screen flex flex-col items-center justify-center relative overflow-hidden pt-16">
+      <!-- Background blobs -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-indigo-100 to-indigo-50 blur-3xl opacity-60"></div>
+        <div class="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-emerald-50 to-emerald-100 blur-3xl opacity-50"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-gradient-radial from-indigo-50/30 to-transparent"></div>
+        <!-- Grid overlay -->
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(#4F46E5 1px, transparent 1px), linear-gradient(90deg, #4F46E5 1px, transparent 1px); background-size: 60px 60px;"></div>
+      </div>
+
+      <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-700 dark:text-indigo-400 text-xs font-semibold mb-8 animate-pulse-slow transition-colors">
+          <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+          Applications Open — Cohort 2026
+        </div>
+
+        <h1 class="font-syne text-6xl md:text-7xl lg:text-8xl font-800 text-obsidian dark:text-white leading-[0.9] tracking-tight mb-6 transition-colors">
+          A ITE Startup<br />
+          <span class="relative">
+            <span class="bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 bg-clip-text text-transparent">Launch Pad</span>
+            <svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 300 8" fill="none"><path d="M2 6C50 2 100 1 150 3C200 5 250 6 298 2" stroke="url(#gr1)" stroke-width="3" stroke-linecap="round"/><defs><linearGradient id="gr1" x1="0" y1="0" x2="300" y2="0"><stop stop-color="#4F46E5"/><stop offset="1" stop-color="#7C3AED"/></linearGradient></defs></svg>
+          </span>
+        </h1>
+
+        <p class="text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mt-8 mb-12 leading-relaxed transition-colors">
+          A structured entrepreneurship ecosystem where ambitious students transform raw ideas into investor-ready startups — with expert mentorship, structured milestones, and a thriving community.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+          <button onclick="navigate('screen-auth')" id="hero-cta-apply" class="px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold text-base hover:from-indigo-600 hover:to-indigo-700 shadow-glow hover:shadow-xl transition-all active:scale-95 hover:-translate-y-0.5">
+            Apply Now — It's Free
+          </button>
+          <button onclick="scrollTo('how-it-works')" id="hero-cta-learn" class="px-8 py-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-base hover:border-indigo-300 dark:hover:border-indigo-500/50 hover:bg-indigo-50 dark:hover:bg-slate-700 transition-all active:scale-95">
+            See How It Works
+          </button>
+        </div>
+
+        <!-- Metrics Strip -->
+        <div id="stats" class="grid grid-cols-3 gap-px bg-slate-200 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-card max-w-2xl mx-auto transition-colors">
+          <div class="bg-white dark:bg-obsidian px-8 py-6 text-center transition-colors">
+            <div class="text-3xl font-800 font-syne text-obsidian dark:text-white"><span class="text-indigo-500">+</span>80</div>
+            <div class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-widest">Students</div>
+          </div>
+          <div class="bg-white dark:bg-obsidian px-8 py-6 text-center border-x border-slate-200 dark:border-slate-800 transition-colors">
+            <div class="text-3xl font-800 font-syne text-obsidian dark:text-white">15<span class="text-indigo-500">-20</span></div>
+            <div class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-widest">Teams</div>
+          </div>
+          <div class="bg-white dark:bg-obsidian px-8 py-6 text-center transition-colors">
+            <div class="text-3xl font-800 font-syne text-obsidian dark:text-white">7</div>
+            <div class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-widest">Mentors</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating cards -->
+      <div class="hidden lg:block absolute left-8 top-1/2 -translate-y-1/2 animate-float">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-soft p-4 w-52 transition-colors">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center">
+              <svg class="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div>
+              <div class="text-xs font-semibold text-slate-700 dark:text-slate-200">MVP Submitted</div>
+              <div class="text-xs text-slate-400 dark:text-slate-500">TechBridge Team</div>
+            </div>
+          </div>
+          <div class="h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+            <div class="h-full w-4/5 bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full"></div>
+          </div>
+          <div class="text-xs text-slate-400 dark:text-slate-500 mt-2">Phase 4 of 6 · 80%</div>
+        </div>
+      </div>
+      <div class="hidden lg:block absolute right-8 top-1/3 animate-float-delayed">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-soft p-4 w-52 transition-colors">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+            <span class="text-xs font-semibold text-amber-600 dark:text-amber-500">Review Pending</span>
+          </div>
+          <div class="text-xs font-medium text-slate-700 dark:text-slate-200 mb-1">Market Research Doc</div>
+          <div class="text-[10px] text-slate-400 dark:text-slate-500">EduFlow Startup · 2h ago</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED STARTUPS CAROUSEL -->
+    <section class="py-24 bg-slate-50 dark:bg-slate-900/50 border-y border-slate-100 dark:border-slate-800 relative transition-colors">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div>
+            <div class="text-xs font-semibold text-indigo-500 uppercase tracking-widest mb-2">Cohort 2026 Spotlight</div>
+            <h2 class="font-syne text-3xl font-800 text-obsidian dark:text-white transition-colors">Featured Startups</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="carousel-prev" onclick="carouselPrev()" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:border-indigo-300 dark:hover:border-slate-600 hover:bg-indigo-50 dark:hover:bg-slate-800 transition-all active:scale-95 group">
+              <svg class="w-4 h-4 text-slate-600 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button id="carousel-next" onclick="carouselNext()" class="w-10 h-10 rounded-xl bg-indigo-500 flex items-center justify-center hover:bg-indigo-600 transition-all active:scale-95">
+              <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sliding track -->
+        <div class="relative overflow-hidden">
+          <div id="carousel-track" class="flex gap-6 transition-transform duration-500 ease-in-out">
+
+            <!-- Card 1: EduFlow -->
+            <div class="startup-slide flex-shrink-0 w-80 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden" onclick="showStartupDetail(0)">
+              <div class="h-2 bg-gradient-to-r from-indigo-500 to-indigo-700"></div>
+              <div class="p-6">
+                <div class="flex items-center gap-4 mb-4">
+                  <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-400 to-indigo-700 flex items-center justify-center text-white font-bold text-xl font-syne shadow-glow flex-shrink-0">EF</div>
+                  <div>
+                    <div class="font-semibold text-obsidian dark:text-white text-base transition-colors">EduFlow</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 transition-colors">EdTech · 5 members</div>
+                    <div class="flex items-center gap-1 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span class="text-xs text-emerald-600 dark:text-emerald-400 font-medium">Active</span></div>
+                  </div>
+                </div>
+                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed mb-4 transition-colors">AI-powered adaptive learning platform for tier-2 colleges with personalized learning paths.</p>
+                <div class="mb-4">
+                  <div class="flex justify-between text-xs mb-1.5"><span class="text-slate-500 dark:text-slate-400 font-medium">MVP Build</span><span class="font-semibold text-indigo-600 dark:text-indigo-400">67%</span></div>
+                  <div class="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden transition-colors"><div class="h-full bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-full" style="width:67%"></div></div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex -space-x-2">
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-xs font-bold transition-colors">A</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-xs font-bold transition-colors">P</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-xs font-bold transition-colors">R</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 text-xs font-bold transition-colors">+2</div>
+                  </div>
+                  <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold transition-colors">View Details →</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2: GreenHarvest -->
+            <div class="startup-slide flex-shrink-0 w-80 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden" onclick="showStartupDetail(1)">
+              <div class="h-2 bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
+              <div class="p-6">
+                <div class="flex items-center gap-4 mb-4">
+                  <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-700 flex items-center justify-center text-white font-bold text-xl font-syne shadow-glow-emerald flex-shrink-0">GH</div>
+                  <div>
+                    <div class="font-semibold text-obsidian dark:text-white text-base transition-colors">GreenHarvest</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 transition-colors">AgriTech · 4 members</div>
+                    <div class="flex items-center gap-1 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span class="text-xs text-emerald-600 dark:text-emerald-400 font-medium">Active</span></div>
+                  </div>
+                </div>
+                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed mb-4 transition-colors">IoT-enabled smart irrigation system helping small farmers reduce water waste by 40%.</p>
+                <div class="mb-4">
+                  <div class="flex justify-between text-xs mb-1.5"><span class="text-slate-500 dark:text-slate-400 font-medium">Market Research</span><span class="font-semibold text-emerald-600 dark:text-emerald-400">35%</span></div>
+                  <div class="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden transition-colors"><div class="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full" style="width:35%"></div></div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex -space-x-2">
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-xs font-bold transition-colors">R</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-xs font-bold transition-colors">A</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-xs font-bold transition-colors">S</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 text-xs font-bold transition-colors">+1</div>
+                  </div>
+                  <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold transition-colors">View Details →</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3: FinPulse -->
+            <div class="startup-slide flex-shrink-0 w-80 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden" onclick="showStartupDetail(2)">
+              <div class="h-2 bg-gradient-to-r from-amber-400 to-amber-600"></div>
+              <div class="p-6">
+                <div class="flex items-center gap-4 mb-4">
+                  <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-700 flex items-center justify-center text-white font-bold text-xl font-syne flex-shrink-0">FP</div>
+                  <div>
+                    <div class="font-semibold text-obsidian dark:text-white text-base transition-colors">FinPulse</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 transition-colors">FinTech · 5 members</div>
+                    <div class="flex items-center gap-1 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span class="text-xs text-emerald-600 dark:text-emerald-400 font-medium">Active</span></div>
+                  </div>
+                </div>
+                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed mb-4 transition-colors">AI credit scoring for gig workers and freelancers — enabling access to micro-loans.</p>
+                <div class="mb-4">
+                  <div class="flex justify-between text-xs mb-1.5"><span class="text-slate-500 dark:text-slate-400 font-medium">Pitch Deck</span><span class="font-semibold text-amber-600 dark:text-amber-500">82%</span></div>
+                  <div class="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden transition-colors"><div class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full" style="width:82%"></div></div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex -space-x-2">
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-xs font-bold transition-colors">N</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-xs font-bold transition-colors">K</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-xs font-bold transition-colors">J</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 text-xs font-bold transition-colors">+2</div>
+                  </div>
+                  <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold transition-colors">View Details →</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4: TechBridge -->
+            <div class="startup-slide flex-shrink-0 w-80 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden" onclick="showStartupDetail(5)">
+              <div class="h-2 bg-gradient-to-r from-teal-400 to-teal-600"></div>
+              <div class="p-6">
+                <div class="flex items-center gap-4 mb-4">
+                  <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-400 to-teal-700 flex items-center justify-center text-white font-bold text-xl font-syne flex-shrink-0">TB</div>
+                  <div>
+                    <div class="font-semibold text-obsidian dark:text-white text-base transition-colors">TechBridge</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 transition-colors">SaaS · 5 members</div>
+                    <div class="flex items-center gap-1 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span class="text-xs text-emerald-600 dark:text-emerald-400 font-medium">Active</span></div>
+                  </div>
+                </div>
+                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed mb-4 transition-colors">B2B SaaS platform bridging rural artisans with urban buyers via mobile-first marketplace.</p>
+                <div class="mb-4">
+                  <div class="flex justify-between text-xs mb-1.5"><span class="text-slate-500 dark:text-slate-400 font-medium">MVP Build</span><span class="font-semibold text-teal-600 dark:text-teal-400">80%</span></div>
+                  <div class="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden transition-colors"><div class="h-full bg-gradient-to-r from-teal-400 to-teal-600 rounded-full" style="width:80%"></div></div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex -space-x-2">
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-xs font-bold transition-colors">V</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-xs font-bold transition-colors">I</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-xs font-bold transition-colors">R</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 text-xs font-bold transition-colors">+2</div>
+                  </div>
+                  <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold transition-colors">View Details →</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 5: MediSwift -->
+            <div class="startup-slide flex-shrink-0 w-80 bg-white rounded-2xl border border-slate-200 shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden" onclick="showStartupDetail(3)">
+              <div class="h-2 bg-gradient-to-r from-purple-400 to-purple-600"></div>
+              <div class="p-6">
+                <div class="flex items-center gap-4 mb-4">
+                  <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-700 flex items-center justify-center text-white font-bold text-xl font-syne flex-shrink-0">MS</div>
+                  <div>
+                    <div class="font-semibold text-obsidian text-base">MediSwift</div>
+                    <div class="text-xs text-slate-500">HealthTech · 3 members</div>
+                    <div class="flex items-center gap-1 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span class="text-xs text-emerald-600 font-medium">Active</span></div>
+                  </div>
+                </div>
+                <p class="text-slate-500 text-xs leading-relaxed mb-4">Prescription management and last-mile medicine delivery for tier-3 towns using pharmacy networks.</p>
+                <div class="mb-4">
+                  <div class="flex justify-between text-xs mb-1.5"><span class="text-slate-500 font-medium">Cust. Interviews</span><span class="font-semibold text-purple-600">50%</span></div>
+                  <div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-purple-400 to-purple-600 rounded-full" style="width:50%"></div></div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex -space-x-2">
+                    <div class="w-7 h-7 rounded-full border-2 border-white bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white text-xs font-bold">K</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-xs font-bold">A</div>
+                    <div class="w-7 h-7 rounded-full border-2 border-white bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-xs font-bold">S</div>
+                  </div>
+                  <span class="text-xs text-indigo-600 font-semibold">View Details →</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Dots -->
+        <div class="flex justify-center gap-2 mt-8" id="carousel-dots">
+          <button onclick="carouselGoTo(0)" class="carousel-dot w-2 h-2 rounded-full bg-indigo-500 transition-all"></button>
+          <button onclick="carouselGoTo(1)" class="carousel-dot w-2 h-2 rounded-full bg-slate-300 transition-all"></button>
+          <button onclick="carouselGoTo(2)" class="carousel-dot w-2 h-2 rounded-full bg-slate-300 transition-all"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS — 7-STEP TIMELINE -->
+    <section id="how-it-works" class="py-24 bg-ice dark:bg-obsidian transition-colors">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <div class="text-xs font-semibold text-indigo-500 uppercase tracking-widest mb-3">The Journey</div>
+          <h2 class="font-syne text-4xl font-800 text-obsidian dark:text-white mb-4 transition-colors">7 Steps From Idea to Pitch</h2>
+          <p class="text-slate-500 dark:text-slate-400 max-w-xl mx-auto transition-colors">A structured, mentor-guided pathway that takes you from registration to your final investor pitch.</p>
+        </div>
+
+        <!-- Timeline -->
+        <div class="relative">
+          <!-- Connector line -->
+          <div class="hidden lg:block absolute top-10 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-slate-200 to-transparent mx-20"></div>
+          <div class="hidden lg:block absolute top-10 left-[8%] right-[8%] h-0.5 bg-gradient-to-r from-indigo-300 via-indigo-500 to-purple-400 opacity-60"></div>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6">
+            <!-- Steps -->
+            <div class="step-card group text-center cursor-pointer" data-step="1">
+              <div class="relative mx-auto w-20 h-20 rounded-2xl bg-white border-2 border-indigo-500 shadow-glow flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span class="text-2xl">📝</span>
+                <div class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center">1</div>
+              </div>
+              <div class="text-sm font-semibold text-slate-700">Register</div>
+              <div class="text-xs text-slate-400 mt-1">Create account</div>
+            </div>
+            <div class="step-card group text-center cursor-pointer">
+              <div class="relative mx-auto w-20 h-20 rounded-2xl bg-white border border-slate-200 shadow-card flex items-center justify-center mb-4 group-hover:border-indigo-300 group-hover:scale-110 transition-all">
+                <span class="text-2xl">🎯</span>
+                <div class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-slate-300 text-white text-xs font-bold flex items-center justify-center">2</div>
+              </div>
+              <div class="text-sm font-semibold text-slate-700">Select Role</div>
+              <div class="text-xs text-slate-400 mt-1">CEO, CTO, CMO…</div>
+            </div>
+            <div class="step-card group text-center cursor-pointer">
+              <div class="relative mx-auto w-20 h-20 rounded-2xl bg-white border border-slate-200 shadow-card flex items-center justify-center mb-4 group-hover:border-indigo-300 group-hover:scale-110 transition-all">
+                <span class="text-2xl">👥</span>
+                <div class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-slate-300 text-white text-xs font-bold flex items-center justify-center">3</div>
+              </div>
+              <div class="text-sm font-semibold text-slate-700">Form Team</div>
+              <div class="text-xs text-slate-400 mt-1">Build your crew</div>
+            </div>
+            <div class="step-card group text-center cursor-pointer">
+              <div class="relative mx-auto w-20 h-20 rounded-2xl bg-white border border-slate-200 shadow-card flex items-center justify-center mb-4 group-hover:border-indigo-300 group-hover:scale-110 transition-all">
+                <span class="text-2xl">🧑‍💼</span>
+                <div class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-slate-300 text-white text-xs font-bold flex items-center justify-center">4</div>
+              </div>
+              <div class="text-sm font-semibold text-slate-700">Mentor Assigned</div>
+              <div class="text-xs text-slate-400 mt-1">Expert guidance</div>
+            </div>
+            <div class="step-card group text-center cursor-pointer">
+              <div class="relative mx-auto w-20 h-20 rounded-2xl bg-white border border-slate-200 shadow-card flex items-center justify-center mb-4 group-hover:border-indigo-300 group-hover:scale-110 transition-all">
+                <span class="text-2xl">✅</span>
+                <div class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-slate-300 text-white text-xs font-bold flex items-center justify-center">5</div>
+              </div>
+              <div class="text-sm font-semibold text-slate-700">Idea Validated</div>
+              <div class="text-xs text-slate-400 mt-1">Market fit check</div>
+            </div>
+            <div class="step-card group text-center cursor-pointer">
+              <div class="relative mx-auto w-20 h-20 rounded-2xl bg-white border border-slate-200 shadow-card flex items-center justify-center mb-4 group-hover:border-indigo-300 group-hover:scale-110 transition-all">
+                <span class="text-2xl">🛠️</span>
+                <div class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-slate-300 text-white text-xs font-bold flex items-center justify-center">6</div>
+              </div>
+              <div class="text-sm font-semibold text-slate-700">Build MVP</div>
+              <div class="text-xs text-slate-400 mt-1">Ship fast, learn</div>
+            </div>
+            <div class="step-card group text-center cursor-pointer">
+              <div class="relative mx-auto w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 shadow-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span class="text-2xl">🚀</span>
+                <div class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-amber-600 text-white text-xs font-bold flex items-center justify-center">7</div>
+              </div>
+              <div class="text-sm font-semibold text-slate-700">Pitch Day</div>
+              <div class="text-xs text-slate-400 mt-1">Demo to investors</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES GRID -->
+    <section class="py-24 bg-white dark:bg-slate-900 transition-colors">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <div class="text-xs font-semibold text-indigo-500 uppercase tracking-widest mb-3">Why ITE LaunchPad</div>
+          <h2 class="font-syne text-4xl font-800 text-obsidian dark:text-white transition-colors">Everything You Need to Launch</h2>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="p-8 rounded-2xl border border-slate-200 hover:border-indigo-200 hover:shadow-glow transition-all group">
+            <div class="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center mb-6 group-hover:bg-indigo-100 transition-colors">
+              <svg class="w-6 h-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <h3 class="text-lg font-semibold text-obsidian mb-2">Milestone Tracking</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">6-phase structured milestones from idea validation to final pitch, with real-time progress tracking and mentor reviews.</p>
+          </div>
+          <div class="p-8 rounded-2xl border border-slate-200 hover:border-emerald-200 hover:shadow-glow-emerald transition-all group">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-6 group-hover:bg-emerald-100 transition-colors">
+              <svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <h3 class="text-lg font-semibold text-obsidian mb-2">Expert Mentors</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">7 industry-expert mentors personally assigned to each team, providing structured feedback and startup guidance.</p>
+          </div>
+          <div class="p-8 rounded-2xl border border-slate-200 hover:border-amber-200 transition-all group" style="--tw-shadow-colored: 0 0 30px rgba(245,158,11,0.15);">
+            <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center mb-6 group-hover:bg-amber-100 transition-colors">
+              <svg class="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h3 class="text-lg font-semibold text-obsidian mb-2">Role-Based System</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">Assign real C-Suite roles — CEO, CTO, COO, CFO, CMO — to simulate actual startup team dynamics and accountability.</p>
+          </div>
+          <div class="p-8 rounded-2xl bg-gradient-to-br from-obsidian to-graphite text-white group hover:shadow-xl transition-all">
+            <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-6">
+              <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2">Structured Submissions</h3>
+            <p class="text-white/60 text-sm leading-relaxed">Submit milestone deliverables directly through the platform for mentor review and approval with feedback loops.</p>
+          </div>
+          <div class="p-8 rounded-2xl border border-slate-200 hover:border-indigo-200 hover:shadow-glow transition-all group">
+            <div class="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center mb-6 group-hover:bg-indigo-100 transition-colors">
+              <svg class="w-6 h-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+            </div>
+            <h3 class="text-lg font-semibold text-obsidian mb-2">Team Formation Engine</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">CEOs can search and invite unassigned students based on skills, creating balanced, complementary teams.</p>
+          </div>
+          <div class="p-8 rounded-2xl border border-slate-200 hover:border-emerald-200 transition-all group">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-6 group-hover:bg-emerald-100 transition-colors">
+              <svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
+            </div>
+            <h3 class="text-lg font-semibold text-obsidian mb-2">Admin Analytics</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">Professor/Admin dashboard with full program oversight — student metrics, team progress, and submission management.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    </section>
+
+    <!-- MENTORS SECTION -->
+    <section id="mentors" class="py-24 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900/50 dark:to-obsidian transition-colors">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-semibold mb-4 uppercase tracking-widest transition-colors">Expert Faculty</div>
+          <h2 class="font-syne text-4xl md:text-5xl font-800 text-obsidian dark:text-white mb-4 transition-colors">Meet Your Mentors</h2>
+          <p class="text-slate-500 dark:text-slate-400 max-w-xl mx-auto text-base leading-relaxed transition-colors">7 industry veterans and academic leaders personally guiding each team from ideation to pitch day.</p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <!-- Mentor cards - JS renders these, but we put static ones for landing -->
+          <div onclick="showMentorDetail('rv')" class="mentor-landing-card group cursor-pointer bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:border-indigo-200 dark:hover:border-indigo-500/50 hover:shadow-glow transition-all duration-300 hover:-translate-y-1">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center text-white font-bold text-lg font-syne shadow-md flex-shrink-0">RV</div>
+              <div>
+                <div class="font-semibold text-obsidian dark:text-white text-sm leading-tight transition-colors">Dr. Rajesh Verma</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 transition-colors">IIT Bombay · Ex-Google</div>
+                <div class="flex items-center gap-1 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span><span class="text-xs text-emerald-600 font-medium">Available</span></div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-xs font-medium">Product Strategy</span>
+              <span class="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-xs font-medium">Fundraising</span>
+              <span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium transition-colors">EdTech</span>
+            </div>
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between transition-colors">
+              <span class="text-xs text-slate-400 dark:text-slate-500 transition-colors">3 teams mentoring</span>
+              <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold group-hover:translate-x-0.5 transition-all">View Profile →</span>
+            </div>
+          </div>
+
+          <div onclick="showMentorDetail('sm')" class="mentor-landing-card group cursor-pointer bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:border-indigo-200 dark:hover:border-indigo-500/50 hover:shadow-glow transition-all duration-300 hover:-translate-y-1">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center text-white font-bold text-lg font-syne shadow-md flex-shrink-0">SM</div>
+              <div>
+                <div class="font-semibold text-obsidian dark:text-white text-sm leading-tight transition-colors">Prof. Sunita Mehta</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 transition-colors">IIM Ahmedabad · Ex-McKinsey</div>
+                <div class="flex items-center gap-1 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span><span class="text-xs text-emerald-600 font-medium">Available</span></div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-medium">Market Research</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-medium">GTM Strategy</span>
+              <span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium transition-colors">AgriTech</span>
+            </div>
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between transition-colors">
+              <span class="text-xs text-slate-400 dark:text-slate-500 transition-colors">2 teams mentoring</span>
+              <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold group-hover:translate-x-0.5 transition-all">View Profile →</span>
+            </div>
+          </div>
+
+          <div onclick="showMentorDetail('aj')" class="mentor-landing-card group cursor-pointer bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:border-indigo-200 dark:hover:border-indigo-500/50 hover:shadow-glow transition-all duration-300 hover:-translate-y-1">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-white font-bold text-lg font-syne shadow-md flex-shrink-0">AJ</div>
+              <div>
+                <div class="font-semibold text-obsidian dark:text-white text-sm leading-tight transition-colors">Dr. Ankit Joshi</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 transition-colors">IIT Delhi · Ex-Sequoia</div>
+                <div class="flex items-center gap-1 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span><span class="text-xs text-emerald-600 font-medium">Available</span></div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-xs font-medium">VC Funding</span>
+              <span class="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-xs font-medium">Pitch Coaching</span>
+              <span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium transition-colors">FinTech</span>
+            </div>
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between transition-colors">
+              <span class="text-xs text-slate-400 dark:text-slate-500 transition-colors">3 teams mentoring</span>
+              <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold group-hover:translate-x-0.5 transition-all">View Profile →</span>
+            </div>
+          </div>
+
+          <div onclick="showMentorDetail('nk')" class="mentor-landing-card group cursor-pointer bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:border-indigo-200 dark:hover:border-indigo-500/50 hover:shadow-glow transition-all duration-300 hover:-translate-y-1">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center text-white font-bold text-lg font-syne shadow-md flex-shrink-0">NK</div>
+              <div>
+                <div class="font-semibold text-obsidian dark:text-white text-sm leading-tight transition-colors">Dr. Nandita Krishnan</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 transition-colors">AIIMS Delhi · Founder, MedKart</div>
+                <div class="flex items-center gap-1 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span><span class="text-xs text-emerald-600 font-medium">Available</span></div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 text-xs font-medium">HealthTech</span>
+              <span class="px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 text-xs font-medium">Clinical Ops</span>
+              <span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium transition-colors">Biotech</span>
+            </div>
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between transition-colors">
+              <span class="text-xs text-slate-400 dark:text-slate-500 transition-colors">3 teams mentoring</span>
+              <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold group-hover:translate-x-0.5 transition-all">View Profile →</span>
+            </div>
+          </div>
+
+          <div onclick="showMentorDetail('pp')" class="mentor-landing-card group cursor-pointer bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:border-indigo-200 dark:hover:border-indigo-500/50 hover:shadow-glow transition-all duration-300 hover:-translate-y-1">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center text-white font-bold text-lg font-syne shadow-md flex-shrink-0">PP</div>
+              <div>
+                <div class="font-semibold text-obsidian dark:text-white text-sm leading-tight transition-colors">Ms. Prerna Pandey</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 transition-colors">ISB Hyderabad · Ex-Unacademy</div>
+                <div class="flex items-center gap-1 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span><span class="text-xs text-amber-600 font-medium">Busy</span></div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 text-xs font-medium">EdTech</span>
+              <span class="px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 text-xs font-medium">Growth Hacking</span>
+              <span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium transition-colors">D2C</span>
+            </div>
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between transition-colors">
+              <span class="text-xs text-slate-400 dark:text-slate-500 transition-colors">1 team mentoring</span>
+              <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold group-hover:translate-x-0.5 transition-all">View Profile →</span>
+            </div>
+          </div>
+
+          <div onclick="showMentorDetail('vr')" class="mentor-landing-card group cursor-pointer bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:border-indigo-200 dark:hover:border-indigo-500/50 hover:shadow-glow transition-all duration-300 hover:-translate-y-1">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center text-white font-bold text-lg font-syne shadow-md flex-shrink-0">VR</div>
+              <div>
+                <div class="font-semibold text-obsidian dark:text-white text-sm leading-tight transition-colors">Mr. Vivek Rao</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 transition-colors">NIT Trichy · Founder, SaaSify</div>
+                <div class="flex items-center gap-1 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span><span class="text-xs text-emerald-600 font-medium">Available</span></div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 text-xs font-medium">SaaS</span>
+              <span class="px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 text-xs font-medium">Product-Led Growth</span>
+              <span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium transition-colors">B2B</span>
+            </div>
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between transition-colors">
+              <span class="text-xs text-slate-400 dark:text-slate-500 transition-colors">2 teams mentoring</span>
+              <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold group-hover:translate-x-0.5 transition-all">View Profile →</span>
+            </div>
+          </div>
+
+          <div onclick="showMentorDetail('sc')" class="mentor-landing-card group cursor-pointer bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:border-indigo-200 dark:hover:border-indigo-500/50 hover:shadow-glow transition-all duration-300 hover:-translate-y-1">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white font-bold text-lg font-syne shadow-md flex-shrink-0">SC</div>
+              <div>
+                <div class="font-semibold text-obsidian dark:text-white text-sm leading-tight transition-colors">Dr. Sneha Chopra</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 transition-colors">IIT Madras · Ex-Tesla Energy</div>
+                <div class="flex items-center gap-1 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span><span class="text-xs text-emerald-600 font-medium">Available</span></div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-xs font-medium">CleanTech</span>
+              <span class="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-xs font-medium">ESG / Impact</span>
+              <span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium transition-colors">Deep Tech</span>
+            </div>
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between transition-colors">
+              <span class="text-xs text-slate-400 dark:text-slate-500 transition-colors">2 teams mentoring</span>
+              <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold group-hover:translate-x-0.5 transition-all">View Profile →</span>
+            </div>
+          </div>
+
+          <!-- CTA Card -->
+          <div class="bg-gradient-to-br from-obsidian to-graphite rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10" style="background: radial-gradient(circle at 80% 20%, #4F46E5 0%, transparent 60%);"></div>
+            <div class="relative z-10">
+              <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-4">
+                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+              </div>
+              <h3 class="font-semibold text-white text-base mb-2">Become a Mentor</h3>
+              <p class="text-slate-400 text-xs leading-relaxed">Share your expertise with the next generation of startup founders.</p>
+            </div>
+            <button onclick="navigate('screen-auth')" class="relative z-10 mt-6 w-full py-2.5 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-400 transition-all active:scale-95">Apply to Mentor →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER CTA -->
+
+    <section class="py-24 bg-gradient-to-br from-obsidian via-graphite to-obsidian relative overflow-hidden">
+      <div class="absolute inset-0 pointer-events-none opacity-10" style="background-image: radial-gradient(circle at 20% 50%, #4F46E5 0%, transparent 50%), radial-gradient(circle at 80% 50%, #10B981 0%, transparent 50%);"></div>
+      <div class="relative max-w-3xl mx-auto px-6 text-center">
+        <h2 class="font-syne text-4xl md:text-5xl font-800 text-white mb-6">Ready to Launch Your Startup?</h2>
+        <p class="text-slate-400 text-lg mb-10">Join 80+ students building the future. Applications are open for the 2026 cohort.</p>
+        <button onclick="navigate('screen-auth')" id="footer-cta" class="px-10 py-4 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold text-base hover:from-indigo-400 hover:to-indigo-500 shadow-glow hover:shadow-2xl transition-all active:scale-95">
+          Apply for Free →
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCREEN 2: AUTH / LOGIN -->
+  <!-- ============================================================ -->
+  <div id="screen-auth" class="screen hidden min-h-screen bg-ice dark:bg-obsidian flex transition-colors">
+    <!-- Left panel -->
+    <div class="hidden lg:flex flex-col justify-between w-1/2 bg-gradient-to-br from-obsidian to-graphite p-12 relative overflow-hidden">
+      <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(circle at 30% 70%, rgba(79,70,229,0.2) 0%, transparent 60%), radial-gradient(circle at 80% 20%, rgba(16,185,129,0.1) 0%, transparent 50%);"></div>
+      <div class="absolute inset-0 opacity-5" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+      <div class="relative z-10">
+        <div class="flex items-center gap-3 mb-16">
+          <div class="w-9 h-9 rounded-xl bg-indigo-500 flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <span class="font-syne font-800 text-xl text-white">ITE Launch<span class="text-indigo-400">Pad</span></span>
+        </div>
+
+        <h2 class="font-syne text-4xl font-800 text-white mb-4 leading-tight">Welcome to the<br /><span class="text-indigo-400">Future of Innovation</span></h2>
+        <p class="text-slate-400 text-base leading-relaxed max-w-sm">Build real startups, gain C-Suite experience, and pitch to investors — all within your academic program.</p>
+      </div>
+
+      <!-- Testimonial cards -->
+      <div class="relative z-10 space-y-4">
+        <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">AS</div>
+            <div>
+              <p class="text-white/80 text-sm leading-relaxed">"LaunchPad helped me lead my first real startup. Our team secured a ₹5L seed grant at Pitch Day!"</p>
+              <div class="text-slate-500 text-xs mt-2">Aryan Shah · CEO, EduFlow · Cohort 2025</div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5">
+          <div class="flex items-center gap-4">
+            <div class="grid grid-cols-3 gap-2 flex-shrink-0">
+              <div class="text-center"><div class="text-lg font-bold text-white">18</div><div class="text-xs text-slate-500">Teams</div></div>
+              <div class="text-center"><div class="text-lg font-bold text-emerald-400">84%</div><div class="text-xs text-slate-500">Completion</div></div>
+              <div class="text-center"><div class="text-lg font-bold text-amber-400">7</div><div class="text-xs text-slate-500">Mentors</div></div>
+            </div>
+            <div class="text-slate-500 text-xs">2025 Cohort Stats</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel -->
+    <div class="flex-1 flex items-center justify-center p-6 lg:p-12 dark:bg-slate-900 transition-colors">
+      <div class="w-full max-w-md">
+        <!-- Back button -->
+        <button onclick="navigate('screen-landing')" class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 mb-8 transition-colors">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          Back to home
+        </button>
+
+        <h1 class="font-syne text-3xl font-800 text-obsidian dark:text-white mb-2 transition-colors">Sign In</h1>
+        <p class="text-slate-500 dark:text-slate-400 text-sm mb-8 transition-colors">Select your role and sign in to continue.</p>
+
+        <!-- Role selector -->
+        <div class="grid grid-cols-3 gap-2 mb-8 p-1.5 bg-slate-100 dark:bg-slate-800 rounded-xl transition-colors">
+          <button id="role-student" onclick="setRole('student')" class="role-tab active py-2.5 px-3 rounded-lg text-sm font-semibold transition-all">
+            🎓 Student
+          </button>
+          <button id="role-mentor" onclick="setRole('mentor')" class="role-tab py-2.5 px-3 rounded-lg text-sm font-semibold transition-all text-slate-500 dark:text-slate-400">
+            🧑‍💼 Mentor
+          </button>
+          <button id="role-admin" onclick="setRole('admin')" class="role-tab py-2.5 px-3 rounded-lg text-sm font-semibold transition-all text-slate-500 dark:text-slate-400">
+            🛡️ Admin
+          </button>
+        </div>
+
+        <!-- Login form -->
+        <form onsubmit="handleLogin(event)" class="space-y-5">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-2 uppercase tracking-wide transition-colors">Email Address</label>
+            <input type="email" id="auth-email" placeholder="you@ite.ac.in" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-2 uppercase tracking-wide transition-colors">Password</label>
+            <div class="relative">
+              <input type="password" id="auth-password" placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all pr-12" />
+              <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" id="login-btn" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold text-sm hover:from-indigo-600 hover:to-indigo-700 shadow-glow transition-all active:scale-95 flex items-center justify-center gap-2">
+            <span id="login-btn-text">Sign In as Student</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+
+        <div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 text-center transition-colors">
+          <p class="text-sm text-slate-500 dark:text-slate-400 transition-colors">New student? <button onclick="navigate('screen-onboarding')" class="text-indigo-500 dark:text-indigo-400 font-semibold hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors">Create your account →</button></p>
+        </div>
+
+        <!-- Quick access demo buttons -->
+        <div class="mt-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 transition-colors">
+          <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3 transition-colors">Quick Demo Access</p>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="demoLogin('student-ceo')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-xs font-medium text-slate-600 dark:text-slate-300 hover:border-indigo-300 dark:hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all">CEO View</button>
+            <button onclick="demoLogin('student-member')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-xs font-medium text-slate-600 dark:text-slate-300 hover:border-indigo-300 dark:hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all">Member View</button>
+            <button onclick="demoLogin('mentor')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-xs font-medium text-slate-600 dark:text-slate-300 hover:border-indigo-300 dark:hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all">Mentor View</button>
+            <button onclick="demoLogin('admin')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-xs font-medium text-slate-600 dark:text-slate-300 hover:border-indigo-300 dark:hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all">Admin View</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCREEN 3: ONBOARDING WIZARD -->
+  <!-- ============================================================ -->
+  <div id="screen-onboarding" class="screen hidden min-h-screen bg-ice dark:bg-obsidian flex items-center justify-center p-6 transition-colors">
+    <div class="w-full max-w-2xl">
+      <!-- Back -->
+      <button onclick="navigate('screen-auth')" class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 mb-8 transition-colors">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        Back to login
+      </button>
+
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <div class="flex items-center gap-3 justify-center mb-4">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shadow-glow">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <span class="font-syne font-800 text-xl text-obsidian dark:text-white transition-colors">ITE Launch<span class="text-indigo-500">Pad</span></span>
+        </div>
+        <h1 class="font-syne text-3xl font-800 text-obsidian dark:text-white mb-2 transition-colors">Create Your Profile</h1>
+        <p class="text-slate-500 dark:text-slate-400 text-sm transition-colors">Step <span id="current-step-label">1</span> of 3 — Let's get you set up</p>
+      </div>
+
+      <!-- Stepper -->
+      <div class="flex items-center justify-center mb-10">
+        <div class="flex items-center gap-0">
+          <div class="step-indicator active" id="step-ind-1">
+            <div class="w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center text-sm font-semibold shadow-glow transition-colors">1</div>
+            <div class="text-xs font-medium text-indigo-600 dark:text-indigo-400 mt-1.5 text-center transition-colors">Details</div>
+          </div>
+          <div class="h-0.5 w-16 bg-slate-200 dark:bg-slate-700 mx-2 mt-0 mb-5 transition-colors" id="step-line-1"></div>
+          <div class="step-indicator" id="step-ind-2">
+            <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400 flex items-center justify-center text-sm font-semibold transition-colors" id="step-circle-2">2</div>
+            <div class="text-xs font-medium text-slate-400 dark:text-slate-500 mt-1.5 text-center transition-colors" id="step-label-2">Skills</div>
+          </div>
+          <div class="h-0.5 w-16 bg-slate-200 dark:bg-slate-700 mx-2 mt-0 mb-5 transition-colors" id="step-line-2"></div>
+          <div class="step-indicator" id="step-ind-3">
+            <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400 flex items-center justify-center text-sm font-semibold transition-colors" id="step-circle-3">3</div>
+            <div class="text-xs font-medium text-slate-400 dark:text-slate-500 mt-1.5 text-center transition-colors" id="step-label-3">Role</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-soft p-8 transition-colors">
+        <!-- Step 1: Basic Details -->
+        <div id="onboard-step-1">
+          <h2 class="text-xl font-semibold text-obsidian dark:text-white mb-6 transition-colors">Basic Information</h2>
+          <div class="grid grid-cols-2 gap-5">
+            <div class="col-span-2 sm:col-span-1">
+              <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide transition-colors">Full Name *</label>
+              <input type="text" placeholder="Aryan Sharma" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white bg-white dark:bg-slate-900/50 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all" />
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+              <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide transition-colors">Roll Number *</label>
+              <input type="text" placeholder="ITE2021001" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white bg-white dark:bg-slate-900/50 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all" />
+            </div>
+            <div class="col-span-2">
+              <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide transition-colors">Branch / Department *</label>
+              <select class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all bg-white dark:bg-slate-900/50">
+                <option value="" disabled selected>Select your branch</option>
+                <option>Computer Science & Engineering</option>
+                <option>Information Technology</option>
+                <option>Electronics & Communication</option>
+                <option>Mechanical Engineering</option>
+                <option>Business Administration</option>
+                <option>Design & Innovation</option>
+              </select>
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+              <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide transition-colors">Email Address *</label>
+              <input type="email" placeholder="aryan@ite.ac.in" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white bg-white dark:bg-slate-900/50 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all" />
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+              <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide transition-colors">Phone Number *</label>
+              <input type="tel" placeholder="+91 98765 43210" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white bg-white dark:bg-slate-900/50 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all" />
+            </div>
+            <div class="col-span-2">
+              <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide transition-colors">Password *</label>
+              <input type="password" placeholder="Minimum 8 characters" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white bg-white dark:bg-slate-900/50 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Skills -->
+        <div id="onboard-step-2" class="hidden">
+          <h2 class="text-xl font-semibold text-obsidian dark:text-white mb-2 transition-colors">Your Skills</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 transition-colors">Select all that apply. This helps team formation and role assignment.</p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="skills-grid">
+            <!-- Skills generated by JS -->
+          </div>
+        </div>
+
+        <!-- Step 3: Role Assignment -->
+        <div id="onboard-step-3" class="hidden">
+          <h2 class="text-xl font-semibold text-obsidian dark:text-white mb-2 transition-colors">Choose Your Startup Role</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 transition-colors">Pick the role that best aligns with your skills and aspirations.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="roles-grid">
+            <!-- Roles generated by JS -->
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-slate-100 dark:border-slate-700 transition-colors">
+          <button id="onboard-prev" onclick="onboardPrev()" class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all hidden">
+            ← Previous
+          </button>
+          <div class="flex-1"></div>
+          <button id="onboard-next" onclick="onboardNext()" class="px-6 py-2.5 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-all shadow-glow active:scale-95">
+            Continue →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCREEN 4: STUDENT DASHBOARD (Non-CEO — Invitations) -->
+  <!-- ============================================================ -->
+  <div id="screen-student-member" class="screen hidden min-h-screen bg-slate-100 dark:bg-obsidian transition-colors">
+    <!-- Top Nav -->
+    <div class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 transition-colors">
+      <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">
+            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <span class="font-syne font-800 text-lg text-obsidian dark:text-white transition-colors">ITE Launch<span class="text-indigo-500">Pad</span></span>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <button class="relative w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+              <svg class="w-5 h-5 text-slate-600 dark:text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+              <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center font-bold">3</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-2 cursor-pointer">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-xs font-bold">PS</div>
+            <div class="hidden sm:block">
+              <div class="text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors">Priya Singh</div>
+              <div class="text-xs text-slate-400 dark:text-slate-500 transition-colors">ITE2021024 · CTO</div>
+            </div>
+          </div>
+          <button onclick="navigate('screen-auth')" class="text-xs text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">Sign out</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <!-- Welcome banner -->
+      <div class="bg-gradient-to-r from-indigo-500 to-indigo-700 rounded-2xl p-8 mb-8 relative overflow-hidden shadow-glow">
+        <div class="absolute right-0 top-0 bottom-0 w-64 opacity-10" style="background: radial-gradient(circle at center, white 0%, transparent 70%);"></div>
+        <div class="relative z-10">
+          <div class="text-indigo-200 text-sm font-medium mb-2">👋 Welcome back</div>
+          <h1 class="font-syne text-2xl font-800 text-white mb-1">Hello, Priya!</h1>
+          <p class="text-indigo-200 text-sm">You have <strong class="text-white">3 team invitations</strong> waiting for your response.</p>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Main: Invitations -->
+        <div class="lg:col-span-2">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-lg font-semibold text-obsidian dark:text-white transition-colors">Team Invitations</h2>
+            <span class="px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-semibold">3 Pending</span>
+          </div>
+
+          <div class="space-y-4" id="invitations-list">
+            <!-- Invitation cards -->
+            <div class="invitation-card bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-card hover:shadow-soft transition-all hover:-translate-y-0.5" id="inv-1">
+              <div class="flex items-start justify-between gap-4 mb-4">
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white font-bold text-lg">EF</div>
+                  <div>
+                    <h3 class="font-semibold text-obsidian dark:text-white transition-colors text-base">EduFlow</h3>
+                    <p class="text-slate-500 dark:text-slate-400 transition-colors text-xs">EdTech · 4 members · Looking for CTO</p>
+                  </div>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-semibold flex-shrink-0 transition-colors">2h ago</span>
+              </div>
+              <p class="text-slate-600 dark:text-slate-300 text-sm mb-4 leading-relaxed transition-colors">"We're building an AI-powered adaptive learning platform for tier-2 colleges. We need a strong tech lead to architect our recommendation engine."</p>
+              <div class="flex flex-wrap gap-2 mb-5">
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors text-xs font-medium">React</span>
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors text-xs font-medium">Node.js</span>
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors text-xs font-medium">ML/AI</span>
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors text-xs font-medium">MongoDB</span>
+              </div>
+              <div class="flex gap-3">
+                <button onclick="acceptInvitation('inv-1')" class="flex-1 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-all active:scale-95 shadow-glow-emerald flex items-center justify-center gap-2">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  Accept
+                </button>
+                <button onclick="rejectInvitation('inv-1')" class="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 text-sm font-semibold hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-200 dark:hover:border-red-800 hover:text-red-600 dark:hover:text-red-400 transition-all active:scale-95 flex items-center justify-center gap-2">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                  Decline
+                </button>
+              </div>
+            </div>
+
+            <div class="invitation-card bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-card hover:shadow-soft transition-all hover:-translate-y-0.5" id="inv-2">
+              <div class="flex items-start justify-between gap-4 mb-4">
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-bold text-lg">GH</div>
+                  <div>
+                    <h3 class="font-semibold text-obsidian dark:text-white transition-colors text-base">GreenHarvest</h3>
+                    <p class="text-slate-500 dark:text-slate-400 transition-colors text-xs">AgriTech · 3 members · Looking for CTO</p>
+                  </div>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-semibold flex-shrink-0 transition-colors">5h ago</span>
+              </div>
+              <p class="text-slate-600 dark:text-slate-300 text-sm mb-4 leading-relaxed transition-colors">"Smart irrigation and crop monitoring using IoT sensors. We're targeting small-scale farmers in Maharashtra with a mobile-first solution."</p>
+              <div class="flex flex-wrap gap-2 mb-5">
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors text-xs font-medium">IoT</span>
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors text-xs font-medium">Python</span>
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors text-xs font-medium">Flutter</span>
+              </div>
+              <div class="flex gap-3">
+                <button onclick="acceptInvitation('inv-2')" class="flex-1 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-all active:scale-95 flex items-center justify-center gap-2">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  Accept
+                </button>
+                <button onclick="rejectInvitation('inv-2')" class="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 text-sm font-semibold hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-200 dark:hover:border-red-800 hover:text-red-600 dark:hover:text-red-400 transition-all active:scale-95 flex items-center justify-center gap-2">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                  Decline
+                </button>
+              </div>
+            </div>
+
+            <div class="invitation-card bg-white rounded-2xl border border-slate-200 p-6 shadow-card hover:shadow-soft transition-all hover:-translate-y-0.5" id="inv-3">
+              <div class="flex items-start justify-between gap-4 mb-4">
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white font-bold text-lg">FP</div>
+                  <div>
+                    <h3 class="font-semibold text-obsidian text-base">FinPulse</h3>
+                    <p class="text-slate-500 text-xs">FinTech · 2 members · Looking for CTO</p>
+                  </div>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 text-xs font-semibold flex-shrink-0">1d ago</span>
+              </div>
+              <p class="text-slate-600 text-sm mb-4 leading-relaxed">"A micro-investment platform for college students. We gamify saving habits and offer curated mutual fund recommendations using ML."</p>
+              <div class="flex flex-wrap gap-2 mb-5">
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">React Native</span>
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">Django</span>
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">PostgreSQL</span>
+              </div>
+              <div class="flex gap-3">
+                <button onclick="acceptInvitation('inv-3')" class="flex-1 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-all active:scale-95 flex items-center justify-center gap-2">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  Accept
+                </button>
+                <button onclick="rejectInvitation('inv-3')" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-sm font-semibold hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-all active:scale-95 flex items-center justify-center gap-2">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                  Decline
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="no-invitations" class="hidden text-center py-16">
+            <div class="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <h3 class="font-semibold text-slate-700 mb-2">All caught up!</h3>
+            <p class="text-slate-400 text-sm">You've responded to all invitations.<br />New ones will appear here when teams invite you.</p>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-card">
+            <h3 class="font-semibold text-obsidian mb-4">Your Profile</h3>
+            <div class="flex items-center gap-3 mb-5">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white font-bold">PS</div>
+              <div>
+                <div class="font-semibold text-slate-800">Priya Singh</div>
+                <div class="text-xs text-slate-400">ITE2021024 · CSE</div>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-xs text-slate-500">Assigned Role</span>
+                <span class="px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold">CTO</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-xs text-slate-500">Status</span>
+                <span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold">Unassigned</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-xs text-slate-500">Invitations</span>
+                <span class="text-xs font-semibold text-slate-700">3 pending</span>
+              </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-slate-100">
+              <div class="text-xs font-semibold text-slate-500 mb-3">Top Skills</div>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-2 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-xs font-medium">React</span>
+                <span class="px-2 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-xs font-medium">Node.js</span>
+                <span class="px-2 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-xs font-medium">Python</span>
+                <span class="px-2 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-xs font-medium">ML/AI</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-card">
+            <h3 class="font-semibold text-obsidian mb-4">Quick Actions</h3>
+            <div class="space-y-2">
+              <button class="w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-3 text-sm font-medium text-slate-600 group">
+                <div class="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-indigo-50 flex items-center justify-center transition-colors">
+                  <svg class="w-4 h-4 text-slate-500 group-hover:text-indigo-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                </div>
+                Edit Profile
+              </button>
+              <button onclick="navigate('screen-student-team')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-3 text-sm font-medium text-slate-600 group">
+                <div class="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-indigo-50 flex items-center justify-center transition-colors">
+                  <svg class="w-4 h-4 text-slate-500 group-hover:text-indigo-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                </div>
+                View Team Dashboard
+              </button>
+              <button onclick="navigate('screen-auth')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-3 text-sm font-medium text-slate-500 group">
+                <div class="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-red-50 flex items-center justify-center transition-colors">
+                  <svg class="w-4 h-4 text-slate-500 group-hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                </div>
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCREEN 5: CEO DASHBOARD (Create Startup) -->
+  <!-- ============================================================ -->
+  <div id="screen-student-ceo" class="screen hidden min-h-screen bg-slate-100">
+    <!-- Top Nav -->
+    <div class="bg-white border-b border-slate-200 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">
+            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <span class="font-syne font-800 text-lg text-obsidian">ITE Launch<span class="text-indigo-500">Pad</span></span>
+        </div>
+        <div class="flex items-center gap-4">
+          <button onclick="navigate('screen-student-team')" class="px-4 py-2 rounded-xl bg-indigo-50 text-indigo-600 text-sm font-semibold hover:bg-indigo-100 transition-colors">View Team →</button>
+          <div class="flex items-center gap-2 cursor-pointer">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-xs font-bold">AK</div>
+            <div class="hidden sm:block">
+              <div class="text-sm font-semibold text-slate-700">Aarav Kumar</div>
+              <div class="text-xs text-slate-400">ITE2021001 · CEO</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Create Startup Form -->
+        <div class="lg:col-span-2 space-y-6">
+          <div>
+            <h1 class="font-syne text-2xl font-800 text-obsidian mb-1">Create Your Startup</h1>
+            <p class="text-slate-500 text-sm">Define your startup's identity and invite your founding team.</p>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200 p-8 shadow-card">
+            <h2 class="font-semibold text-obsidian mb-6 flex items-center gap-2">
+              <div class="w-6 h-6 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center font-bold">1</div>
+              Startup Identity
+            </h2>
+            <div class="space-y-5">
+              <div class="grid grid-cols-2 gap-5">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Startup Name *</label>
+                  <input type="text" id="startup-name" placeholder="e.g. EduFlow" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Industry / Domain *</label>
+                  <select class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all bg-white">
+                    <option value="" disabled selected>Select domain</option>
+                    <option>EdTech</option>
+                    <option>FinTech</option>
+                    <option>HealthTech</option>
+                    <option>AgriTech</option>
+                    <option>CleanTech</option>
+                    <option>SaaS</option>
+                    <option>E-Commerce</option>
+                    <option>Social Impact</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Problem Statement *</label>
+                <textarea rows="4" placeholder="What specific problem are you solving? Be precise about who faces this problem and why current solutions fail..." class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all resize-none leading-relaxed"></textarea>
+                <div class="text-right text-xs text-slate-400 mt-1">0 / 500 characters</div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Startup Description *</label>
+                <textarea rows="4" placeholder="Describe your solution, target market, and what makes it unique. How does your startup solve the problem?" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all resize-none leading-relaxed"></textarea>
+                <div class="text-right text-xs text-slate-400 mt-1">0 / 1000 characters</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Team Builder -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-8 shadow-card">
+            <h2 class="font-semibold text-obsidian mb-6 flex items-center gap-2">
+              <div class="w-6 h-6 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center font-bold">2</div>
+              Build Your Team
+            </h2>
+
+            <!-- Search -->
+            <div class="relative mb-6">
+              <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input type="text" id="student-search" oninput="searchStudents(this.value)" placeholder="Search unassigned students by name, skills, or branch..." class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all" />
+            </div>
+
+            <!-- Filter pills -->
+            <div class="flex flex-wrap gap-2 mb-6">
+              <button onclick="filterStudents('all')" class="filter-pill active px-3 py-1.5 rounded-full text-xs font-semibold border transition-all">All Roles</button>
+              <button onclick="filterStudents('cto')" class="filter-pill px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-200 text-slate-500 hover:border-indigo-300 hover:text-indigo-600 transition-all">CTO</button>
+              <button onclick="filterStudents('coo')" class="filter-pill px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-200 text-slate-500 hover:border-indigo-300 hover:text-indigo-600 transition-all">COO</button>
+              <button onclick="filterStudents('cfo')" class="filter-pill px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-200 text-slate-500 hover:border-indigo-300 hover:text-indigo-600 transition-all">CFO</button>
+              <button onclick="filterStudents('cmo')" class="filter-pill px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-200 text-slate-500 hover:border-indigo-300 hover:text-indigo-600 transition-all">CMO</button>
+            </div>
+
+            <!-- Student results -->
+            <div id="student-results" class="space-y-3">
+              <!-- populated by JS -->
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="flex gap-4">
+            <button class="flex-1 py-3.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition-all">Save as Draft</button>
+            <button onclick="navigate('screen-student-team')" class="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold text-sm hover:from-indigo-600 hover:to-indigo-700 shadow-glow transition-all active:scale-95">
+              Launch Startup →
+            </button>
+          </div>
+        </div>
+
+        <!-- Sidebar: Team slots -->
+        <div class="space-y-6">
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-card">
+            <h3 class="font-semibold text-obsidian mb-4">Team Composition</h3>
+            <div class="space-y-3" id="team-slots">
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-indigo-50 border border-indigo-200">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-xs font-bold">AK</div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-xs font-semibold text-slate-700 truncate">Aarav Kumar (You)</div>
+                  <div class="text-xs text-slate-500">CEO · ITE2021001</div>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold">CEO</span>
+              </div>
+              <div class="flex items-center gap-3 p-3 rounded-xl border border-dashed border-slate-300 text-slate-400">
+                <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                </div>
+                <div class="flex-1">
+                  <div class="text-xs font-medium">Add CTO</div>
+                  <div class="text-xs">Technical Lead</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 p-3 rounded-xl border border-dashed border-slate-300 text-slate-400">
+                <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                </div>
+                <div class="flex-1">
+                  <div class="text-xs font-medium">Add COO</div>
+                  <div class="text-xs">Operations Lead</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 p-3 rounded-xl border border-dashed border-slate-300 text-slate-400">
+                <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                </div>
+                <div class="flex-1">
+                  <div class="text-xs font-medium">Add CFO</div>
+                  <div class="text-xs">Finance Lead</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 p-3 rounded-xl border border-dashed border-slate-300 text-slate-400">
+                <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                </div>
+                <div class="flex-1">
+                  <div class="text-xs font-medium">Add CMO</div>
+                  <div class="text-xs">Marketing Lead</div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-slate-100">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-500">Team size</span>
+                <span class="font-semibold text-slate-700">1 / 5</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-2xl p-6 text-white shadow-glow">
+            <div class="text-sm font-semibold mb-2">💡 CEO Tips</div>
+            <ul class="text-indigo-200 text-xs space-y-2 leading-relaxed">
+              <li>• Write a clear problem statement — it helps mentors validate your idea</li>
+              <li>• Balance your team with diverse skills across tech, ops, and business</li>
+              <li>• Aim for 4-5 members for optimal team dynamics</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCREEN 6: TEAM DASHBOARD (Active Team View) -->
+  <!-- ============================================================ -->
+  <div id="screen-student-team" class="screen hidden min-h-screen bg-slate-100">
+    <!-- Top Nav -->
+    <div class="bg-white border-b border-slate-200 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">
+            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <span class="font-syne font-800 text-lg text-obsidian">ITE Launch<span class="text-indigo-500">Pad</span></span>
+          <div class="hidden sm:flex items-center gap-2 ml-2 px-3 py-1 rounded-lg bg-slate-100 text-slate-600 text-xs font-medium">
+            <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+            EduFlow
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <button class="relative w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition-colors">
+            <svg class="w-5 h-5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-500 text-white text-xs flex items-center justify-center font-bold">1</span>
+          </button>
+          <div class="flex items-center gap-2 cursor-pointer">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-xs font-bold">PS</div>
+            <div class="hidden sm:block">
+              <div class="text-sm font-semibold text-slate-700">Priya Singh</div>
+              <div class="text-xs text-emerald-600 font-medium">CTO · EduFlow</div>
+            </div>
+          </div>
+          <button onclick="navigate('screen-auth')" class="text-xs text-slate-400 hover:text-slate-600">Sign out</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Main content -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Startup Profile Card -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-card overflow-hidden">
+            <div class="bg-gradient-to-r from-indigo-500 to-indigo-700 h-24 relative">
+              <div class="absolute inset-0 opacity-20" style="background: radial-gradient(circle at 70% 50%, white 0%, transparent 60%);"></div>
+              <div class="absolute bottom-0 left-0 right-0 translate-y-1/2 px-8 flex items-end gap-4">
+                <div class="w-16 h-16 rounded-2xl bg-white shadow-lg border-2 border-white flex items-center justify-center text-2xl font-bold text-indigo-600 font-syne">EF</div>
+              </div>
+            </div>
+            <div class="px-8 pt-12 pb-6">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h2 class="font-syne text-2xl font-800 text-obsidian">EduFlow</h2>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span class="px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold">EdTech</span>
+                    <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold">Active</span>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <div class="text-2xl font-bold text-obsidian font-syne">67%</div>
+                  <div class="text-xs text-slate-500">Overall Progress</div>
+                </div>
+              </div>
+              <p class="text-slate-500 text-sm mt-4 leading-relaxed">An AI-powered adaptive learning platform for tier-2 colleges, making quality education accessible through personalized learning paths and intelligent content recommendations.</p>
+              <div class="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-slate-100">
+                <div class="text-center">
+                  <div class="text-lg font-bold text-obsidian">5</div>
+                  <div class="text-xs text-slate-500">Team Members</div>
+                </div>
+                <div class="text-center border-x border-slate-100">
+                  <div class="text-lg font-bold text-obsidian">Phase 4</div>
+                  <div class="text-xs text-slate-500">Current Milestone</div>
+                </div>
+                <div class="text-center">
+                  <div class="text-lg font-bold text-obsidian">12d</div>
+                  <div class="text-xs text-slate-500">To Next Deadline</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Milestone Tracker -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-8 shadow-card">
+            <div class="flex items-center justify-between mb-8">
+              <h2 class="font-semibold text-obsidian text-lg">Milestone Tracker</h2>
+              <span class="text-xs text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full font-medium">Phase 4 of 6 Active</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-6">
+              <!-- Milestone 1: Complete -->
+              <div class="milestone-item text-center group">
+                <div class="relative mx-auto w-20 h-20 mb-3">
+                  <svg class="w-20 h-20 -rotate-90" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#E2E8F0" stroke-width="3"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#10B981" stroke-width="3" stroke-dasharray="100 100" stroke-linecap="round" class="transition-all duration-1000"/>
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="text-lg">✅</span>
+                    <div class="text-xs font-bold text-emerald-600">100%</div>
+                  </div>
+                </div>
+                <div class="text-xs font-semibold text-slate-700">Idea Validation</div>
+                <div class="text-xs text-emerald-600 mt-1 font-medium">Approved</div>
+              </div>
+
+              <!-- Milestone 2: Complete -->
+              <div class="milestone-item text-center group">
+                <div class="relative mx-auto w-20 h-20 mb-3">
+                  <svg class="w-20 h-20 -rotate-90" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#E2E8F0" stroke-width="3"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#10B981" stroke-width="3" stroke-dasharray="100 100" stroke-linecap="round"/>
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="text-lg">✅</span>
+                    <div class="text-xs font-bold text-emerald-600">100%</div>
+                  </div>
+                </div>
+                <div class="text-xs font-semibold text-slate-700">Market Research</div>
+                <div class="text-xs text-emerald-600 mt-1 font-medium">Approved</div>
+              </div>
+
+              <!-- Milestone 3: Complete -->
+              <div class="milestone-item text-center group">
+                <div class="relative mx-auto w-20 h-20 mb-3">
+                  <svg class="w-20 h-20 -rotate-90" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#E2E8F0" stroke-width="3"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#10B981" stroke-width="3" stroke-dasharray="100 100" stroke-linecap="round"/>
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="text-lg">✅</span>
+                    <div class="text-xs font-bold text-emerald-600">100%</div>
+                  </div>
+                </div>
+                <div class="text-xs font-semibold text-slate-700">Cust. Interviews</div>
+                <div class="text-xs text-emerald-600 mt-1 font-medium">Approved</div>
+              </div>
+
+              <!-- Milestone 4: Active -->
+              <div class="milestone-item text-center group">
+                <div class="relative mx-auto w-20 h-20 mb-3">
+                  <svg class="w-20 h-20 -rotate-90" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#E2E8F0" stroke-width="3"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4F46E5" stroke-width="3" stroke-dasharray="65 100" stroke-linecap="round"/>
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="text-lg">🛠️</span>
+                    <div class="text-xs font-bold text-indigo-600">65%</div>
+                  </div>
+                </div>
+                <div class="text-xs font-semibold text-slate-700">MVP Build</div>
+                <div class="text-xs text-indigo-600 mt-1 font-medium">In Progress</div>
+              </div>
+
+              <!-- Milestone 5: Locked -->
+              <div class="milestone-item text-center group opacity-60">
+                <div class="relative mx-auto w-20 h-20 mb-3">
+                  <svg class="w-20 h-20 -rotate-90" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#E2E8F0" stroke-width="3"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#CBD5E1" stroke-width="3" stroke-dasharray="0 100" stroke-linecap="round"/>
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="text-lg">🔒</span>
+                    <div class="text-xs font-bold text-slate-400">0%</div>
+                  </div>
+                </div>
+                <div class="text-xs font-semibold text-slate-400">Pitch Deck</div>
+                <div class="text-xs text-slate-400 mt-1 font-medium">Locked</div>
+              </div>
+
+              <!-- Milestone 6: Locked -->
+              <div class="milestone-item text-center group opacity-60">
+                <div class="relative mx-auto w-20 h-20 mb-3">
+                  <svg class="w-20 h-20 -rotate-90" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#E2E8F0" stroke-width="3"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#CBD5E1" stroke-width="3" stroke-dasharray="0 100" stroke-linecap="round"/>
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="text-lg">🔒</span>
+                    <div class="text-xs font-bold text-slate-400">0%</div>
+                  </div>
+                </div>
+                <div class="text-xs font-semibold text-slate-400">Final Pitch</div>
+                <div class="text-xs text-slate-400 mt-1 font-medium">Locked</div>
+              </div>
+            </div>
+
+            <!-- Active milestone detail -->
+            <div class="mt-8 pt-6 border-t border-slate-100">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-semibold text-obsidian">Current: MVP Build</h3>
+                <span class="text-xs text-slate-500">Due in 12 days</span>
+              </div>
+              <div class="space-y-3 mb-5">
+                <div class="flex items-center gap-3">
+                  <div class="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
+                  <span class="text-sm text-slate-600">Frontend prototype complete</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
+                  <span class="text-sm text-slate-600">API architecture designed</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-5 h-5 rounded-full bg-indigo-100 border-2 border-indigo-400 flex-shrink-0"></div>
+                  <span class="text-sm text-slate-600">Backend integration in progress</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-5 h-5 rounded-full bg-slate-100 border-2 border-slate-300 flex-shrink-0"></div>
+                  <span class="text-sm text-slate-400">User testing & feedback</span>
+                </div>
+              </div>
+              <button class="w-full py-3 rounded-xl bg-indigo-500 text-white font-semibold text-sm hover:bg-indigo-600 transition-all shadow-glow active:scale-95">
+                Submit MVP for Review →
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right sidebar -->
+        <div class="space-y-6">
+          <!-- Mentor Card -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-card">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-semibold text-obsidian">Your Mentor</h3>
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            </div>
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center text-white font-bold text-xl">RV</div>
+              <div>
+                <div class="font-semibold text-slate-800">Dr. Rajesh Verma</div>
+                <div class="text-xs text-slate-500">IIT Bombay · Ex-Google</div>
+                <div class="text-xs text-emerald-600 font-medium mt-0.5">● Available for 1-on-1</div>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 mb-4">
+              <div class="text-center p-2 bg-slate-50 rounded-xl">
+                <div class="text-sm font-bold text-slate-700">12</div>
+                <div class="text-xs text-slate-500">Sessions</div>
+              </div>
+              <div class="text-center p-2 bg-slate-50 rounded-xl">
+                <div class="text-sm font-bold text-slate-700">4.9★</div>
+                <div class="text-xs text-slate-500">Rating</div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-1 mb-5">
+              <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs">Product</span>
+              <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs">Strategy</span>
+              <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs">Fundraising</span>
+            </div>
+            <button class="w-full py-2.5 rounded-xl bg-indigo-50 text-indigo-600 text-sm font-semibold hover:bg-indigo-100 transition-colors flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+              Message Mentor
+            </button>
+          </div>
+
+          <!-- Team Grid -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-card">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-semibold text-obsidian">Team EduFlow</h3>
+              <span class="text-xs text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">5 members</span>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">AK</div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-sm font-medium text-slate-800 truncate">Aarav Kumar</div>
+                  <div class="text-xs text-slate-500">ITE2021001</div>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-xs font-bold">CEO</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">PS</div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-sm font-medium text-slate-800 truncate">Priya Singh</div>
+                  <div class="text-xs text-emerald-600 font-medium">You</div>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold">CTO</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">RM</div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-sm font-medium text-slate-800 truncate">Rahul Mehta</div>
+                  <div class="text-xs text-slate-500">ITE2021033</div>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold">COO</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">SA</div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-sm font-medium text-slate-800 truncate">Sneha Agarwal</div>
+                  <div class="text-xs text-slate-500">ITE2021045</div>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 text-xs font-bold">CFO</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">VP</div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-sm font-medium text-slate-800 truncate">Vikram Patel</div>
+                  <div class="text-xs text-slate-500">ITE2021058</div>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 text-xs font-bold">CMO</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent activity -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-card">
+            <h3 class="font-semibold text-obsidian mb-4">Recent Activity</h3>
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <div class="w-7 h-7 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div>
+                  <p class="text-xs text-slate-700 font-medium">Market Research approved by Dr. Verma</p>
+                  <p class="text-xs text-slate-400 mt-0.5">Yesterday · 3:42 PM</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-7 h-7 rounded-full bg-indigo-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg class="w-3.5 h-3.5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                </div>
+                <div>
+                  <p class="text-xs text-slate-700 font-medium">MVP frontend prototype uploaded</p>
+                  <p class="text-xs text-slate-400 mt-0.5">2 days ago · Priya Singh</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-7 h-7 rounded-full bg-amber-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg class="w-3.5 h-3.5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                </div>
+                <div>
+                  <p class="text-xs text-slate-700 font-medium">Mentor session notes shared</p>
+                  <p class="text-xs text-slate-400 mt-0.5">3 days ago · Dr. Verma</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCREEN 7: ADMIN/MENTOR MASTER DASHBOARD -->
+  <!-- ============================================================ -->
+  <div id="screen-admin" class="screen hidden min-h-screen flex bg-slate-100">
+    <!-- Fixed Left Sidebar -->
+    <aside class="w-64 bg-obsidian min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-40">
+      <!-- Logo -->
+      <div class="px-6 py-5 border-b border-white/10">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-indigo-500 flex items-center justify-center shadow-glow">
+            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <span class="font-syne font-800 text-white">ITE <span class="text-indigo-400">Admin</span></span>
+        </div>
+      </div>
+
+      <!-- Nav Links -->
+      <nav class="flex-1 px-4 py-6 space-y-1">
+        <button onclick="adminTab('overview')" id="admin-nav-overview" class="admin-nav-btn active w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-left text-sm font-medium transition-all">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+          Overview
+        </button>
+        <button onclick="adminTab('teams')" id="admin-nav-teams" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-left text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-white/5">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Team Tracking
+          <span class="ml-auto px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-bold">18</span>
+        </button>
+        <button onclick="adminTab('submissions')" id="admin-nav-submissions" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-left text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-white/5">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          Submissions
+          <span class="ml-auto px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold">5</span>
+        </button>
+        <button onclick="adminTab('announcements')" id="admin-nav-announcements" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-left text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-white/5">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+          Announcements
+        </button>
+        <button onclick="adminTab('logs')" id="admin-nav-logs" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-left text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-white/5">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+          System Logs
+        </button>
+      </nav>
+
+      <!-- Bottom Profile -->
+      <div class="px-4 py-4 border-t border-white/10">
+        <div class="flex items-center gap-3 px-3 py-2 rounded-xl">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">PK</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-medium text-white truncate">Prof. P. Kumar</div>
+            <div class="text-xs text-slate-500">Program Director</div>
+          </div>
+          <button onclick="navigate('screen-auth')" class="text-slate-500 hover:text-white transition-colors">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="ml-64 flex-1 flex">
+      <!-- Primary Content -->
+      <div class="flex-1 min-w-0">
+        <!-- Top bar -->
+        <div class="bg-white border-b border-slate-200 px-8 h-16 flex items-center justify-between sticky top-0 z-30">
+          <div>
+            <h1 class="text-lg font-semibold text-obsidian" id="admin-page-title">Program Overview</h1>
+            <p class="text-xs text-slate-500">Cohort 2026 · Updated just now</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button class="relative w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition-colors">
+              <svg class="w-5 h-5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+              <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-xs flex items-center justify-center font-bold">5</span>
+            </button>
+            <button class="px-4 py-2 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-glow">+ New Announcement</button>
+          </div>
+        </div>
+
+        <!-- Tab content -->
+        <div class="p-8">
+          <!-- OVERVIEW TAB -->
+          <div id="admin-tab-overview">
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+              <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-card hover:shadow-soft transition-all">
+                <div class="flex items-center justify-between mb-4">
+                  <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                  </div>
+                  <span class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full">+3 new</span>
+                </div>
+                <div class="text-3xl font-800 font-syne text-obsidian">18</div>
+                <div class="text-sm text-slate-500 mt-1">Active Startups</div>
+              </div>
+              <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-card hover:shadow-soft transition-all">
+                <div class="flex items-center justify-between mb-4">
+                  <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  </div>
+                  <span class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full">+12 this wk</span>
+                </div>
+                <div class="text-3xl font-800 font-syne text-obsidian">84</div>
+                <div class="text-sm text-slate-500 mt-1">Active Students</div>
+              </div>
+              <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-card hover:shadow-soft transition-all">
+                <div class="flex items-center justify-between mb-4">
+                  <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                  </div>
+                  <span class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full">↑ 8%</span>
+                </div>
+                <div class="text-3xl font-800 font-syne text-obsidian">67<span class="text-lg text-slate-400">%</span></div>
+                <div class="text-sm text-slate-500 mt-1">Avg. Progress</div>
+              </div>
+              <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-card hover:shadow-soft transition-all">
+                <div class="flex items-center justify-between mb-4">
+                  <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  </div>
+                  <span class="text-xs text-slate-500 font-semibold bg-slate-50 px-2 py-0.5 rounded-full">Prize pool</span>
+                </div>
+                <div class="text-3xl font-800 font-syne text-obsidian">₹2.5L</div>
+                <div class="text-sm text-slate-500 mt-1">Total Funding Pool</div>
+              </div>
+            </div>
+
+            <!-- Phase distribution + mentor chart -->
+            <div class="grid lg:grid-cols-5 gap-6 mb-8">
+              <div class="lg:col-span-3 bg-white rounded-2xl border border-slate-200 p-6 shadow-card">
+                <h3 class="font-semibold text-obsidian mb-5">Teams by Milestone Phase</h3>
+                <div class="space-y-4">
+                  <div>
+                    <div class="flex justify-between text-xs font-medium mb-1.5">
+                      <span class="text-slate-600">Idea Validation</span>
+                      <span class="text-slate-500">3 teams</span>
+                    </div>
+                    <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div class="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full" style="width: 16%"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between text-xs font-medium mb-1.5">
+                      <span class="text-slate-600">Market Research</span>
+                      <span class="text-slate-500">4 teams</span>
+                    </div>
+                    <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div class="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full" style="width: 22%"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between text-xs font-medium mb-1.5">
+                      <span class="text-slate-600">Customer Interviews</span>
+                      <span class="text-slate-500">2 teams</span>
+                    </div>
+                    <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div class="h-full bg-gradient-to-r from-indigo-400 to-indigo-500 rounded-full" style="width: 11%"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between text-xs font-medium mb-1.5">
+                      <span class="text-slate-600">MVP Build</span>
+                      <span class="text-slate-500">6 teams</span>
+                    </div>
+                    <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div class="h-full bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-full" style="width: 33%"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between text-xs font-medium mb-1.5">
+                      <span class="text-slate-600">Pitch Deck</span>
+                      <span class="text-slate-500">2 teams</span>
+                    </div>
+                    <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full" style="width: 11%"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between text-xs font-medium mb-1.5">
+                      <span class="text-slate-600">Final Pitch Ready</span>
+                      <span class="text-slate-500">1 team</span>
+                    </div>
+                    <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div class="h-full bg-gradient-to-r from-purple-400 to-purple-600 rounded-full" style="width: 5%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-6 shadow-card">
+                <h3 class="font-semibold text-obsidian mb-5">Mentors Utilization</h3>
+                <div class="space-y-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">RV</div>
+                    <div class="flex-1">
+                      <div class="flex justify-between text-xs mb-1"><span class="font-medium text-slate-700">Dr. R. Verma</span><span class="text-slate-500">3/3</span></div>
+                      <div class="h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-indigo-500 rounded-full" style="width:100%"></div></div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">SM</div>
+                    <div class="flex-1">
+                      <div class="flex justify-between text-xs mb-1"><span class="font-medium text-slate-700">Prof. S. Mehta</span><span class="text-slate-500">2/3</span></div>
+                      <div class="h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-indigo-500 rounded-full" style="width:67%"></div></div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">AJ</div>
+                    <div class="flex-1">
+                      <div class="flex justify-between text-xs mb-1"><span class="font-medium text-slate-700">Dr. A. Joshi</span><span class="text-slate-500">3/3</span></div>
+                      <div class="h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-indigo-500 rounded-full" style="width:100%"></div></div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">NK</div>
+                    <div class="flex-1">
+                      <div class="flex justify-between text-xs mb-1"><span class="font-medium text-slate-700">Dr. N. Krishnan</span><span class="text-slate-500">3/3</span></div>
+                      <div class="h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-indigo-500 rounded-full" style="width:100%"></div></div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">PP</div>
+                    <div class="flex-1">
+                      <div class="flex justify-between text-xs mb-1"><span class="font-medium text-slate-700">Ms. P. Pandey</span><span class="text-slate-500">1/3</span></div>
+                      <div class="h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-emerald-500 rounded-full" style="width:33%"></div></div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">VR</div>
+                    <div class="flex-1">
+                      <div class="flex justify-between text-xs mb-1"><span class="font-medium text-slate-700">Mr. V. Rao</span><span class="text-slate-500">2/3</span></div>
+                      <div class="h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-indigo-500 rounded-full" style="width:67%"></div></div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">SC</div>
+                    <div class="flex-1">
+                      <div class="flex justify-between text-xs mb-1"><span class="font-medium text-slate-700">Dr. S. Chopra</span><span class="text-slate-500">2/3</span></div>
+                      <div class="h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-indigo-500 rounded-full" style="width:67%"></div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Teams Data Table -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-card overflow-hidden">
+              <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                <h3 class="font-semibold text-obsidian">All Teams Registry</h3>
+                <div class="flex items-center gap-3">
+                  <div class="relative">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input type="text" placeholder="Search teams..." class="pl-9 pr-4 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 w-48 transition-all" />
+                  </div>
+                  <select class="px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-600 focus:outline-none bg-white">
+                    <option>All Phases</option>
+                    <option>MVP Build</option>
+                    <option>Pitch Deck</option>
+                  </select>
+                </div>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="bg-slate-50 border-b border-slate-100">
+                      <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Startup</th>
+                      <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Members</th>
+                      <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Mentor</th>
+                      <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Milestone</th>
+                      <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Progress</th>
+                      <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100" id="teams-table-body">
+                    <!-- populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- TEAMS TAB -->
+          <div id="admin-tab-teams" class="hidden">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-card overflow-hidden">
+              <div class="px-6 py-4 border-b border-slate-100">
+                <h3 class="font-semibold text-obsidian">Detailed Team Tracking</h3>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="bg-slate-50 border-b border-slate-100">
+                      <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Startup</th>
+                      <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Members</th>
+                      <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Mentor</th>
+                      <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Milestone</th>
+                      <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Progress</th>
+                      <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100" id="teams-table-body-2">
+                    <!-- same data -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBMISSIONS TAB -->
+          <div id="admin-tab-submissions" class="hidden">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <h3 class="font-semibold text-obsidian">Pending Submissions</h3>
+                <span class="px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold">5 Awaiting Review</span>
+              </div>
+              <div id="submissions-list" class="space-y-4">
+                <!-- populated by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- ANNOUNCEMENTS TAB -->
+          <div id="admin-tab-announcements" class="hidden">
+            <div class="space-y-6">
+              <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-card">
+                <h3 class="font-semibold text-obsidian mb-4">New Announcement</h3>
+                <div class="space-y-4">
+                  <input type="text" placeholder="Announcement Title" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500" />
+                  <textarea rows="4" placeholder="Write your announcement here..." class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 resize-none"></textarea>
+                  <div class="flex gap-3">
+                    <select class="px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none flex-1">
+                      <option>All Students & Mentors</option>
+                      <option>Students Only</option>
+                      <option>Mentors Only</option>
+                    </select>
+                    <button class="px-6 py-2.5 rounded-xl bg-indigo-500 text-white font-semibold text-sm hover:bg-indigo-600 transition-all shadow-glow">Send Announcement</button>
+                  </div>
+                </div>
+              </div>
+              <div class="space-y-4">
+                <h3 class="font-semibold text-obsidian">Past Announcements</h3>
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-card">
+                  <div class="flex items-start justify-between gap-4 mb-2">
+                    <h4 class="font-semibold text-slate-800">Pitch Day Scheduled — June 30, 2026</h4>
+                    <span class="text-xs text-slate-400 flex-shrink-0">2d ago</span>
+                  </div>
+                  <p class="text-slate-500 text-sm">The final Pitch Day event has been confirmed for June 30th in Auditorium A. All teams must have their pitch deck submitted by June 25th for review.</p>
+                  <div class="flex items-center gap-2 mt-3">
+                    <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs">All Members</span>
+                    <span class="text-xs text-slate-400">84 recipients</span>
+                  </div>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-card">
+                  <div class="flex items-start justify-between gap-4 mb-2">
+                    <h4 class="font-semibold text-slate-800">MVP Submission Deadline Extended</h4>
+                    <span class="text-xs text-slate-400 flex-shrink-0">5d ago</span>
+                  </div>
+                  <p class="text-slate-500 text-sm">Due to multiple requests, the MVP submission deadline has been extended to June 15th. Please ensure your team submits on time to unlock Phase 5.</p>
+                  <div class="flex items-center gap-2 mt-3">
+                    <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs">Students Only</span>
+                    <span class="text-xs text-slate-400">80 recipients</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LOGS TAB -->
+          <div id="admin-tab-logs" class="hidden">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-card overflow-hidden">
+              <div class="px-6 py-4 border-b border-slate-100">
+                <h3 class="font-semibold text-obsidian">System Activity Logs</h3>
+              </div>
+              <div class="divide-y divide-slate-100 max-h-[600px] overflow-y-auto" id="system-logs">
+                <!-- populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Sidebar: Submissions Widget -->
+      <aside class="w-80 bg-white border-l border-slate-200 flex flex-col">
+        <div class="px-6 py-4 border-b border-slate-100">
+          <h2 class="font-semibold text-obsidian">Recent Submissions</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Pending your review</p>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-4">
+          <!-- Submission cards -->
+          <div class="submission-review-card border border-slate-200 rounded-xl p-4 hover:border-indigo-200 transition-all">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">EF</div>
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-semibold text-slate-800">EduFlow</div>
+                <div class="text-xs text-slate-500">MVP Build · Phase 4</div>
+              </div>
+              <span class="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold flex-shrink-0">Pending</span>
+            </div>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">Submitted MVP prototype with core recommendation engine. Frontend and API layers complete.</p>
+            <div class="text-xs text-slate-400 mb-3">Submitted 2h ago · Priya Singh</div>
+            <div class="flex gap-2">
+              <button onclick="approveSubmission(this)" class="flex-1 py-2 rounded-lg bg-emerald-500 text-white text-xs font-semibold hover:bg-emerald-600 transition-all active:scale-95">✓ Approve</button>
+              <button onclick="requestChanges(this)" class="flex-1 py-2 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-amber-50 hover:border-amber-300 hover:text-amber-700 transition-all active:scale-95">↩ Request Changes</button>
+            </div>
+          </div>
+
+          <div class="submission-review-card border border-slate-200 rounded-xl p-4 hover:border-indigo-200 transition-all">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">GH</div>
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-semibold text-slate-800">GreenHarvest</div>
+                <div class="text-xs text-slate-500">Market Research · Phase 2</div>
+              </div>
+              <span class="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold flex-shrink-0">Pending</span>
+            </div>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">30-farmer survey results with insights on irrigation pain points and willingness to pay analysis.</p>
+            <div class="text-xs text-slate-400 mb-3">Submitted 5h ago · Rohan Desai</div>
+            <div class="flex gap-2">
+              <button onclick="approveSubmission(this)" class="flex-1 py-2 rounded-lg bg-emerald-500 text-white text-xs font-semibold hover:bg-emerald-600 transition-all active:scale-95">✓ Approve</button>
+              <button onclick="requestChanges(this)" class="flex-1 py-2 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-amber-50 hover:border-amber-300 hover:text-amber-700 transition-all active:scale-95">↩ Request Changes</button>
+            </div>
+          </div>
+
+          <div class="submission-review-card border border-slate-200 rounded-xl p-4 hover:border-indigo-200 transition-all">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">FP</div>
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-semibold text-slate-800">FinPulse</div>
+                <div class="text-xs text-slate-500">Pitch Deck · Phase 5</div>
+              </div>
+              <span class="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold flex-shrink-0">Pending</span>
+            </div>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">14-slide pitch deck including TAM/SAM/SOM analysis, business model canvas, and go-to-market strategy.</p>
+            <div class="text-xs text-slate-400 mb-3">Submitted 1d ago · Neel Shah</div>
+            <div class="flex gap-2">
+              <button onclick="approveSubmission(this)" class="flex-1 py-2 rounded-lg bg-emerald-500 text-white text-xs font-semibold hover:bg-emerald-600 transition-all active:scale-95">✓ Approve</button>
+              <button onclick="requestChanges(this)" class="flex-1 py-2 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-amber-50 hover:border-amber-300 hover:text-amber-700 transition-all active:scale-95">↩ Request Changes</button>
+            </div>
+          </div>
+
+          <div class="submission-review-card border border-slate-200 rounded-xl p-4 hover:border-indigo-200 transition-all">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">MS</div>
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-semibold text-slate-800">MediSwift</div>
+                <div class="text-xs text-slate-500">Customer Interviews · Phase 3</div>
+              </div>
+              <span class="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold flex-shrink-0">Pending</span>
+            </div>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">Interview transcripts from 15 pharmacists and 20 patients regarding prescription management pain points.</p>
+            <div class="text-xs text-slate-400 mb-3">Submitted 2d ago · Kavya Nair</div>
+            <div class="flex gap-2">
+              <button onclick="approveSubmission(this)" class="flex-1 py-2 rounded-lg bg-emerald-500 text-white text-xs font-semibold hover:bg-emerald-600 transition-all active:scale-95">✓ Approve</button>
+              <button onclick="requestChanges(this)" class="flex-1 py-2 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-amber-50 hover:border-amber-300 hover:text-amber-700 transition-all active:scale-95">↩ Request Changes</button>
+            </div>
+          </div>
+
+          <div class="submission-review-card border border-slate-200 rounded-xl p-4 hover:border-indigo-200 transition-all">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">SL</div>
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-semibold text-slate-800">SkillLaunch</div>
+                <div class="text-xs text-slate-500">Idea Validation · Phase 1</div>
+              </div>
+              <span class="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold flex-shrink-0">Pending</span>
+            </div>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">Problem statement, market size estimate, and competitor analysis for blue-collar upskilling platform.</p>
+            <div class="text-xs text-slate-400 mb-3">Submitted 3d ago · Arjun Tiwari</div>
+            <div class="flex gap-2">
+              <button onclick="approveSubmission(this)" class="flex-1 py-2 rounded-lg bg-emerald-500 text-white text-xs font-semibold hover:bg-emerald-600 transition-all active:scale-95">✓ Approve</button>
+              <button onclick="requestChanges(this)" class="flex-1 py-2 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-amber-50 hover:border-amber-300 hover:text-amber-700 transition-all active:scale-95">↩ Request Changes</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STARTUP DETAIL MODAL -->
+  <!-- ============================================================ -->
+  <div id="startup-modal" class="fixed inset-0 z-[200] hidden" aria-modal="true" role="dialog">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-obsidian/60 backdrop-blur-sm" onclick="closeStartupModal()"></div>
+
+    <!-- Modal Panel -->
+    <div class="absolute inset-y-0 right-0 w-full max-w-3xl bg-white shadow-2xl overflow-y-auto flex flex-col" id="startup-modal-panel" style="transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);">
+
+      <!-- Modal Header -->
+      <div class="sticky top-0 z-10 bg-white border-b border-slate-200 px-8 py-5 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div id="modal-logo" class="w-12 h-12 rounded-2xl flex items-center justify-center text-white font-bold text-lg font-syne shadow-glow"></div>
+          <div>
+            <div id="modal-name" class="font-syne text-xl font-800 text-obsidian"></div>
+            <div id="modal-meta" class="text-sm text-slate-500"></div>
+          </div>
+        </div>
+        <button onclick="closeStartupModal()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors">
+          <svg class="w-5 h-5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Big Progress Bar Section -->
+      <div class="px-8 py-8 bg-gradient-to-br from-slate-50 to-white border-b border-slate-100">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="font-semibold text-obsidian">Journey Progress</h2>
+          <div id="modal-progress-pct" class="text-2xl font-800 font-syne text-indigo-600"></div>
+        </div>
+
+        <!-- Step Progress Bar -->
+        <div class="relative">
+          <!-- Connector track -->
+          <div class="absolute top-6 left-6 right-6 h-1 bg-slate-200 rounded-full" id="modal-track-bg"></div>
+          <div class="absolute top-6 left-6 h-1 bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-full transition-all duration-1000" id="modal-track-fill" style="width:0%"></div>
+
+          <!-- Steps -->
+          <div class="relative flex justify-between" id="modal-steps-row">
+            <!-- Steps injected by JS -->
+          </div>
+        </div>
+
+        <!-- Phase label -->
+        <div class="mt-8 p-4 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center gap-4">
+          <div class="w-10 h-10 rounded-xl bg-indigo-500 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <div>
+            <div class="text-xs text-indigo-500 font-semibold uppercase tracking-wide">Current Phase</div>
+            <div id="modal-current-phase" class="text-sm font-semibold text-indigo-800"></div>
+          </div>
+          <div class="ml-auto text-right">
+            <div class="text-xs text-slate-500">Mentor</div>
+            <div id="modal-mentor" class="text-sm font-semibold text-slate-700"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Details Grid -->
+      <div class="px-8 py-6 grid grid-cols-2 gap-4 border-b border-slate-100">
+        <div class="bg-slate-50 rounded-xl p-4">
+          <div class="text-xs text-slate-500 uppercase tracking-wide font-semibold mb-1">Domain</div>
+          <div id="modal-domain" class="text-sm font-semibold text-slate-800"></div>
+        </div>
+        <div class="bg-slate-50 rounded-xl p-4">
+          <div class="text-xs text-slate-500 uppercase tracking-wide font-semibold mb-1">Status</div>
+          <div id="modal-status" class="text-sm font-semibold"></div>
+        </div>
+        <div class="bg-slate-50 rounded-xl p-4">
+          <div class="text-xs text-slate-500 uppercase tracking-wide font-semibold mb-1">Team Size</div>
+          <div id="modal-team-size" class="text-sm font-semibold text-slate-800"></div>
+        </div>
+        <div class="bg-slate-50 rounded-xl p-4">
+          <div class="text-xs text-slate-500 uppercase tracking-wide font-semibold mb-1">Overall Progress</div>
+          <div id="modal-overall" class="text-sm font-semibold text-slate-800"></div>
+        </div>
+      </div>
+
+      <!-- Team Members -->
+      <div class="px-8 py-6 border-b border-slate-100">
+        <h3 class="font-semibold text-obsidian mb-4">Team Members</h3>
+        <div id="modal-members" class="space-y-3"></div>
+      </div>
+
+      <!-- Milestone Checklist -->
+      <div class="px-8 py-6 border-b border-slate-100">
+        <h3 class="font-semibold text-obsidian mb-4">Milestone Checklist</h3>
+        <div id="modal-checklist" class="space-y-2"></div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="px-8 py-6 mt-auto">
+        <div class="flex gap-3">
+          <button onclick="closeStartupModal()" class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition-all">Close</button>
+          <button onclick="showToast('success','Opened full team dashboard!'); closeStartupModal(); navigate(\"screen-admin\");" class="flex-1 py-3 rounded-xl bg-indigo-500 text-white font-semibold text-sm hover:bg-indigo-600 transition-all shadow-glow">Open Full Dashboard →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MENTOR PROFILE MODAL -->
+  <!-- ============================================================ -->
+  <div id="mentor-modal" class="fixed inset-0 z-[250] hidden flex items-end sm:items-center justify-center p-0 sm:p-6">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-obsidian/70 backdrop-blur-sm" onclick="closeMentorModal()"></div>
+
+    <!-- Card -->
+    <div id="mentor-modal-card" class="relative w-full sm:max-w-2xl bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col" style="transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); max-height: 90vh;">
+
+      <!-- Hero Banner -->
+      <div id="mentor-banner" class="relative bg-gradient-to-br from-obsidian to-graphite px-8 pt-8 pb-16 overflow-hidden">
+        <div class="absolute inset-0 opacity-20" style="background: radial-gradient(circle at 80% 30%, #4F46E5 0%, transparent 55%), radial-gradient(circle at 20% 80%, #10B981 0%, transparent 50%);"></div>
+        <div class="absolute inset-0 opacity-5" style="background-image: linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px); background-size: 32px 32px;"></div>
+        <button onclick="closeMentorModal()" class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
+          <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <div class="relative z-10 flex items-start gap-5">
+          <div id="mentor-avatar" class="w-20 h-20 rounded-2xl flex items-center justify-center text-white font-bold text-2xl font-syne shadow-xl flex-shrink-0"></div>
+          <div class="flex-1 min-w-0">
+            <div id="mentor-title-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white/70 text-xs font-medium mb-2"></div>
+            <h2 id="mentor-fullname" class="font-syne text-2xl font-700 text-white leading-tight"></h2>
+            <p id="mentor-institution" class="text-white/60 text-sm mt-1"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Row (overlapping banner) -->
+      <div class="px-8 -mt-8 mb-0 relative z-10">
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-white rounded-xl border border-slate-200 shadow-card p-4 text-center">
+            <div id="mentor-stat-teams" class="text-xl font-700 font-syne text-obsidian"></div>
+            <div class="text-xs text-slate-500 mt-0.5">Teams</div>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 shadow-card p-4 text-center">
+            <div id="mentor-stat-sessions" class="text-xl font-700 font-syne text-obsidian"></div>
+            <div class="text-xs text-slate-500 mt-0.5">Sessions</div>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 shadow-card p-4 text-center">
+            <div id="mentor-stat-rating" class="text-xl font-700 font-syne text-obsidian"></div>
+            <div class="text-xs text-slate-500 mt-0.5">Rating</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scrollable body -->
+      <div class="overflow-y-auto flex-1 px-8 py-6 space-y-6">
+        <!-- Bio -->
+        <div>
+          <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">About</h3>
+          <p id="mentor-bio" class="text-slate-600 text-sm leading-relaxed"></p>
+        </div>
+
+        <!-- Availability -->
+        <div class="flex items-center gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200">
+          <div id="mentor-avail-dot" class="w-3 h-3 rounded-full animate-pulse flex-shrink-0"></div>
+          <div>
+            <div id="mentor-avail-label" class="text-sm font-semibold"></div>
+            <div id="mentor-avail-sub" class="text-xs text-slate-400"></div>
+          </div>
+          <div class="ml-auto text-right">
+            <div class="text-xs text-slate-400">Next Available</div>
+            <div id="mentor-next-slot" class="text-xs font-semibold text-slate-700"></div>
+          </div>
+        </div>
+
+        <!-- Expertise -->
+        <div>
+          <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">Areas of Expertise</h3>
+          <div id="mentor-expertise" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Teams Mentoring -->
+        <div>
+          <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">Current Teams</h3>
+          <div id="mentor-teams" class="space-y-2"></div>
+        </div>
+
+        <!-- Career Highlights -->
+        <div>
+          <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">Career Highlights</h3>
+          <div id="mentor-highlights" class="space-y-2"></div>
+        </div>
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="px-8 py-5 border-t border-slate-100 flex gap-3">
+        <button onclick="closeMentorModal()" class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition-all">Close</button>
+        <button onclick="showToast('success','Session request sent! Mentor will respond within 24h.'); closeMentorModal();" class="flex-1 py-3 rounded-xl bg-indigo-500 text-white font-semibold text-sm hover:bg-indigo-600 transition-all shadow-glow flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          Request 1-on-1 Session
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+
+  <div id="toast" class="fixed bottom-6 right-6 z-[100] transform translate-y-20 opacity-0 transition-all duration-300">
+    <div class="flex items-center gap-3 px-5 py-4 rounded-xl shadow-xl bg-white border border-slate-200 max-w-sm">
+      <div id="toast-icon" class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"></div>
+      <div id="toast-msg" class="text-sm font-medium text-slate-700"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

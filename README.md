@@ -68,6 +68,12 @@ ITE2/
 ├── index.html                  # SPA entry point & shell
 ├── acm-chapter.html            # Standalone ACM student chapter & creators page
 │
+├── assets/
+│   ├── acm-logo.png            # ACM Chapter logo
+│   ├── image_2f40b9.png        # Transparent ACM Partner footer logo
+│   ├── Main_Bldg_Final_1.jpg.jpeg # High-resolution main building image
+│   └── vnit-logo.jpg           # VNIT institutional logo
+│
 ├── css/
 │   ├── main.css                # Design system: CSS variables, layout, animations
 │   ├── components.css          # Reusable UI components

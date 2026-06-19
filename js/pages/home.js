@@ -18,7 +18,29 @@ ITE.Pages.Home = (function () {
     </button>`;
   }
 
-
+  function _renderFooter() {
+    return `<footer class="home-footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <div class="home-footer-logo">
+        ${ITE.App.renderLogo(36)}
+        <div>
+          <div class="home-footer-name">ITE Startup Launch Pad</div>
+          <div class="home-footer-sub">Introduction to Entrepreneurship</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-vnit">
+      <a href="https://vnit.ac.in/" target="_blank" rel="noopener noreferrer" class="vnit-footer-link">
+        <img src="assets/vnit-logo.jpg" alt="VNIT Nagpur Logo" class="vnit-footer-logo">
+        <span class="vnit-footer-text">Visvesvaraya National Institute of Technology<br><strong>VNIT Nagpur</strong></span>
+      </a>
+    </div>
+  </div>
+  <div class="home-footer-copy">© 2024 <a href="https://vnit.ac.in/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">VNIT Nagpur</a>. All rights reserved. Engineered with 🩵 by <a href="#/acm-chapter" style="color:inherit;text-decoration:underline">ACM Student Chapter, VNIT</a></div>
+</footer>`;
+  }
 
   function render() {
     const startups = ITE.Data.getPrevStartups();
@@ -116,10 +138,7 @@ ITE.Pages.Home = (function () {
   </div>
 </section>
 <!-- FOOTER -->
-<footer class="home-footer">
-  <div class="home-footer-logo">${ITE.App.renderLogo(34)}<div><div class="home-footer-name">ITE Startup Launch Pad</div><div class="home-footer-sub">VNIT Nagpur · Introduction to Entrepreneurship</div></div></div>
-  <div class="home-footer-copy">© 2024 VNIT Nagpur. All rights reserved. Built by the ITE Program.</div>
-</footer>
+${_renderFooter()}
 </div>`;
     ITE.App.applyTheme(localStorage.getItem('ite_theme') || 'light');
   }
@@ -277,7 +296,7 @@ ITE.Pages.Home = (function () {
   ${batches.map(b=>`<button class="batch-chip btn btn-ghost btn-sm" data-batch="${b}">Batch ${b}</button>`).join('')}
 </div>
 <div class="all-startups-grid" id="as-grid">${all.map(s=>_startupCard(s)).join('')}</div>
-<footer class="home-footer"><div class="home-footer-logo">${ITE.App.renderLogo(32)}<div><div class="home-footer-name">ITE Startup Launch Pad</div><div class="home-footer-sub">VNIT Nagpur · © 2024</div></div></div></footer>
+${_renderFooter()}
 </div>`;
 
     document.querySelectorAll('.batch-chip').forEach(btn => {
@@ -309,5 +328,64 @@ ITE.Pages.Home = (function () {
 </div>`;
   }
 
-  return { render, renderLogin, renderRegister, renderAllStartups };
+  function renderACMChapter() {
+    const el = document.getElementById('page-content');
+    document.getElementById('sidebar').classList.add('hidden');
+    document.getElementById('topbar').classList.add('hidden');
+    document.getElementById('main-wrapper').style.marginLeft='0';
+    el.style.padding='0';
+
+    const members = [
+      { name: 'Darsh Haria', role: 'Technical Lead', desc: 'Specializes in frontend architectures and state management.', initials: 'DH', color: '#2563EB' },
+      { name: 'Harsh Jodhwani', role: 'Full Stack Engineer', desc: 'Focuses on API performance, data integrity, and server stability.', initials: 'HJ', color: '#10B981' },
+      { name: 'Hrishikesh Balani', role: 'UI/UX Lead', desc: 'Passionate about typography, layout precision, and micro-interactions.', initials: 'HB', color: '#8B5CF6' },
+      { name: 'Parth Lande', role: 'Product Lead', desc: 'Coordinates releases, features implementation, and project delivery.', initials: 'PL', color: '#F59E0B' }
+    ];
+
+    el.innerHTML = `
+<div class="acm-chapter-page">
+<nav class="home-nav">
+  <div class="home-nav-logo">
+    ${ITE.App.renderLogo(32)}
+    <div class="home-nav-brand">ITE Startup Launch Pad</div>
+  </div>
+  <div class="home-nav-links">
+    ${_navThemeBtn()}
+    <a href="#/" class="btn btn-ghost btn-sm">Home</a>
+    <a href="#/login" class="btn btn-primary btn-sm">Sign In</a>
+  </div>
+</nav>
+
+<section class="acm-hero home-section" style="padding-top: 100px; padding-bottom: 60px; text-align: center; background: var(--bg-primary);">
+  <div class="section-header" style="max-width: 800px; margin: 0 auto 40px auto;">
+    <div class="section-eyebrow" style="color: var(--accent); font-weight: 700; text-transform: uppercase; tracking: 0.1em; font-size: 0.85rem; margin-bottom: 12px;">Development Team</div>
+    <h1 style="font-family: var(--font-display); font-size: 2.75rem; font-weight: 800; color: var(--text-primary); line-height: 1.2; margin-bottom: 18px;">ACM Student Chapter, VNIT</h1>
+    <p style="font-size: 1.1rem; color: var(--text-secondary); line-height: 1.6; max-width: 600px; margin: 0 auto;">Engineered for the Visvesvaraya National Institute of Technology, Nagpur ecosystem to accelerate student entrepreneurship and streamline cohort management.</p>
+  </div>
+</section>
+
+<section class="acm-members home-section alt-bg" style="padding: 60px 20px; background: var(--bg-secondary);">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div class="faculty-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px;">
+      ${members.map(m => `
+        <div class="faculty-card" style="background: var(--bg-primary); border: 1px solid var(--border); padding: 30px; border-radius: var(--radius-md); text-align: center; box-shadow: var(--shadow-sm); transition: transform 0.2s ease, box-shadow 0.2s ease;">
+          <div class="faculty-av" style="background: ${m.color}; width: 80px; height: 80px; font-size: 1.75rem; font-weight: 800; color: #FFF; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 auto 20px auto;">
+            ${m.initials}
+          </div>
+          <h3 style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">${m.name}</h3>
+          <div style="font-size: 0.875rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px;">${m.role}</div>
+          <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">${m.desc}</p>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+</section>
+
+${_renderFooter()}
+</div>
+`;
+    ITE.App.applyTheme(localStorage.getItem('ite_theme') || 'light');
+  }
+
+  return { render, renderLogin, renderRegister, renderAllStartups, renderACMChapter };
 })();

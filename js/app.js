@@ -40,7 +40,6 @@ ITE.App = (function () {
 
     // Public routes first
     if (hash === '/all-startups') { return ITE.Pages.Home.renderAllStartups(); }
-    if (hash === '/acm-chapter') { return ITE.Pages.Home.renderACMChapter(); }
     if (!user) {
       if (hash === '/login')    return ITE.Pages.Home.renderLogin();
       if (hash === '/register') return ITE.Pages.Home.renderRegister();
@@ -94,7 +93,7 @@ ITE.App = (function () {
     const pc = document.getElementById('page-content');
     const mw = document.getElementById('main-wrapper');
 
-    const publicHashes = ['/', '/login', '/register', '/all-startups', '/acm-chapter'];
+    const publicHashes = ['/', '/login', '/register', '/all-startups'];
     const isPublic = !user || publicHashes.includes(hash);
 
     if (isPublic) {

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ACM Student Chapter VNIT Nagpur – Technical Collaborators and Portal Creators.">
+  <title>ACM VNIT Chapter & Portal Creators | ITE Startup Launch Pad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    /* New Page Styles */
+    .acm-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 120px 24px 60px;
+    }
+    
+    .acm-hero {
+      text-align: center;
+      margin-bottom: 64px;
+      position: relative;
+    }
+    
+    .acm-logo-wrapper {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      border-radius: var(--radius-lg);
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      margin: 0 auto 24px;
+      box-shadow: var(--shadow);
+      transition: transform var(--transition);
+    }
+    
+    .acm-logo-wrapper:hover {
+      transform: scale(1.05);
+    }
+    
+    .acm-logo-wrapper img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    
+    .acm-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 900;
+      color: var(--text-primary);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    
+    .acm-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 780px;
+      margin: 0 auto 32px;
+      line-height: 1.8;
+    }
+    
+    .acm-socials {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    
+    .creator-section {
+      text-align: center;
+      margin-top: 80px;
+      border-top: 1px solid var(--border);
+      padding-top: 64px;
+    }
+    
+    .creator-section-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    
+    .creator-section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+    }
+    
+    .creator-section-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 48px;
+      line-height: 1.6;
+    }
+    
+    /* Responsive Grid for Profile Cards */
+    .creators-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    @media (min-width: 640px) {
+      .creators-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (min-width: 992px) {
+      .creators-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    
+    /* Profile Card Styling */
+    .profile-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+      transition: all var(--transition-slow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .profile-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent);
+    }
+    
+    .profile-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #FFF;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--navy) 100%);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+      transition: transform var(--transition);
+    }
+    
+    .profile-card:hover .profile-avatar {
+      transform: scale(1.08);
+    }
+    
+    .profile-name {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    
+    .profile-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 24px;
+      flex-grow: 1;
+      max-width: 180px;
+    }
+    
+    .profile-socials {
+      display: flex;
+      gap: 12px;
+      margin-top: auto;
+    }
+    
+    .profile-social-link {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      transition: all var(--transition);
+    }
+    
+    .profile-social-link:hover {
+      background: var(--accent);
+      color: #FFF;
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    
+    .profile-social-link svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+    
+    /* Badge styling */
+    .collaborator-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--accent-light);
+      border: 1px solid rgba(37,99,235,0.25);
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .collaborator-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="home-nav">
+    <div class="home-nav-logo">
+      <svg width="34" height="34" viewBox="0 0 100 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 5 L95 85 L72 85 L72 68 L28 68 L28 85 L5 85 Z" fill="#2563EB"/>
+        <path d="M50 32 L67 65 L33 65 Z" fill="white"/>
+      </svg>
+      <div>
+        <div class="home-nav-brand">ITE Startup Launch Pad</div>
+        <div class="home-nav-sub">VNIT Nagpur</div>
+      </div>
+    </div>
+    <div class="home-nav-links">
+      <a href="index.html" class="home-nav-link">Home</a>
+      <button class="theme-toggle-btn" onclick="toggleTheme()" style="background:var(--bg-secondary); border:1px solid var(--border);" title="Toggle theme">
+        <svg class="sun-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="acm-container">
+    
+    <!-- HERO SECTION -->
+    <section class="acm-hero">
+      <div class="collaborator-badge">Technical Collaborators</div>
+      
+      <div class="acm-logo-wrapper">
+        <img src="assets/acm-logo.png" alt="ACM VNIT Logo">
+      </div>
+      
+      <h1 class="acm-title">
+        ACM Student Chapter<br>
+        <span style="color: var(--accent);">VNIT Nagpur</span>
+      </h1>
+      
+      <p class="acm-desc">
+        The Association for Computing Machinery (ACM) Student Chapter at VNIT Nagpur is the campus’s premier computing and technology hub. Dedicated to instilling a robust research mindset and fostering a progressive software engineering culture, the chapter empowers developers, hosts state-level hackathons, and designs full-stack digital portals to solve real-world community challenges.
+      </p>
+      
+      <div class="acm-socials">
+        <a href="https://www.linkedin.com/company/acm-student-chapter-vnit/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          <svg style="width:16px;height:16px;fill:currentColor;margin-right:8px;" viewBox="0 0 24 24">
+            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+          </svg>
+          LinkedIn
+        </a>
+        <a href="https://www.instagram.com/acm_vnit/" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+          <svg style="width:16px;height:16px;fill:currentColor;margin-right:8px;" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204 0.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+          Instagram
+        </a>
+      </div>
+    </section>
+    
+    <!-- MEET THE CREATORS SECTION -->
+    <section class="creator-section">
+      <div class="creator-section-eyebrow">Engineering & Design</div>
+      <h2 class="creator-section-title">Meet the Portal Creators</h2>
+      <p class="creator-section-desc">
+        The full-stack developers and designers from ACM VNIT who engineered the ITE Launch Pad web experience with meticulous precision.
+      </p>
+      
+      <!-- Grid -->
+      <div class="creators-grid">
+        
+        <!-- Darsh Haria -->
+        <div class="profile-card">
+          <div class="profile-avatar">DH</div>
+          <div class="profile-name">Darsh Haria</div>
+          <div class="profile-subtitle">Computer Science and Engineering | VNIT Batch of 2029</div>
+          <div class="profile-socials">
+            <a href="https://github.com/darshharia1" target="_blank" rel="noopener noreferrer" class="profile-social-link" title="GitHub">
+              <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/darsh-haria-1ab84833b/" target="_blank" rel="noopener noreferrer" class="profile-social-link" title="LinkedIn">
+              <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Harsh Jodhwani -->
+        <div class="profile-card">
+          <div class="profile-avatar">HJ</div>
+          <div class="profile-name">Harsh Jodhwani</div>
+          <div class="profile-subtitle">Computer Science and Engineering | VNIT Batch of 2029</div>
+          <div class="profile-socials">
+            <a href="https://github.com/fearless9221" target="_blank" rel="noopener noreferrer" class="profile-social-link" title="GitHub">
+              <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/harsh-jodhwani-615193343/" target="_blank" rel="noopener noreferrer" class="profile-social-link" title="LinkedIn">
+              <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Hrishikesh Balani -->
+        <div class="profile-card">
+          <div class="profile-avatar">HB</div>
+          <div class="profile-name">Hrishikesh Balani</div>
+          <div class="profile-subtitle">Computer Science and Engineering | VNIT Batch of 2029</div>
+          <div class="profile-socials">
+            <a href="https://github.com/hrishikeshmbalani11-afk" target="_blank" rel="noopener noreferrer" class="profile-social-link" title="GitHub">
+              <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/hrishikesh-balani-2a777836a/" target="_blank" rel="noopener noreferrer" class="profile-social-link" title="LinkedIn">
+              <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Parth Lande -->
+        <div class="profile-card">
+          <div class="profile-avatar">PL</div>
+          <div class="profile-name">Parth Lande</div>
+          <div class="profile-subtitle">Computer Science and Engineering | VNIT Batch of 2029</div>
+          <div class="profile-socials">
+            <a href="https://github.com/parthlande24" target="_blank" rel="noopener noreferrer" class="profile-social-link" title="GitHub">
+              <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/parthlande" target="_blank" rel="noopener noreferrer" class="profile-social-link" title="LinkedIn">
+              <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="home-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="home-footer-logo">
+          <svg width="36" height="36" viewBox="0 0 100 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 5 L95 85 L72 85 L72 68 L28 68 L28 85 L5 85 Z" fill="#2563EB"/>
+            <path d="M50 32 L67 65 L33 65 Z" fill="white"/>
+          </svg>
+          <div>
+            <div class="home-footer-name">ITE Startup Launch Pad</div>
+            <div class="home-footer-sub">Introduction to Entrepreneurship</div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-vnit">
+        <a href="https://vnit.ac.in/" target="_blank" rel="noopener noreferrer" class="vnit-footer-link">
+          <img src="assets/vnit-logo.jpg" alt="VNIT Nagpur Logo" class="vnit-footer-logo">
+          <span class="vnit-footer-text">Visvesvaraya National Institute of Technology<br><strong>VNIT Nagpur</strong></span>
+        </a>
+      </div>
+    </div>
+    <div class="home-footer-copy">© 2024 <a href="https://vnit.ac.in/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">VNIT Nagpur</a>. All rights reserved. Engineered with 🩵 by <a href="acm-chapter.html" style="color:inherit;text-decoration:underline;font-weight:600">ACM Student Chapter, VNIT</a>.</div>
+  </footer>
+
+  <script>
+    // Theme handler
+    function applyTheme(t) {
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem('ite_theme', t);
+      document.querySelectorAll('.sun-icon').forEach(el => { el.style.display = t === 'light' ? 'block' : 'none'; });
+      document.querySelectorAll('.moon-icon').forEach(el => { el.style.display = t === 'dark' ? 'block' : 'none'; });
+    }
+    
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      applyTheme(current === 'light' ? 'dark' : 'light');
+    }
+    
+    // Initialize Theme
+    const savedTheme = localStorage.getItem('ite_theme') || 'light';
+    applyTheme(savedTheme);
+  </script>
+</body>
+</html>

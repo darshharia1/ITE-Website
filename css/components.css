@@ -20,6 +20,8 @@
 .btn-secondary:hover { background: var(--border); }
 .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
 .btn-ghost:hover { background: var(--bg-secondary); color: var(--text-primary); }
+.btn-ghost-light { background: rgba(255,255,255,0.12); color: #FFF; border: 1px solid rgba(255,255,255,0.35); backdrop-filter: blur(6px); }
+.btn-ghost-light:hover { background: rgba(255,255,255,0.22); color: #FFF; border-color: rgba(255,255,255,0.6); transform: translateY(-1px); }
 .btn-danger { background: var(--danger); color: #FFF; }
 .btn-danger:hover { background: #DC2626; transform: translateY(-1px); }
 .btn-success { background: var(--success); color: #FFF; }

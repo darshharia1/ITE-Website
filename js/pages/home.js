@@ -59,8 +59,7 @@ ITE.Pages.Home = (function () {
     <div><div class="home-nav-brand">ITE Startup Launch Pad</div><div class="home-nav-sub">VNIT Nagpur</div></div>
   </div>
   <div class="home-nav-links">
-    <button class="home-nav-link" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">About</button>
-    <button class="home-nav-link" onclick="document.getElementById('faculty').scrollIntoView({behavior:'smooth'})">Faculty</button>
+    <a class="home-nav-link" href="#/faculty">Faculty</a>
     <button class="home-nav-link" onclick="document.getElementById('resources').scrollIntoView({behavior:'smooth'})">Resources</button>
     <button class="home-nav-link" onclick="document.getElementById('prev-startups').scrollIntoView({behavior:'smooth'})">Startups</button>
     ${_navThemeBtn()}
@@ -69,19 +68,20 @@ ITE.Pages.Home = (function () {
   </div>
 </nav>
 <!-- HERO -->
-<section class="hero-section">
-  <div class="hero-bg"><div class="hero-blob hero-blob-1"></div><div class="hero-blob hero-blob-2"></div></div>
-  <div class="hero-content">
-    <div class="hero-badge">${ITE.App.renderLogo(18)} VNIT Nagpur &nbsp;·&nbsp; ITE Program 2024-25</div>
-    <div class="hero-course-label">ITE – Introduction to Entrepreneurship</div>
-    <h1 class="hero-title">Launch Your Venture<br>from VNIT</h1>
-    <div class="hero-tagline">From Idea to Impact</div>
-    <p class="hero-desc">A centralized management platform for the VNIT Introduction to Entrepreneurship course, streamlining student onboarding, team formation, mentorship, venture development, and final evaluations.</p>
+<section class="hero-section hero-section--img">
+  <div class="hero-img-bg" style="background-image:url('assets/Main_Bldg_Final_1.jpg.jpeg')"></div>
+  <div class="hero-img-overlay"></div>
+  <div class="hero-content hero-content--light">
+    <div class="hero-badge hero-badge--dark">${ITE.App.renderLogo(18)} VNIT Nagpur &nbsp;·&nbsp; ITE Program 2024-25</div>
+    <div class="hero-course-label hero-course-label--light">ITE – Introduction to Entrepreneurship</div>
+    <h1 class="hero-title hero-title--light">Launch Your Venture<br>from VNIT</h1>
+    <div class="hero-tagline hero-tagline--light">From Idea to Impact</div>
+    <p class="hero-desc hero-desc--light">A centralized management platform for the VNIT Introduction to Entrepreneurship course, streamlining student onboarding, team formation, mentorship, venture development, and final evaluations.</p>
     <div class="hero-cta">
       <a href="#/register" class="btn btn-primary btn-xl">Register for the Program</a>
-      <a href="#/login" class="btn btn-ghost btn-xl">Sign In</a>
+      <a href="#/login" class="btn btn-ghost-light btn-xl">Sign In</a>
     </div>
-    <div class="hero-stats">
+    <div class="hero-stats hero-stats--light">
       <div class="hero-stat text-center"><div class="hero-stat-val">7+</div><div class="hero-stat-lbl">Ventures Incubated</div></div>
       <div class="hero-stat text-center"><div class="hero-stat-val">50+</div><div class="hero-stat-lbl">Founders Guided</div></div>
       <div class="hero-stat text-center"><div class="hero-stat-val">4</div><div class="hero-stat-lbl">Cohorts Graduated</div></div>
@@ -89,36 +89,7 @@ ITE.Pages.Home = (function () {
     </div>
   </div>
 </section>
-<!-- ABOUT -->
-<section class="home-section" id="about">
-  <div class="section-header">
-    <div class="section-eyebrow">About the Program</div>
-    <h2 class="section-heading">A Structured Pathway for Early-Stage Ventures</h2>
-    <p class="section-desc">Introduction to Entrepreneurship (ITE) is VNIT's premier academic incubator, bridging engineering disciplines with corporate strategy through hands-on product design and advisory support.</p>
-  </div>
-  <div class="about-grid">
-    <div class="about-card-stack">
-      <div class="float-card"><div><div class="float-label">Venture Development</div><div class="float-sub">Six-stage structured development framework</div></div></div>
-      <div class="float-card"><div><div class="float-label">Mentorship</div><div class="float-sub">One-on-one academic and industry advisory</div></div></div>
-      <div class="float-card"><div><div class="float-label">Pitch Day</div><div class="float-sub">Evaluation by venture capitalists and industry leaders</div></div></div>
-    </div>
-    <div>
-      <p style="color:var(--text-secondary);font-size:1rem;line-height:1.75;margin-bottom:14px;">The ITE curriculum transitions students from academic theory to commercial execution. Founders form interdisciplinary teams to ideate, validate, and build functional prototypes within a single academic term.</p>
-      ${['A structured, six-stage development framework from ideation to investor presentation','Interdisciplinary teams with defined leadership roles (CEO, CTO, CFO, CMO)','Personalized guidance from dedicated faculty and industry mentors','Empirical market validation through customer development and prototype deployment','Direct access to seed capital opportunities during the final presentation'].map(f=>`<div class="about-feature"><div class="about-check">✓</div><div class="about-feature-text">${f}</div></div>`).join('')}
-    </div>
-  </div>
-</section>
-<!-- FACULTY -->
-<section class="home-section alt-bg" id="faculty">
-  <div class="section-header">
-    <div class="section-eyebrow">Our Mentors</div>
-    <h2 class="section-heading">Academic and Corporate Advisory</h2>
-    <p class="section-desc">Distinguished faculty members and industry advisors guide each cohort through the development process.</p>
-  </div>
-  <div class="faculty-grid">
-    ${[{n:'Prof. Anand Chaturvedi',t:'ITE Program Coordinator',d:'Management Studies',i:'AC',c:'#2563EB',e:'Entrepreneurship & Strategy'},{n:'Dr. Ravi Sharma',t:'Faculty Mentor',d:'Computer Science & Engg.',i:'RS',c:'#10B981',e:'Product & Market Strategy'},{n:'Dr. Priya Patel',t:'Faculty Mentor',d:'Management Studies',i:'PP',c:'#8B5CF6',e:'Finance & Operations'},{n:'Mr. Vikash Mehta',t:'Industry Expert',d:'Startup Ecosystem',i:'VM',c:'#F59E0B',e:'Angel Investor & Entrepreneur'}].map(f=>`<div class="faculty-card"><div class="faculty-av" style="background:${f.c}">${f.i}</div><div class="faculty-name">${f.n}</div><div class="faculty-title">${f.t}</div><div class="faculty-dept">${f.d}</div><div style="margin-top:8px;font-size:0.72rem;color:var(--text-muted)">${f.e}</div></div>`).join('')}
-  </div>
-</section>
+
 <!-- RESOURCES -->
 <section class="home-section" id="resources">
   <div class="section-header">
@@ -142,22 +113,7 @@ ITE.Pages.Home = (function () {
     </div>
   </div>
 </section>
-<!-- ABOUT VNIT -->
-<section class="home-section" id="about-vnit" style="background: var(--bg-secondary);">
-  <div class="about-vnit-container">
-    <div class="about-vnit-grid">
-      <div class="about-vnit-image-col">
-        <img src="assets/Main_Bldg_Final_1.jpg.jpeg" alt="VNIT Nagpur Main Building" class="about-vnit-img">
-      </div>
-      <div class="about-vnit-text-col">
-        <h2 class="section-heading" style="text-align: left; margin-bottom: 20px;">About VNIT Nagpur</h2>
-        <p class="about-vnit-p">
-          Visvesvaraya National Institute of Technology (VNIT), Nagpur, is one of India's premier technical institutions and an Institute of National Importance. Established in 1960, VNIT is renowned for its excellence in engineering, technology, architecture, and research. With a vibrant academic environment, state-of-the-art infrastructure, and a strong culture of innovation, the institute nurtures future leaders, entrepreneurs, and changemakers who contribute meaningfully to society and industry.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
+
 <!-- FOOTER -->
 ${_renderFooter()}
 </div>`;
@@ -349,5 +305,91 @@ ${_renderFooter()}
 </div>`;
   }
 
-  return { render, renderLogin, renderRegister, renderAllStartups };
+  function renderFaculty() {
+    const el = document.getElementById('page-content');
+    el.innerHTML = `<div class="faculty-page">
+<nav class="home-nav">
+  <div class="home-nav-logo">
+    ${ITE.App.renderLogo(34)}
+    <div><div class="home-nav-brand">ITE Startup Launch Pad</div><div class="home-nav-sub">VNIT Nagpur</div></div>
+  </div>
+  <div class="home-nav-links">
+    <a class="home-nav-link active" href="#/faculty">Faculty</a>
+    <button class="home-nav-link" onclick="window.location.hash='#/'" >Home</button>
+    ${_navThemeBtn()}
+    <a href="#/login" class="btn btn-ghost btn-sm">Login</a>
+    <a href="#/register" class="btn btn-primary btn-sm">Get Started</a>
+  </div>
+</nav>
+<div class="faculty-page-hero">
+  <div class="faculty-page-hero-overlay"></div>
+  <div class="faculty-page-hero-content">
+    <div class="section-eyebrow" style="color:#93C5FD;margin-bottom:12px;">Faculty Profile</div>
+    <h1 class="faculty-page-name">Shashikant Chaudhary</h1>
+    <p class="faculty-page-role">Serial Entrepreneur &amp; Angel Investor</p>
+  </div>
+</div>
+<div class="faculty-profile-body">
+  <div class="faculty-profile-grid">
+    <!-- Photo card -->
+    <aside class="faculty-profile-aside">
+      <div class="faculty-photo-wrap">
+        <img src="assets/image_20b0e2.jpg" alt="Shashikant Chaudhary" class="faculty-profile-photo">
+      </div>
+      <div class="faculty-contact-card">
+        <div class="faculty-contact-name">Shashikant Chaudhary</div>
+        <div class="faculty-contact-role">Serial Entrepreneur &amp; Angel Investor</div>
+        <div class="faculty-contact-divider"></div>
+        <a href="mailto:Shashikant.chaudhary@gmail.com" class="faculty-contact-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Shashikant.chaudhary@gmail.com
+        </a>
+        <div class="faculty-contact-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l.93-.93a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
+          9960345553
+        </div>
+        <div class="faculty-contact-divider"></div>
+        <div class="faculty-tag-list">
+          <span class="faculty-tag">Entrepreneur</span>
+          <span class="faculty-tag">Angel Investor</span>
+          <span class="faculty-tag">VNIT</span>
+          <span class="faculty-tag">42 Years Experience</span>
+        </div>
+      </div>
+    </aside>
+    <!-- Bio content -->
+    <main class="faculty-profile-main">
+      <h2 class="faculty-bio-heading">Biography</h2>
+      <p class="faculty-bio-para">Shashikant a serial entrepreneur with 42 years of experience in senior management and Academics, currently cofounder of Happyeaters.ai, his 10th venture. He is an Angel Investor with more than 30 startups also LP in 6 funds like Blume, IIFL and Artha Ventures. He is GP in Thikuvate a Singapore fund. He is appointed as a member of the Investment Committee for the Maharashtra Innovation and Technological Development Fund (MITDF), a 200 crore fund.</p>
+      <p class="faculty-bio-para">He was the Managing Director of India for GlobalLogic. Managing more than 4000 engineers in India. Globallogic was acquired by Hitachi for a valuation close to 9.6 billion. Awarded for Global Nagpur Award for bringing Nagpur on IT map of India.</p>
+      <p class="faculty-bio-para">He is the convenor for the startup track at Advantage Vidarbha. He is leading the VNIT super 100 angel group and FamilyCap- Nagpur 50-50-50.</p>
+      <p class="faculty-bio-para">He has been conducting an innovative course on Entrepreneurship at VNIT for the last 7 years. He is on the Board of Advisors of various incubators, including IIM Nagpur, RCOEM, Raisoni, LIT, SNDT, IIIT Nagpur. He is the Vice Chairman of VNIT Venture Vault.</p>
+      <p class="faculty-bio-para">He is the founding Chairman of VNIT Nagpur Alumni Association. He was Board Member of GlobalLogic Inc. USA. He was Member Governing Board of VNIT, Management Council YCMOU, Governing Board Member IIM Jammu.</p>
+      <div class="faculty-highlights-grid">
+        <div class="faculty-highlight-card">
+          <div class="faculty-highlight-val">42</div>
+          <div class="faculty-highlight-lbl">Years of Experience</div>
+        </div>
+        <div class="faculty-highlight-card">
+          <div class="faculty-highlight-val">10</div>
+          <div class="faculty-highlight-lbl">Ventures Founded</div>
+        </div>
+        <div class="faculty-highlight-card">
+          <div class="faculty-highlight-val">30+</div>
+          <div class="faculty-highlight-lbl">Startups Invested</div>
+        </div>
+        <div class="faculty-highlight-card">
+          <div class="faculty-highlight-val">6</div>
+          <div class="faculty-highlight-lbl">LP Fund Positions</div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+${_renderFooter()}
+</div>`;
+    ITE.App.applyTheme(localStorage.getItem('ite_theme') || 'light');
+  }
+
+  return { render, renderLogin, renderRegister, renderAllStartups, renderFaculty };
 })();

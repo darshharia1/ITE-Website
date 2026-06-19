@@ -20,50 +20,50 @@ ITE.Pages.Student = (function () {
 
     ITE.App.pc().innerHTML = `
 <div class="page-header">
-  <div class="page-title">Hello, ${user.name.split(' ')[0]} 👋</div>
+  <div class="page-title">Welcome, ${user.name.split(' ')[0]}</div>
   <div class="page-subtitle">${user.rollNo||''} · ${user.branch||''} ${user.teamRole?`· <span class="badge badge-blue">${user.teamRole}</span>`:''}</div>
 </div>
 
 ${pendingInvites.length>0?`
 <div class="card" style="border-color:var(--accent);margin-bottom:18px">
-  <div class="card-header"><div class="card-title">🔔 Pending Team Invitations (${pendingInvites.length})</div></div>
+  <div class="card-header"><div class="card-title">Pending Team Invitations (${pendingInvites.length})</div></div>
   ${pendingInvites.map(inv=>{
     const fromUser=ITE.Data.getUserById(inv.fromUserId);
     const invTeam=ITE.Data.getTeamById(inv.teamId);
-    return`<div class="invite-card"><div style="display:flex;align-items:flex-start;justify-content:space-between"><div><div style="font-weight:600;color:var(--text-primary)">${invTeam?.startupName||'Unknown Team'}</div><div style="font-size:.8rem;color:var(--text-secondary);margin-top:3px">You've been invited to join as <strong>${inv.role}</strong> by ${fromUser?.name||'CEO'}</div></div><span class="badge badge-blue">${inv.role}</span></div><div class="invite-actions"><button class="btn btn-success btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','accepted')">✓ Accept</button><button class="btn btn-danger btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','rejected')">✕ Decline</button></div></div>`;
+    return`<div class="invite-card"><div style="display:flex;align-items:flex-start;justify-content:space-between"><div><div style="font-weight:600;color:var(--text-primary)">${invTeam?.startupName||'Unknown Team'}</div><div style="font-size:.8rem;color:var(--text-secondary);margin-top:3px">Invitation to join as <strong>${inv.role}</strong> by ${fromUser?.name||'CEO'}</div></div><span class="badge badge-blue">${inv.role}</span></div><div class="invite-actions"><button class="btn btn-success btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','accepted')">Accept</button><button class="btn btn-danger btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','rejected')">Decline</button></div></div>`;
   }).join('')}
 </div>`:''
 }
 
 <div class="stats-grid">
-  ${[['📋','Tasks',tasks.length,`${mySubmissions.length} submitted`,'#2563EB'],
-     [team?'🚀':'❓','My Team',team?team.startupName:'Not Assigned',team?ITE.App.STAGES[team.stage]?.label:'—','#10B981'],
-     ['📣','Announcements',anns.length,'Unread feed','#8B5CF6'],
-     ['👤','My Role',user.teamRole||'Student',user.isCEO?'CEO Privileges':'Member','#F59E0B']
-  ].map(([ico,lbl,val,sub,col])=>`<div class="stat-card"><div class="stat-icon" style="background:${col}20;color:${col}">${ico}</div><div class="stat-value" style="font-size:${String(val).length>10?'1.1rem':'1.875rem'}">${val}</div><div class="stat-label">${lbl}</div><div class="stat-sub">${sub}</div></div>`).join('')}
+  ${[['Tasks',tasks.length,`${mySubmissions.length} submitted`,'#2563EB'],
+     ['My Team',team?team.startupName:'Unassigned',team?ITE.App.STAGES[team.stage]?.label:'—','#10B981'],
+     ['Announcements',anns.length,'Unread feed','#8B5CF6'],
+     ['My Role',user.teamRole||'Student',user.isCEO?'CEO Privileges':'Member','#F59E0B']
+  ].map(([lbl,val,sub,col])=>`<div class="stat-card"><div class="stat-value" style="font-size:${String(val).length>10?'1.1rem':'1.875rem'}">${val}</div><div class="stat-label">${lbl}</div><div class="stat-sub">${sub}</div></div>`).join('')}
 </div>
 
 <div class="two-col">
   <!-- Team Status -->
   <div class="card">
-    <div class="card-header"><div class="card-title">My Team Status</div><a href="#/student/my-team" class="btn btn-ghost btn-sm">View →</a></div>
-    ${!team?`<div class="empty-state" style="padding:24px 0"><div class="empty-state-icon">🚀</div><h3>No team yet</h3><p>Wait for your mentor to assign you a role, or accept a team invitation.</p></div>`:
+    <div class="card-header"><div class="card-title">Team Status</div><a href="#/student/my-team" class="btn btn-ghost btn-sm">View</a></div>
+    ${!team?`<div class="empty-state" style="padding:24px 0"><h3>No Team Assignment</h3><p>Please wait for role assignment or team invitation.</p></div>`:
     `<div>
       <div style="font-family:var(--font-display);font-size:1.125rem;font-weight:800;margin-bottom:5px">${team.startupName}</div>
       <p style="font-size:.875rem;color:var(--text-secondary);margin-bottom:14px;line-height:1.5">${team.problemStatement}</p>
       ${ITE.App.renderProgressTracker(team.stage)}
-      ${mentor?`<div style="margin-top:12px;font-size:.8rem;color:var(--text-muted)">🧑‍🏫 Mentor: <strong style="color:var(--text-primary)">${mentor.name}</strong></div>`:''}
+      ${mentor?`<div style="margin-top:12px;font-size:.8rem;color:var(--text-muted)">Mentor: <strong style="color:var(--text-primary)">${mentor.name}</strong></div>`:''}
     </div>`}
   </div>
   <!-- Recent Announcements -->
   <div class="card">
-    <div class="card-header"><div class="card-title">Recent Announcements</div><a href="#/student/announcements" class="btn btn-ghost btn-sm">All →</a></div>
-    ${anns.length===0?`<div class="empty-state" style="padding:20px 0"><div class="empty-state-icon">📣</div><h3>No announcements</h3></div>`:
+    <div class="card-header"><div class="card-title">Recent Announcements</div><a href="#/student/announcements" class="btn btn-ghost btn-sm">View All</a></div>
+    ${anns.length===0?`<div class="empty-state" style="padding:20px 0"><h3>No announcements</h3></div>`:
     anns.slice(0,3).map(a=>`<div class="ann-card ${a.createdByRole}-ann"><div class="ann-meta"><span class="badge ${a.createdByRole==='admin'?'badge-blue':'badge-green'}">${a.createdByRole}</span></div><div class="ann-title">${a.title}</div><div class="ann-date">${new Date(a.createdAt).toLocaleDateString('en-IN')}</div></div>`).join('')}
   </div>
 </div>
 
-${user.isCEO&&team&&!team.startupName?`<div class="card mt-6" style="border-color:var(--accent)"><div class="card-header"><div class="card-title">🚀 You're a CEO! Create Your Startup Profile</div></div><p style="font-size:.875rem;color:var(--text-secondary);margin-bottom:14px">As CEO, you need to set up your startup's profile and invite your team members.</p><button class="btn btn-primary" onclick="ITE.Pages.Student.showCreateStartup()">Create Startup Profile</button></div>`:''}`;
+${user.isCEO&&team&&!team.startupName?`<div class="card mt-6" style="border-color:var(--accent)"><div class="card-header"><div class="card-title">Startup Profile Setup Required</div></div><p style="font-size:.875rem;color:var(--text-secondary);margin-bottom:14px">As CEO, you are required to define the startup profile and invite team members.</p><button class="btn btn-primary" onclick="ITE.Pages.Student.showCreateStartup()">Create Startup Profile</button></div>`:''}`;
   }
 
   /* ---- My Team ---- */
@@ -77,9 +77,8 @@ ${user.isCEO&&team&&!team.startupName?`<div class="card mt-6" style="border-colo
       ITE.App.pc().innerHTML = `
 <div class="page-header"><div class="page-title">My Team</div></div>
 <div class="no-team-card">
-  <div style="font-size:3rem;margin-bottom:14px">🚀</div>
-  <h3 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;margin-bottom:8px">You're not in a team yet</h3>
-  <p style="font-size:.9rem;color:var(--text-secondary);max-width:380px;margin:0 auto 20px">Your mentor will assign you to a team or mark you as CEO. You may also have pending invitations on your dashboard.</p>
+  <h3 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;margin-bottom:8px">No Team Assignment</h3>
+  <p style="font-size:.9rem;color:var(--text-secondary);max-width:380px;margin:0 auto 20px">Your mentor will assign you to a team or designate you as CEO. You may also check pending invitations on the dashboard.</p>
   <a href="#/student/dashboard" class="btn btn-primary">View Dashboard</a>
 </div>`;
       return;
@@ -91,7 +90,7 @@ ${user.isCEO&&team&&!team.startupName?`<div class="card mt-6" style="border-colo
     ITE.App.pc().innerHTML = `
 ${pendingInvites.length>0?`<div style="margin-bottom:16px">${pendingInvites.map(inv=>{
   const ft=ITE.Data.getTeamById(inv.teamId);
-  return`<div class="invite-card"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div style="font-weight:600">${ft?.startupName||'Team'} – ${inv.role} Invitation</div><div style="font-size:.8rem;color:var(--text-secondary);margin-top:2px">Invited by ${ITE.Data.getUserById(inv.fromUserId)?.name||'CEO'}</div></div><span class="badge badge-blue">${inv.role}</span></div><div class="invite-actions"><button class="btn btn-success btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','accepted')">✓ Accept</button><button class="btn btn-danger btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','rejected')">✕ Decline</button></div></div>`;
+  return`<div class="invite-card"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div style="font-weight:600">${ft?.startupName||'Team'} – ${inv.role} Invitation</div><div style="font-size:.8rem;color:var(--text-secondary);margin-top:2px">Invited by ${ITE.Data.getUserById(inv.fromUserId)?.name||'CEO'}</div></div><span class="badge badge-blue">${inv.role}</span></div><div class="invite-actions"><button class="btn btn-success btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','accepted')">Accept</button><button class="btn btn-danger btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','rejected')">Decline</button></div></div>`;
 }).join('')}</div>`:''}
 
 <!-- Hero banner -->
@@ -99,10 +98,10 @@ ${pendingInvites.length>0?`<div style="margin-bottom:16px">${pendingInvites.map(
   <div class="my-team-name">${team.startupName}</div>
   <div class="my-team-tagline">${team.problemStatement}</div>
   <div class="my-team-meta">
-    ${mentor?`<div class="my-team-meta-item">🧑‍🏫 <span>${mentor.name}</span></div>`:''}
-    <div class="my-team-meta-item">👥 <span>${members.length} members</span></div>
-    <div class="my-team-meta-item">🏭 <span>${team.industry}</span></div>
-    <div class="my-team-meta-item">${ITE.App.STAGES[team.stage]?.emoji} <span>${ITE.App.STAGES[team.stage]?.label}</span></div>
+    ${mentor?`<div class="my-team-meta-item"><span>Mentor: ${mentor.name}</span></div>`:''}
+    <div class="my-team-meta-item"><span>${members.length} Members</span></div>
+    <div class="my-team-meta-item"><span>Sector: ${team.industry}</span></div>
+    <div class="my-team-meta-item"><span>Stage ${team.stage + 1}</span></div>
   </div>
 </div>
 
@@ -111,11 +110,11 @@ ${pendingInvites.length>0?`<div style="margin-bottom:16px">${pendingInvites.map(
   <div>
     <!-- Progress Tracker -->
     <div class="card mb-4" style="margin-bottom:16px">
-      <div class="card-header"><div class="card-title">🗺️ Startup Progress</div></div>
+      <div class="card-header"><div class="card-title">Venture Progress</div></div>
       ${ITE.App.renderProgressTracker(team.stage)}
       <div style="margin-top:14px;padding:12px;background:var(--bg-secondary);border-radius:var(--radius-sm)">
         <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:4px">Current Stage</div>
-        <div style="font-size:.9375rem;font-weight:600;color:var(--text-primary)">${ITE.App.STAGES[team.stage]?.emoji} ${ITE.App.STAGES[team.stage]?.label}</div>
+        <div style="font-size:.9375rem;font-weight:600;color:var(--text-primary)">Stage ${team.stage + 1}: ${ITE.App.STAGES[team.stage]?.label}</div>
         <div style="font-size:.8rem;color:var(--text-secondary);margin-top:3px">${_stageHint(team.stage)}</div>
       </div>
     </div>
@@ -123,21 +122,21 @@ ${pendingInvites.length>0?`<div style="margin-bottom:16px">${pendingInvites.map(
     <!-- Startup Details -->
     <div class="card mb-4" style="margin-bottom:16px">
       <div class="card-header">
-        <div class="card-title">📋 Startup Details</div>
+        <div class="card-title">Venture Details</div>
         ${user.isCEO?`<button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Student.showEditStartup('${team.id}')">Edit</button>`:''}
       </div>
       <div style="display:grid;gap:12px">
-        <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px">Startup Name</div><div style="font-size:.9375rem;font-weight:600">${team.startupName}</div></div>
+        <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px">Venture Name</div><div style="font-size:.9375rem;font-weight:600">${team.startupName}</div></div>
         <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px">Industry</div><span class="badge badge-blue">${team.industry}</span></div>
         <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px">Problem Statement</div><p style="font-size:.875rem;line-height:1.6;color:var(--text-secondary)">${team.problemStatement}</p></div>
-        <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px">Description</div><p style="font-size:.875rem;line-height:1.6;color:var(--text-secondary)">${team.description||'Not provided yet.'}</p></div>
+        <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px">Description</div><p style="font-size:.875rem;line-height:1.6;color:var(--text-secondary)">${team.description||'Not provided.'}</p></div>
       </div>
     </div>
 
     <!-- Team Announcements -->
     <div class="card">
-      <div class="card-header"><div class="card-title">📢 Team Announcements</div></div>
-      ${anns.length===0?`<div class="empty-state" style="padding:20px 0"><div class="empty-state-icon">📣</div><h3>No team announcements</h3></div>`:
+      <div class="card-header"><div class="card-title">Team Announcements</div></div>
+      ${anns.length===0?`<div class="empty-state" style="padding:20px 0"><h3>No team announcements</h3></div>`:
       anns.map(a=>`<div class="ann-card mentor-ann"><div class="ann-meta"><span class="badge badge-green">MENTOR</span><span style="font-size:.72rem;color:var(--text-muted)">${a.createdByName}</span></div><div class="ann-title">${a.title}</div><div class="ann-body">${a.content}</div><div class="ann-date">${new Date(a.createdAt).toLocaleString('en-IN')}</div></div>`).join('')}
     </div>
   </div>
@@ -146,29 +145,29 @@ ${pendingInvites.length>0?`<div style="margin-bottom:16px">${pendingInvites.map(
   <div>
     <div class="card mb-4" style="margin-bottom:16px">
       <div class="card-header">
-        <div class="card-title">👥 Team Members</div>
-        ${user.isCEO?`<button class="btn btn-primary btn-sm" onclick="ITE.Pages.Student.showInviteMember()">+ Invite</button>`:''}
+        <div class="card-title">Team Directory</div>
+        ${user.isCEO?`<button class="btn btn-primary btn-sm" onclick="ITE.Pages.Student.showInviteMember()">Invite</button>`:''}
       </div>
       <div style="display:grid;gap:8px">
-        ${members.map(m=>`<div class="member-card"><div class="member-avatar" style="background:${ITE.App.roleColor(m.role)}">${m.user?.avatar||'?'}</div><div class="member-info"><div class="member-name">${m.user?.name||'?'} ${m.userId===user.id?'<span style="font-size:.65rem;color:var(--accent)">(You)</span>':''}</div><div class="member-sub">${m.user?.rollNo||''} · ${m.user?.branch||''}</div></div><span class="badge" style="background:${ITE.App.roleColor(m.role)}22;color:${ITE.App.roleColor(m.role)}">${m.role}</span></div>`).join('')}
-        ${members.length<4?`<div style="padding:10px;text-align:center;border:1px dashed var(--border);border-radius:var(--radius-sm);font-size:.8rem;color:var(--text-muted)">${4-members.length} more slot${4-members.length!==1?'s':''} available</div>`:''}
+        ${members.map(m=>`<div class="member-card"><div class="member-avatar" style="background:${ITE.App.roleColor(m.role)}">${m.user?.avatar||'?'}</div><div class="member-info"><div class="member-name">${m.user?.name||''} ${m.userId===user.id?'<span style="font-size:.65rem;color:var(--accent)">(You)</span>':''}</div><div class="member-sub">${m.user?.rollNo||''} · ${m.user?.branch||''}</div></div><span class="badge" style="background:${ITE.App.roleColor(m.role)}22;color:${ITE.App.roleColor(m.role)}">${m.role}</span></div>`).join('')}
+        ${members.length<4?`<div style="padding:10px;text-align:center;border:1px dashed var(--border);border-radius:var(--radius-sm);font-size:.8rem;color:var(--text-muted)">${4-members.length} slot${4-members.length!==1?'s':''} available</div>`:''}
       </div>
     </div>
 
     ${mentor?`<div class="card mb-4" style="margin-bottom:16px">
-      <div class="card-header"><div class="card-title">🧑‍🏫 Your Mentor</div></div>
+      <div class="card-header"><div class="card-title">Dedicated Advisory</div></div>
       <div style="display:flex;align-items:center;gap:12px">
         <div style="width:48px;height:48px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;color:#FFF">${mentor.avatar}</div>
-        <div><div style="font-weight:700;font-size:.9375rem">${mentor.name}</div><div style="font-size:.8rem;color:var(--text-muted)">${mentor.specialization||'Faculty Mentor'}</div><div style="font-size:.75rem;color:var(--text-muted);margin-top:2px">📧 ${mentor.email}</div></div>
+        <div><div style="font-weight:700;font-size:.9375rem">${mentor.name}</div><div style="font-size:.8rem;color:var(--text-muted)">${mentor.specialization||'Faculty Mentor'}</div><div style="font-size:.75rem;color:var(--text-muted);margin-top:2px">Email: ${mentor.email}</div></div>
       </div>
     </div>`:''}
 
     ${user.isCEO?`<div class="card" style="border-color:var(--accent)">
-      <div class="card-header"><div class="card-title">👑 CEO Actions</div></div>
-      <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:12px">As CEO you can invite students to fill team roles.</p>
+      <div class="card-header"><div class="card-title">Executive Controls</div></div>
+      <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:12px">Invite team members and manage venture details.</p>
       <div style="display:grid;gap:8px">
-        <button class="btn btn-primary" onclick="ITE.Pages.Student.showInviteMember()">+ Invite Team Member</button>
-        <button class="btn btn-ghost" onclick="ITE.Pages.Student.showEditStartup('${team.id}')">✏️ Edit Startup Profile</button>
+        <button class="btn btn-primary" onclick="ITE.Pages.Student.showInviteMember()">Invite Team Member</button>
+        <button class="btn btn-ghost" onclick="ITE.Pages.Student.showEditStartup('${team.id}')">Edit Startup Profile</button>
       </div>
       ${_pendingInvitesSent(user.id)}
     </div>`:''}
@@ -182,7 +181,7 @@ ${pendingInvites.length>0?`<div style="margin-bottom:16px">${pendingInvites.map(
             'Conduct at least 20 interviews with potential customers.',
             'Build a minimum viable product to test with real users.',
             'Create a compelling pitch deck for investors.',
-            '🎉 Final pitch to faculty and industry judges!'][stage]||'';
+            'Final pitch to faculty and industry judges.'][stage]||'';
   }
 
   function _pendingInvitesSent(userId) {
@@ -271,7 +270,7 @@ ${pendingInvites.length>0?`<div style="margin-bottom:16px">${pendingInvites.map(
         // Update mentor for the new member
         const ceo=ITE.Data.getUserById(team.ceoId);
         ITE.Data.updateUser(user.id,{teamId:inv.teamId,teamRole:inv.role,mentorId:team.mentorId});
-        ITE.App.toast(`You've joined ${team.startupName} as ${inv.role}! 🎉`,'success');
+        ITE.App.toast(`You have joined ${team.startupName} as ${inv.role}.`,'success');
       }
     } else {
       ITE.App.toast('Invitation declined.','info');
@@ -295,21 +294,21 @@ ${pendingInvites.length>0?`<div style="margin-bottom:16px">${pendingInvites.map(
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><span style="font-size:.875rem;color:var(--text-secondary)">Overall Completion</span><span style="font-weight:700">${total?Math.round(submitted/total*100):0}%</span></div>
   <div class="analytics-bar-track" style="height:10px"><div class="analytics-bar-fill" style="width:${total?submitted/total*100:0}%"></div></div>
 </div>
-${tasks.length===0?`<div class="empty-state card"><div class="empty-state-icon">📋</div><h3>No tasks assigned yet</h3></div>`:
+${tasks.length===0?`<div class="empty-state card"><h3>No tasks assigned yet</h3></div>`:
 tasks.map(task=>{
   const sub=getSubForTask(task.id);
   const done=!!sub;
   return`<div class="task-card">
-  <div class="task-check ${done?'done':''}">✓</div>
+  <div class="task-check ${done?'done':''}"></div>
   <div style="flex:1">
     <div class="task-title">${task.title}</div>
     <div class="task-desc">${task.description}</div>
     <div style="display:flex;align-items:center;gap:12px;margin-top:7px;flex-wrap:wrap">
-      <div class="task-due">📅 Due: ${new Date(task.dueDate).toLocaleDateString('en-IN')}</div>
+      <div class="task-due">Due: ${new Date(task.dueDate).toLocaleDateString('en-IN')}</div>
       <span class="badge badge-blue">${task.category}</span>
-      ${done?`<span class="badge badge-green">✓ Submitted ${sub.grade?`· Grade: ${sub.grade}`:''}</span>`:`<span class="badge badge-yellow">Pending</span>`}
+      ${done?`<span class="badge badge-green">Submitted ${sub.grade?`· Grade: ${sub.grade}`:''}</span>`:`<span class="badge badge-yellow">Pending</span>`}
     </div>
-    ${done?`<div style="margin-top:10px;padding:10px;background:var(--success-light);border-radius:var(--radius-sm);font-size:.8rem;color:var(--success)">✅ Submitted: "${sub.content?.slice(0,80)||''}…"</div>`:
+    ${done?`<div style="margin-top:10px;padding:10px;background:var(--success-light);border-radius:var(--radius-sm);font-size:.8rem;color:var(--success)">Submitted: "${sub.content?.slice(0,80)||''}…"</div>`:
     `<div style="margin-top:10px"><button class="btn btn-primary btn-sm" onclick="ITE.Pages.Student.showSubmitTask('${task.id}','${task.title.replace(/'/g,"\\'")}')">Submit Task</button></div>`}
   </div>
 </div>`;
@@ -332,7 +331,7 @@ tasks.map(task=>{
     const user=ITE.Auth.getCurrentUser();
     if(ITE.Data.getSubByStudentTask(user.id,taskId)){ITE.App.toast('Already submitted!','warning');return;}
     ITE.Data.createSubmission({taskId,studentId:user.id,content});
-    ITE.App.toast('Task submitted successfully! 🎉','success');
+    ITE.App.toast('Task submitted successfully.','success');
     ITE.App.closeModal(); renderTasks();
   }
 
@@ -342,7 +341,7 @@ tasks.map(task=>{
     const anns = ITE.Data.getAnnouncementsForUser(user);
     ITE.App.pc().innerHTML = `
 <div class="page-header"><div class="page-title">Announcements</div><div class="page-subtitle">${anns.length} total announcements · View-only</div></div>
-${anns.length===0?`<div class="empty-state card"><div class="empty-state-icon">📣</div><h3>No announcements</h3><p>Announcements from your admin and mentor will appear here.</p></div>`:
+${anns.length===0?`<div class="empty-state card"><h3>No announcements</h3><p>Announcements from your admin and mentor will appear here.</p></div>`:
 anns.map(a=>`<div class="ann-card ${a.createdByRole}-ann"><div class="ann-meta"><span class="badge ${a.createdByRole==='admin'?'badge-blue':'badge-green'}">${a.createdByRole.toUpperCase()}</span><span style="font-size:.72rem;color:var(--text-muted)">by ${a.createdByName}</span>${user.teamId&&a.recipients==='team-'+user.teamId?`<span class="badge badge-purple">Your Team</span>`:a.recipients==='all-students'?`<span class="badge badge-blue">All Students</span>`:''}</div><div class="ann-title">${a.title}</div><div class="ann-body">${a.content}</div><div class="ann-date">${new Date(a.createdAt).toLocaleString('en-IN')}</div></div>`).join('')}`;
   }
 

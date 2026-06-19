@@ -5,12 +5,12 @@ window.ITE = window.ITE || {};
 
 ITE.App = (function () {
   const STAGES = [
-    { label: 'Idea Validation',    emoji: '💡' },
-    { label: 'Market Research',    emoji: '📊' },
-    { label: 'Customer Interviews',emoji: '🎤' },
-    { label: 'MVP Development',    emoji: '🛠️' },
-    { label: 'Pitch Deck',         emoji: '📋' },
-    { label: 'Final Pitch',        emoji: '🚀' },
+    { label: 'Idea Validation' },
+    { label: 'Market Research' },
+    { label: 'Customer Interviews' },
+    { label: 'MVP Development' },
+    { label: 'Pitch Deck' },
+    { label: 'Final Pitch' },
   ];
 
   let theme = localStorage.getItem('ite_theme') || 'light';
@@ -192,7 +192,7 @@ ITE.App = (function () {
   function renderProgressTracker(stage) {
     return `<div class="progress-tracker">${STAGES.map((s,i) => {
       const done = i < stage, active = i === stage;
-      return `<div class="progress-step ${done?'done':active?'active':''}"><div class="step-circle">${done?'✓':s.emoji}</div><div class="step-label">${s.label}</div></div>`;
+      return `<div class="progress-step ${done?'done':active?'active':''}"><div class="step-circle">${done?'✓':(i+1)}</div><div class="step-label">${s.label}</div></div>`;
     }).join('')}</div>`;
   }
 

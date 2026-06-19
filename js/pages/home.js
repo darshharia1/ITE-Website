@@ -18,29 +18,7 @@ ITE.Pages.Home = (function () {
     </button>`;
   }
 
-  function _renderFooter() {
-    return `<footer class="home-footer">
-  <div class="footer-container">
-    <div class="footer-brand">
-      <div class="home-footer-logo">
-        ${ITE.App.renderLogo(36)}
-        <div>
-          <div class="home-footer-name">ITE Startup Launch Pad</div>
-          <div class="home-footer-sub">Introduction to Entrepreneurship</div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-divider"></div>
-    <div class="footer-vnit">
-      <a href="https://vnit.ac.in/" target="_blank" rel="noopener noreferrer" class="vnit-footer-link">
-        <img src="assets/vnit-logo.jpg" alt="VNIT Nagpur Logo" class="vnit-footer-logo">
-        <span class="vnit-footer-text">Visvesvaraya National Institute of Technology<br><strong>VNIT Nagpur</strong></span>
-      </a>
-    </div>
-  </div>
-  <div class="home-footer-copy">© 2024 <a href="https://vnit.ac.in/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">VNIT Nagpur</a>. All rights reserved. Managed by the ITE Program.</div>
-</footer>`;
-  }
+
 
   function render() {
     const startups = ITE.Data.getPrevStartups();
@@ -138,7 +116,10 @@ ITE.Pages.Home = (function () {
   </div>
 </section>
 <!-- FOOTER -->
-${_renderFooter()}
+<footer class="home-footer">
+  <div class="home-footer-logo">${ITE.App.renderLogo(34)}<div><div class="home-footer-name">ITE Startup Launch Pad</div><div class="home-footer-sub">VNIT Nagpur · Introduction to Entrepreneurship</div></div></div>
+  <div class="home-footer-copy">© 2024 VNIT Nagpur. All rights reserved. Built by the ITE Program.</div>
+</footer>
 </div>`;
     ITE.App.applyTheme(localStorage.getItem('ite_theme') || 'light');
   }
@@ -296,7 +277,7 @@ ${_renderFooter()}
   ${batches.map(b=>`<button class="batch-chip btn btn-ghost btn-sm" data-batch="${b}">Batch ${b}</button>`).join('')}
 </div>
 <div class="all-startups-grid" id="as-grid">${all.map(s=>_startupCard(s)).join('')}</div>
-${_renderFooter()}
+<footer class="home-footer"><div class="home-footer-logo">${ITE.App.renderLogo(32)}<div><div class="home-footer-name">ITE Startup Launch Pad</div><div class="home-footer-sub">VNIT Nagpur · © 2024</div></div></div></footer>
 </div>`;
 
     document.querySelectorAll('.batch-chip').forEach(btn => {

@@ -168,8 +168,8 @@
 .partner-divider { width: 1px; height: 32px; background: rgba(255,255,255,0.06); }
 .acm-footer-link { display: flex; align-items: center; gap: 12px; color: #7A8FA6; text-decoration: none; transition: color var(--transition); }
 .acm-footer-link:hover { color: #FFF; }
-.acm-footer-logo { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.12); transition: border-color var(--transition); background: #FFF; padding: 1px; object-fit: contain; }
-.acm-footer-link:hover .acm-footer-logo { border-color: var(--accent); }
+.acm-footer-logo { width: 44px; height: 44px; transition: transform var(--transition); object-fit: contain; }
+.acm-footer-link:hover .acm-footer-logo { transform: scale(1.08); }
 .acm-footer-text { font-size: 0.72rem; text-align: left; line-height: 1.4; display: block; font-weight: 500; }
 .acm-footer-text strong { font-size: 0.875rem; color: #FFF; display: block; margin-top: 1px; font-family: var(--font-display); }
 .home-footer-logo { display: flex; align-items: center; gap: 12px; }

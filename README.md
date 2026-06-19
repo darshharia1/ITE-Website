@@ -66,6 +66,7 @@ git clone <repo-url>
 ITE2/
 │
 ├── index.html                  # SPA entry point & shell
+├── acm-chapter.html            # Standalone ACM student chapter & creators page
 │
 ├── css/
 │   ├── main.css                # Design system: CSS variables, layout, animations
@@ -387,7 +388,7 @@ This project is licensed under the **MIT License** — see [LICENSE](LICENSE) fo
 
 <div align="center">
 
-Built with 💙 for the ITE Program at VNIT Nagpur
+Engineered with 🩵 by [ACM Student Chapter, VNIT](acm-chapter.html)
 
 **ITE Startup Launch Pad** · *From Idea to Impact*
 

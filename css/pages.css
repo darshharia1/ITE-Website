@@ -252,6 +252,70 @@
   border-radius: var(--radius-lg); padding: 48px 32px; text-align: center;
 }
 
+/* ===== ABOUT VNIT SECTION ===== */
+#about-vnit {
+  padding: 80px 48px;
+}
+.about-vnit-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.about-vnit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.about-vnit-image-col {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.22), var(--shadow);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+.about-vnit-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.about-vnit-text-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.about-vnit-text-col h2 {
+  margin-bottom: 20px;
+}
+.about-vnit-p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+@media (max-width: 768px) {
+  #about-vnit {
+    padding: 52px 20px;
+  }
+  .about-vnit-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .about-vnit-image-col {
+    aspect-ratio: 16 / 9;
+    order: 1;
+  }
+  .about-vnit-text-col {
+    order: 2;
+    text-align: center;
+  }
+  .about-vnit-text-col h2 {
+    text-align: center !important;
+  }
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 960px) {
   .about-grid { grid-template-columns: 1fr; }

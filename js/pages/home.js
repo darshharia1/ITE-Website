@@ -137,6 +137,22 @@ ITE.Pages.Home = (function () {
     </div>
   </div>
 </section>
+<!-- ABOUT VNIT -->
+<section class="home-section" id="about-vnit" style="background: var(--bg-secondary);">
+  <div class="about-vnit-container">
+    <div class="about-vnit-grid">
+      <div class="about-vnit-image-col">
+        <img src="assets/Main_Bldg_Final_1.jpg.jpeg" alt="VNIT Nagpur Main Building" class="about-vnit-img">
+      </div>
+      <div class="about-vnit-text-col">
+        <h2 class="section-heading" style="text-align: left; margin-bottom: 20px;">About VNIT Nagpur</h2>
+        <p class="about-vnit-p">
+          Visvesvaraya National Institute of Technology (VNIT), Nagpur, is one of India's premier technical institutions and an Institute of National Importance. Established in 1960, VNIT is renowned for its excellence in engineering, technology, architecture, and research. With a vibrant academic environment, state-of-the-art infrastructure, and a strong culture of innovation, the institute nurtures future leaders, entrepreneurs, and changemakers who contribute meaningfully to society and industry.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- FOOTER -->
 ${_renderFooter()}
 </div>`;

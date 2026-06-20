@@ -202,7 +202,7 @@ ${_renderFooter()}
 </div>
 <div class="auth-right">
   <div class="auth-form-wrap" style="max-width:460px">
-    <a href="#/login" class="btn btn-ghost btn-sm" style="margin-bottom:8px;">Back to Login</a>
+    <a href="#/" class="btn btn-ghost btn-sm" style="margin-bottom:8px;">Back to Home</a>
     <div class="auth-form-title">Create Account</div>
     <div class="auth-form-subtitle">Registration restricted to pre-approved VNIT students only.</div>
     <div id="reg-err" class="form-error-box"></div>
@@ -311,7 +311,7 @@ ${_renderFooter()}
   function renderFaculty() {
     const el = document.getElementById('page-content');
     el.innerHTML = `<div class="faculty-page">
-<nav class="home-nav">
+<nav class="home-nav home-nav--solid">
   <div class="home-nav-logo">
     ${ITE.App.renderLogo(34)}
     <div><div class="home-nav-brand">ITE Startup Launch Pad</div><div class="home-nav-sub">VNIT Nagpur</div></div>

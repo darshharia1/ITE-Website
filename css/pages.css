@@ -23,6 +23,45 @@
   box-shadow: 0 4px 24px rgba(0,0,0,0.4);
 }
 [data-theme="dark"] .home-nav.scrolled { background: rgba(12, 12, 20, 0.85); }
+
+/* Solid override for specific pages like /faculty and ACM */
+/* Solid override for specific pages like /faculty and ACM */
+.home-nav--solid {
+  background: var(--card) !important;
+  border-bottom: 1px solid var(--border) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+  z-index: 9999 !important;
+}
+[data-theme="dark"] .home-nav--solid {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
+}
+.home-nav--solid .home-nav-brand,
+.home-nav--solid .home-nav-link {
+  color: var(--text-primary) !important;
+  text-shadow: none !important;
+}
+.home-nav--solid .home-nav-sub {
+  color: var(--text-secondary) !important;
+  text-shadow: none !important;
+}
+.home-nav--solid .home-nav-logo path[fill="white"] {
+  fill: var(--text-primary) !important;
+}
+.home-nav--solid .home-nav-link:hover {
+  background: var(--bg-secondary) !important;
+}
+.home-nav--solid .btn-ghost {
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+  text-shadow: none !important;
+}
+.home-nav--solid .btn-ghost:hover {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
 .home-nav-logo { display: flex; align-items: center; gap: 12px; }
 .home-nav-brand { font-family: var(--font-display); font-size: 0.9375rem; font-weight: 800; color: #FFF; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
 .home-nav-sub   { font-size: 0.7rem; color: rgba(255, 255, 255, 0.85); text-shadow: 0 1px 3px rgba(0,0,0,0.5); }

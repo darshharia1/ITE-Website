@@ -63,27 +63,24 @@
   );
 }
 
-/* ---- Giant ITE clip-text ---- */
-.hero-ite-text {
-  position: relative; z-index: 1;
+/* ---- Giant ITE massive text (gradient fade, always visible) ---- */
+.hero-massive-text {
+  position: relative;
+  z-index: 10;           /* Above the dark overlay */
   font-family: var(--font-display);
-  font-size: 15rem; /* Massive size */
+  font-size: clamp(12rem, 20vw, 25rem);
   font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: -2px;
-  /* Clip the campus image through the letterforms */
-  background-image: url('assets/Main_Bldg_Final_1.jpg.jpeg');
-  background-size: cover;
-  background-position: center 30%;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  /* Vertical gradient: bright white at top, fades to near-transparent at bottom */
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.1) 100%);
   -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
   -webkit-text-fill-color: transparent;
-  /* Keep it mostly white with just a hint of the image showing through */
-  filter: brightness(2.4);
-  margin-bottom: -0.06em;
+  background-clip: text;
+  color: transparent;    /* Fallback */
+  margin-bottom: 0px;    /* Tight — no gap pushing headline down */
   user-select: none;
-  animation: fadeInDown 0.7s ease 0.1s both;
+  animation: fadeInDown 0.55s ease 0.1s both;
 }
 
 /* ---- Hero body text block ---- */
@@ -480,7 +477,7 @@
 
   /* Hero – remove old padding-based offset; hero is full-screen with no top padding */
   .hero-section { padding: 0; }
-  .hero-ite-text { font-size: clamp(6rem, 24vw, 9rem); }
+  .hero-massive-text { font-size: clamp(6rem, 22vw, 10rem); letter-spacing: -0.04em; }
   .hero-stats {
     position: static;
     flex-wrap: wrap;

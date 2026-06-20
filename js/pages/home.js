@@ -73,15 +73,15 @@ ITE.Pages.Home = (function () {
   <div class="hero-img-overlay"></div>
 
   <!-- Badge pill -->
-  <div class="hero-badge hero-badge--dark" style="position:relative;z-index:1;margin-bottom:16px;">
+  <div class="hero-badge hero-badge--dark" style="position:relative;z-index:10;margin-bottom:8px;">
     ${ITE.App.renderLogo(16)}&nbsp; ITE Program 2024-25
   </div>
 
-  <!-- Giant clipped ITE letterforms -->
-  <div class="hero-ite-text">ITE</div>
+  <!-- Giant gradient ITE text — always visible, sits between badge and headline -->
+  <div class="hero-massive-text">ITE</div>
 
-  <!-- Text content block -->
-  <div class="hero-content hero-content--light">
+  <!-- Text content block — tight below the ITE letters -->
+  <div class="hero-content hero-content--light" style="margin-top:-12px;">
     <h1 class="hero-title hero-title--light">
       Transform Ideas <span class="accent">into Ventures</span> at VNIT
     </h1>

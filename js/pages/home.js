@@ -62,6 +62,7 @@ ITE.Pages.Home = (function () {
     <div><div class="home-nav-brand">ITE Startup Launch Pad</div><div class="home-nav-sub">VNIT Nagpur</div></div>
   </div>
   <div class="home-nav-links">
+    <a class="home-nav-link" href="#/about">About</a>
     <a class="home-nav-link" href="#/faculty">Faculty</a>
     <button class="home-nav-link" onclick="document.getElementById('resources').scrollIntoView({behavior:'smooth'})">Resources</button>
     <button class="home-nav-link" onclick="document.getElementById('prev-startups').scrollIntoView({behavior:'smooth'})">Startups</button>
@@ -71,18 +72,24 @@ ITE.Pages.Home = (function () {
   </div>
 </nav>
 <!-- HERO -->
-<section class="hero-section hero-section--img">
+<section class="hero-section hero-section--img" style="position:relative;overflow:hidden;">
   <div class="hero-img-bg" style="background-image:url('assets/Main_Bldg_Final_1.jpg.jpeg')"></div>
   <div class="hero-img-overlay"></div>
-  <div class="hero-content hero-content--light">
+  <!-- DEAD-CENTER DECOUPLED ITE WATERMARK -->
+  <div class="hero-watermark-decoupled" aria-hidden="true">
+    <span class="hero-watermark-text">ITE</span>
+  </div>
+  <!-- FOREGROUND CONTENT -->
+  <div class="hero-content hero-content--light hero-fg">
     <div class="hero-badge hero-badge--dark">${ITE.App.renderLogo(18)} VNIT Nagpur &nbsp;·&nbsp; ITE Program ${dynamicYear}</div>
-    <div class="hero-course-label hero-course-label--light">ITE – Introduction to Entrepreneurship</div>
-    <h1 class="hero-title hero-title--light">Launch Your Venture<br>from VNIT</h1>
-    <div class="hero-tagline hero-tagline--light">From Idea to Impact</div>
-    <p class="hero-desc hero-desc--light">A centralized management platform for the VNIT Introduction to Entrepreneurship course, streamlining student onboarding, team formation, mentorship, venture development, and final evaluations.</p>
-    <div class="hero-cta">
-      <a href="#/register" class="btn btn-primary btn-xl">Register for the Program</a>
-      <a href="#/login" class="btn btn-ghost-light btn-xl">Sign In</a>
+    <div class="hero-main-stack">
+      <div class="hero-subheading">Introduction to Entrepreneurship</div>
+      <h1 class="hero-title hero-title--light hero-title--compact">Launch Your Venture<br>from VNIT</h1>
+      <div class="hero-tagline hero-tagline--light">From Idea to Impact</div>
+      <div class="hero-cta">
+        <a href="#/register" class="btn btn-primary btn-lg">Register for the Program</a>
+        <a href="#/login" class="btn btn-ghost-light btn-lg">Sign In</a>
+      </div>
     </div>
     <div class="hero-stats hero-stats--light">
       <div class="hero-stat text-center"><div class="hero-stat-val">7+</div><div class="hero-stat-lbl">Ventures Incubated</div></div>
@@ -317,6 +324,7 @@ ${_renderFooter()}
     <div><div class="home-nav-brand">ITE Startup Launch Pad</div><div class="home-nav-sub">VNIT Nagpur</div></div>
   </div>
   <div class="home-nav-links">
+    <a class="home-nav-link" href="#/about">About</a>
     <a class="home-nav-link active" href="#/faculty">Faculty</a>
     <button class="home-nav-link" onclick="window.location.hash='#/'" >Home</button>
     ${_navThemeBtn()}

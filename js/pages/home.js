@@ -53,7 +53,7 @@ ITE.Pages.Home = (function () {
     document.getElementById('page-content').innerHTML = `
 <div class="home-page">
 <!-- NAVBAR -->
-<nav class="home-nav" id="home-nav">
+<nav class="home-nav">
   <div class="home-nav-logo">
     ${ITE.App.renderLogo(34)}
     <div><div class="home-nav-brand">ITE Startup Launch Pad</div><div class="home-nav-sub">VNIT Nagpur</div></div>
@@ -63,74 +63,29 @@ ITE.Pages.Home = (function () {
     <button class="home-nav-link" onclick="document.getElementById('resources').scrollIntoView({behavior:'smooth'})">Resources</button>
     <button class="home-nav-link" onclick="document.getElementById('prev-startups').scrollIntoView({behavior:'smooth'})">Startups</button>
     ${_navThemeBtn()}
-    <a href="#/login" class="btn btn-ghost-light btn-sm">Login</a>
+    <a href="#/login" class="btn btn-ghost btn-sm">Login</a>
     <a href="#/register" class="btn btn-primary btn-sm">Get Started</a>
   </div>
 </nav>
-<section class="hero-section">
+<!-- HERO -->
+<section class="hero-section hero-section--img">
   <div class="hero-img-bg" style="background-image:url('assets/Main_Bldg_Final_1.jpg.jpeg')"></div>
   <div class="hero-img-overlay"></div>
-  <div class="hero-aura"></div>
-
-  <!-- Badge pill -->
-  <div class="hero-badge hero-badge--dark" style="position:relative;z-index:10;margin-bottom:8px;">
-    ${ITE.App.renderLogo(16)}&nbsp; ITE Program 2024-25
-  </div>
-
-  <!-- Giant gradient ITE text — always visible, sits between badge and headline -->
-  <div class="hero-massive-text">ITE</div>
-
-  <!-- Text content block — tight below the ITE letters -->
-  <div class="hero-content hero-content--light" style="margin-top:-12px;">
-    <h1 class="hero-title hero-title--light">
-      Transform Ideas <span class="accent">into Ventures</span> at VNIT
-    </h1>
-    <p class="hero-desc hero-desc--light">
-      A practical entrepreneurship program that helps students learn by building real startups and creating real impact.
-    </p>
+  <div class="hero-content hero-content--light">
+    <div class="hero-badge hero-badge--dark">${ITE.App.renderLogo(18)} VNIT Nagpur &nbsp;·&nbsp; ITE Program 2024-25</div>
+    <div class="hero-course-label hero-course-label--light">ITE – Introduction to Entrepreneurship</div>
+    <h1 class="hero-title hero-title--light">Launch Your Venture<br>from VNIT</h1>
+    <div class="hero-tagline hero-tagline--light">From Idea to Impact</div>
+    <p class="hero-desc hero-desc--light">A centralized management platform for the VNIT Introduction to Entrepreneurship course, streamlining student onboarding, team formation, mentorship, venture development, and final evaluations.</p>
     <div class="hero-cta">
-      <a href="#/register" class="btn btn-primary btn-lg">Join the Program &nbsp;&#8594;</a>
-      <a href="#/all-startups" class="btn btn-ghost-light btn-lg">Explore Startups</a>
+      <a href="#/register" class="btn btn-primary btn-xl">Register for the Program</a>
+      <a href="#/login" class="btn btn-ghost-light btn-xl">Sign In</a>
     </div>
-  </div>
-
-  <!-- Floating stats bar pinned to bottom -->
-  <div class="hero-stats hero-stats--light">
-    <div class="hero-stat">
-      <div class="hero-stat-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      </div>
-      <div class="hero-stat-text">
-        <div class="hero-stat-val">7+</div>
-        <div class="hero-stat-lbl">Ventures Incubated</div>
-      </div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a2 2 0 0 1-.019 3.138l-8.5 7.107a2 2 0 0 1-2.54 0l-8.5-7.107a2 2 0 0 1-.019-3.138l8.673-7.228a2 2 0 0 1 2.458 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
-      </div>
-      <div class="hero-stat-text">
-        <div class="hero-stat-val">50+</div>
-        <div class="hero-stat-lbl">Founders Guided</div>
-      </div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      </div>
-      <div class="hero-stat-text">
-        <div class="hero-stat-val">4</div>
-        <div class="hero-stat-lbl">Cohorts Completed</div>
-      </div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12"/><path d="M6 8h12"/><path d="m6 13 8.5 8"/><path d="M6 13h3c6.667 0 6.667-10 0-10"/></svg>
-      </div>
-      <div class="hero-stat-text">
-        <div class="hero-stat-val">&#8377;2.5M+</div>
-        <div class="hero-stat-lbl">Capital Secured</div>
-      </div>
+    <div class="hero-stats hero-stats--light">
+      <div class="hero-stat text-center"><div class="hero-stat-val">7+</div><div class="hero-stat-lbl">Ventures Incubated</div></div>
+      <div class="hero-stat text-center"><div class="hero-stat-val">50+</div><div class="hero-stat-lbl">Founders Guided</div></div>
+      <div class="hero-stat text-center"><div class="hero-stat-val">4</div><div class="hero-stat-lbl">Cohorts Graduated</div></div>
+      <div class="hero-stat text-center"><div class="hero-stat-val">₹2.5M+</div><div class="hero-stat-lbl">Capital Secured</div></div>
     </div>
   </div>
 </section>

@@ -281,18 +281,6 @@ ITE.App = (function () {
       }
     });
 
-    // Scroll listener: add dark overlay to transparent nav when page scrolls
-    window.addEventListener('scroll', () => {
-      const nav = document.getElementById('home-nav');
-      if (nav) {
-        if (window.scrollY > 20) {
-          nav.classList.add('scrolled');
-        } else {
-          nav.classList.remove('scrolled');
-        }
-      }
-    }, { passive: true });
-
     window.addEventListener('hashchange', route);
     route();
   }

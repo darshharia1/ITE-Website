@@ -363,13 +363,43 @@
   .about-card-stack { display: none; }
 }
 @media (max-width: 768px) {
-  .home-nav { padding: 0 18px; }
+  /* Header adjustments */
+  .home-nav { 
+    padding: 0 16px; 
+    height: auto; 
+    min-height: 68px; 
+    flex-wrap: wrap; 
+    gap: 12px; 
+    justify-content: center;
+  }
   .home-nav-links .home-nav-link { display: none; }
+  .home-nav-brand { font-size: clamp(0.75rem, 3.5vw, 0.875rem); }
+  .home-nav-logo { gap: 8px; }
+  .home-nav-links { gap: 6px; }
+
   .hero-section { padding: 90px 20px 60px; }
   .hero-stats { gap: 20px; }
   .home-section { padding: 52px 20px; }
   .auth-page { grid-template-columns: 1fr; }
   .auth-left { display: none; }
+  
+  /* Grid & profile card breakpoints */
+  .creators-grid, .cards-grid { 
+    grid-template-columns: 1fr !important; 
+    gap: 20px !important;
+  }
+  .profile-card, .card, .member-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+  .profile-name, .profile-subtitle, .member-name, .member-sub {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100% !important;
+  }
+  
+  /* Footer layout */
   .all-startups-grid { padding: 24px 16px; }
   .filter-chips { padding: 16px 16px 0; }
   .all-startups-hero { padding: 40px 20px; }
@@ -377,13 +407,22 @@
   .footer-container { flex-direction: column; gap: 20px; }
   .footer-divider { width: 60px; height: 1px; }
   .home-footer-logo { justify-content: center; }
-  .vnit-footer-link { justify-content: center; }
-  .vnit-footer-text { text-align: center; }
-  .footer-partners { flex-direction: column; gap: 16px; }
-  .partner-divider { display: none; }
-  .acm-footer-link { justify-content: center; }
-  .acm-footer-text { text-align: center; }
   .home-footer-name, .home-footer-sub { text-align: center; }
+  
+  /* Partners logo layout in a responsive row with wrap */
+  .footer-partners { 
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 16px 24px; 
+  }
+  .partner-divider { display: none; }
+  .vnit-footer-link, .acm-footer-link { 
+    justify-content: center; 
+    flex-direction: row;
+    gap: 8px;
+  }
+  .vnit-footer-text, .acm-footer-text { text-align: left; }
 }
 @media (max-width: 480px) {
   .startup-cards-row { grid-template-columns: 1fr; }

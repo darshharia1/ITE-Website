@@ -53,71 +53,83 @@ ITE.Pages.Home = (function () {
     document.getElementById('page-content').innerHTML = `
 <div class="home-page">
 <!-- NAVBAR -->
-<nav class="home-nav home-nav--hero">
+<nav class="home-nav" id="home-nav">
   <div class="home-nav-logo">
     ${ITE.App.renderLogo(34)}
     <div><div class="home-nav-brand">ITE Startup Launch Pad</div><div class="home-nav-sub">VNIT Nagpur</div></div>
   </div>
   <div class="home-nav-links">
-    <button class="home-nav-link" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">About ITE</button>
-    <button class="home-nav-link" onclick="document.getElementById('faculty').scrollIntoView({behavior:'smooth'})">Mentors</button>
-    <button class="home-nav-link" onclick="document.getElementById('prev-startups').scrollIntoView({behavior:'smooth'})">Startups</button>
+    <a class="home-nav-link" href="#/faculty">Faculty</a>
     <button class="home-nav-link" onclick="document.getElementById('resources').scrollIntoView({behavior:'smooth'})">Resources</button>
-    <button class="home-nav-link" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Timeline</button>
+    <button class="home-nav-link" onclick="document.getElementById('prev-startups').scrollIntoView({behavior:'smooth'})">Startups</button>
     ${_navThemeBtn()}
-    <a href="#/login" class="btn btn-ghost btn-sm">Login</a>
+    <a href="#/login" class="btn btn-ghost-light btn-sm">Login</a>
     <a href="#/register" class="btn btn-primary btn-sm">Get Started</a>
   </div>
 </nav>
 <!-- HERO -->
-<section class="hero-section hero-section--img">
+<section class="hero-section">
   <div class="hero-img-bg" style="background-image:url('assets/Main_Bldg_Final_1.jpg.jpeg')"></div>
   <div class="hero-img-overlay"></div>
+
+  <!-- Badge pill -->
+  <div class="hero-badge hero-badge--dark" style="position:relative;z-index:1;margin-bottom:16px;">
+    ${ITE.App.renderLogo(16)}&nbsp; ITE Program 2024-25
+  </div>
+
+  <!-- Giant clipped ITE letterforms -->
+  <div class="hero-ite-text">ITE</div>
+
+  <!-- Text content block -->
   <div class="hero-content hero-content--light">
-    <div class="hero-badge hero-badge--dark">${ITE.App.renderLogo(18)} ITE Program 2024-25</div>
-    
-    <div class="hero-main-title">ITE</div>
-    <div class="hero-title-divider"><span class="hero-title-dot"></span></div>
-    
-    <h1 class="hero-title hero-title--light">Transform Ideas <span class="accent-blue">into Ventures</span> at VNIT</h1>
-    <p class="hero-desc hero-desc--light">A practical entrepreneurship program that helps students learn by building real startups and creating real impact.</p>
-    
+    <h1 class="hero-title hero-title--light">
+      Transform Ideas <span class="accent">into Ventures</span> at VNIT
+    </h1>
+    <p class="hero-desc hero-desc--light">
+      A practical entrepreneurship program that helps students learn by building real startups and creating real impact.
+    </p>
     <div class="hero-cta">
-      <a href="#/register" class="btn btn-primary btn-xl">Join the Program &rarr;</a>
-      <button class="btn btn-ghost-light btn-xl" onclick="document.getElementById('prev-startups').scrollIntoView({behavior:'smooth'})">Explore Startups</button>
+      <a href="#/register" class="btn btn-primary btn-lg">Join the Program &nbsp;&#8594;</a>
+      <a href="#/all-startups" class="btn btn-ghost-light btn-lg">Explore Startups</a>
     </div>
-    
-    <div class="hero-stats-pill">
-      <div class="hero-stat-pill-item">
-        <div class="stat-pill-icon">👥</div>
-        <div>
-          <div class="hero-stat-val">7+</div>
-          <div class="hero-stat-lbl">Ventures Incubated</div>
-        </div>
+  </div>
+
+  <!-- Floating stats bar pinned to bottom -->
+  <div class="hero-stats hero-stats--light">
+    <div class="hero-stat">
+      <div class="hero-stat-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </div>
-      <div class="hero-stat-pill-divider"></div>
-      <div class="hero-stat-pill-item">
-        <div class="stat-pill-icon">🎓</div>
-        <div>
-          <div class="hero-stat-val">50+</div>
-          <div class="hero-stat-lbl">Founders Guided</div>
-        </div>
+      <div class="hero-stat-text">
+        <div class="hero-stat-val">7+</div>
+        <div class="hero-stat-lbl">Ventures Incubated</div>
       </div>
-      <div class="hero-stat-pill-divider"></div>
-      <div class="hero-stat-pill-item">
-        <div class="stat-pill-icon">👥</div>
-        <div>
-          <div class="hero-stat-val">4</div>
-          <div class="hero-stat-lbl">Cohorts Completed</div>
-        </div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
       </div>
-      <div class="hero-stat-pill-divider"></div>
-      <div class="hero-stat-pill-item">
-        <div class="stat-pill-icon">₹</div>
-        <div>
-          <div class="hero-stat-val">₹2.5M+</div>
-          <div class="hero-stat-lbl">Capital Secured</div>
-        </div>
+      <div class="hero-stat-text">
+        <div class="hero-stat-val">50+</div>
+        <div class="hero-stat-lbl">Founders Guided</div>
+      </div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="hero-stat-text">
+        <div class="hero-stat-val">4</div>
+        <div class="hero-stat-lbl">Cohorts Completed</div>
+      </div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <div class="hero-stat-text">
+        <div class="hero-stat-val">&#8377;2.5M+</div>
+        <div class="hero-stat-lbl">Capital Secured</div>
       </div>
     </div>
   </div>

@@ -281,6 +281,14 @@ ITE.App = (function () {
       }
     });
 
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) {
+        const pc = document.getElementById('page-content');
+        if (pc) pc.classList.add('fade-in');
+        document.body.style.opacity = '1';
+      }
+    });
+
     window.addEventListener('hashchange', route);
     route();
   }

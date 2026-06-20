@@ -467,6 +467,14 @@
           }
         }
       });
+
+      // Handle back-forward cache (Bfcache) restoration so the page doesn't stay blank on back navigation
+      window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+          if (main) main.classList.add('fade-in');
+          document.body.style.opacity = '1';
+        }
+      });
     });
   </script>
 </body>

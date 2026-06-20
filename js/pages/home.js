@@ -394,5 +394,14 @@ ${_renderFooter()}
     ITE.App.applyTheme(localStorage.getItem('ite_theme') || 'light');
   }
 
+  // Global scroll listener for dynamic translucent navbar
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('.home-nav');
+    if (nav) {
+      if (window.scrollY > 50) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    }
+  }, { passive: true });
+
   return { render, renderLogin, renderRegister, renderAllStartups, renderFaculty };
 })();

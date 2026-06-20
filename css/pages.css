@@ -363,19 +363,34 @@
   .about-card-stack { display: none; }
 }
 @media (max-width: 768px) {
-  /* Header adjustments */
+  /* Header navigation adjustments */
   .home-nav { 
-    padding: 0 16px; 
+    padding: 12px 16px; 
     height: auto; 
     min-height: 68px; 
-    flex-wrap: wrap; 
+    flex-direction: column;
+    align-items: center;
     gap: 12px; 
-    justify-content: center;
   }
-  .home-nav-links .home-nav-link { display: none; }
+  .home-nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+  .home-nav-links .home-nav-link { 
+    display: inline-block !important; /* Make links visible */
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+  .home-nav-links .btn {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
   .home-nav-brand { font-size: clamp(0.75rem, 3.5vw, 0.875rem); }
   .home-nav-logo { gap: 8px; }
-  .home-nav-links { gap: 6px; }
 
   .hero-section { padding: 90px 20px 60px; }
   .hero-stats { gap: 20px; }
@@ -399,30 +414,53 @@
     max-width: 100% !important;
   }
   
+  /* Two-column layout mobile collapse */
+  .two-col {
+    grid-template-columns: 1fr !important;
+    display: grid !important;
+    gap: 20px !important;
+  }
+  .two-col > * {
+    width: 100% !important;
+  }
+
   /* Footer layout */
   .all-startups-grid { padding: 24px 16px; }
   .filter-chips { padding: 16px 16px 0; }
   .all-startups-hero { padding: 40px 20px; }
   .home-footer { padding: 36px 20px; }
-  .footer-container { flex-direction: column; gap: 20px; }
-  .footer-divider { width: 60px; height: 1px; }
-  .home-footer-logo { justify-content: center; }
-  .home-footer-name, .home-footer-sub { text-align: center; }
   
-  /* Partners logo layout in a responsive row with wrap */
+  /* Footer partners logo layout in a clean vertical stack */
+  .footer-container { 
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    gap: 28px; 
+  }
+  .footer-divider { display: none; }
+  
   .footer-partners { 
-    flex-direction: row; 
-    flex-wrap: wrap; 
-    justify-content: center; 
-    gap: 16px 24px; 
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    gap: 28px; 
+    width: 100%;
   }
   .partner-divider { display: none; }
-  .vnit-footer-link, .acm-footer-link { 
+  
+  .home-footer-logo, .vnit-footer-link, .acm-footer-link { 
+    display: inline-flex;
+    align-items: center;
     justify-content: center; 
-    flex-direction: row;
-    gap: 8px;
+    text-align: left;
+    gap: 12px;
   }
-  .vnit-footer-text, .acm-footer-text { text-align: left; }
+  .home-footer-name, .home-footer-sub, .vnit-footer-text, .acm-footer-text { 
+    text-align: left; 
+  }
+  .vnit-footer-logo, .acm-footer-logo {
+    flex-shrink: 0;
+  }
 }
 @media (max-width: 480px) {
   .startup-cards-row { grid-template-columns: 1fr; }

@@ -30,7 +30,7 @@
 /* Hero Section */
 .hero-section {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  padding: 100px 48px 80px; position: relative; overflow: hidden;
+  padding: calc(var(--nav-height, 68px) + 32px) 48px 80px; position: relative; overflow: hidden;
 }
 /* Image-based hero variant */
 .hero-section--img {
@@ -392,7 +392,7 @@
   .home-nav-brand { font-size: clamp(0.75rem, 3.5vw, 0.875rem); }
   .home-nav-logo { gap: 8px; }
 
-  .hero-section { padding: 90px 20px 60px; }
+  .hero-section { padding: calc(var(--nav-height, 68px) + 22px) 20px 60px; }
   .hero-stats { gap: 20px; }
   .home-section { padding: 52px 20px; }
   .auth-page { grid-template-columns: 1fr; }
@@ -484,7 +484,7 @@
   min-height: 280px;
   display: flex; align-items: flex-end;
   padding: 0 0 52px;
-  margin-top: 68px; /* offset for fixed navbar */
+  margin-top: var(--nav-height, 68px); /* offset for fixed navbar */
   background: linear-gradient(135deg, var(--navy) 0%, #1a2f6a 50%, #0D1B3E 100%);
   overflow: hidden;
 }

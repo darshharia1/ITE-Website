@@ -28,6 +28,16 @@ ITE.App = (function () {
   /* ---- Navigation ---- */
   function navigate(path) { window.location.hash = path; }
 
+  /* ---- Header Offset helper ---- */
+  function updateNavHeight() {
+    const nav = document.querySelector('.home-nav');
+    if (nav) {
+      document.documentElement.style.setProperty('--nav-height', `${nav.offsetHeight}px`);
+    } else {
+      document.documentElement.style.setProperty('--nav-height', '0px');
+    }
+  }
+
   /* ---- Router ---- */
   function route() {
     const hash = window.location.hash.replace('#', '') || '/';
@@ -36,8 +46,24 @@ ITE.App = (function () {
     // Auto-close mobile sidebar on page navigation
     document.getElementById('sidebar')?.classList.remove('mobile-open');
 
-    updateShell(user, hash);
+    const pc = document.getElementById('page-content');
+    if (pc) {
+      pc.classList.remove('fade-in');
+      setTimeout(() => {
+        updateShell(user, hash);
+        executeRoute(user, hash);
+        pc.classList.add('fade-in');
+        // Let browser render content first, then measure nav height
+        setTimeout(updateNavHeight, 40);
+      }, 300);
+    } else {
+      updateShell(user, hash);
+      executeRoute(user, hash);
+      setTimeout(updateNavHeight, 40);
+    }
+  }
 
+  function executeRoute(user, hash) {
     // Public routes first
     if (hash === '/all-startups') { return ITE.Pages.Home.renderAllStartups(); }
     if (hash === '/faculty')      { return ITE.Pages.Home.renderFaculty(); }
@@ -228,6 +254,32 @@ ITE.App = (function () {
       }
     });
     document.getElementById('mobile-menu-btn')?.addEventListener('click', () => document.getElementById('sidebar')?.classList.toggle('mobile-open'));
+
+    // Dynamic header height tracking
+    window.addEventListener('resize', updateNavHeight);
+    window.addEventListener('load', updateNavHeight);
+
+    // Intercept standard static/external links for fade out transitions
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a');
+      if (a && a.href && !a.href.includes('#') && a.target !== '_blank' && !a.getAttribute('download')) {
+        const isExternal = a.hostname !== window.location.hostname;
+        if (!isExternal) {
+          e.preventDefault();
+          const targetUrl = a.href;
+          const pc = document.getElementById('page-content');
+          if (pc) {
+            pc.classList.remove('fade-in');
+          } else {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.4s ease-in-out';
+          }
+          setTimeout(() => {
+            window.location.href = targetUrl;
+          }, 400);
+        }
+      }
+    });
 
     window.addEventListener('hashchange', route);
     route();

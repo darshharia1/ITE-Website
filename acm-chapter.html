@@ -16,7 +16,7 @@
     .acm-container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 120px 24px 60px;
+      padding: calc(var(--nav-height, 68px) + 52px) 24px 60px;
     }
     
     .acm-hero {
@@ -268,7 +268,7 @@
   </nav>
 
   <!-- MAIN -->
-  <main class="acm-container">
+  <main class="acm-container page-fade">
     
     <!-- HERO SECTION -->
     <section class="acm-hero">
@@ -426,6 +426,48 @@
     // Initialize Theme
     const savedTheme = localStorage.getItem('ite_theme') || 'light';
     applyTheme(savedTheme);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Dynamic header height tracking
+      function updateNavHeight() {
+        const nav = document.querySelector('.home-nav');
+        if (nav) {
+          document.documentElement.style.setProperty('--nav-height', `${nav.offsetHeight}px`);
+        }
+      }
+      window.addEventListener('resize', updateNavHeight);
+      window.addEventListener('load', updateNavHeight);
+      updateNavHeight();
+
+      // Fade in main container on load
+      const main = document.querySelector('.acm-container');
+      if (main) {
+        // Trigger layout reflow first
+        main.offsetHeight;
+        main.classList.add('fade-in');
+      }
+
+      // Intercept standard static/external links for fade out transitions
+      document.addEventListener('click', (e) => {
+        const a = e.target.closest('a');
+        if (a && a.href && !a.href.includes('#') && a.target !== '_blank' && !a.getAttribute('download')) {
+          const isExternal = a.hostname !== window.location.hostname;
+          if (!isExternal) {
+            e.preventDefault();
+            const targetUrl = a.href;
+            if (main) {
+              main.classList.remove('fade-in');
+            } else {
+              document.body.style.opacity = '0';
+              document.body.style.transition = 'opacity 0.4s ease-in-out';
+            }
+            setTimeout(() => {
+              window.location.href = targetUrl;
+            }, 400);
+          }
+        }
+      });
+    });
   </script>
 </body>
 </html>

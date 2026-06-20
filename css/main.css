@@ -293,3 +293,16 @@ ul { list-style: none; }
   .mobile-menu-btn { display: flex; }
   #page-content { padding: 16px; }
 }
+
+/* ---- Page Transitions & Header Offsets ---- */
+:root {
+  --nav-height: 68px; /* Default height */
+}
+
+.page-fade {
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+.page-fade.fade-in {
+  opacity: 1;
+}

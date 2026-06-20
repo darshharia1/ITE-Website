@@ -138,6 +138,24 @@ window.ITE.Pages.Student // Student pages
 
 ---
 
+## ✨ Recent UX & Layout Enhancements
+
+To deliver a premium, production-grade visual experience, several UX improvements and responsive design fixes have been implemented:
+
+- **📱 Mobile Responsiveness (Under 768px)**:
+  - **Header Nav wrapping**: Header links wrap cleanly on mobile viewports so that they remain fully visible and accessible without overflow.
+  - **Footer Stack**: Stacks the collaborator items (ITE brand, VNIT logo, ACM chapter) into a clean vertical alignment on mobile. Normalized all logo widths to `44px` so that the logos and text blocks line up perfectly.
+  - **Two-Column Collapse**: Automatically collapses `.two-col` layouts across the site into a single column with a `20px` gap on mobile.
+  - **Overflow Lock**: Implemented viewport locks (`max-width: 100vw; overflow-x: hidden`) on `html` and `body` tags to prevent horizontal scrolling.
+
+- **📐 Dynamic Header Offset (Overlap Fix)**:
+  - Replaced hardcoded CSS offset margins with a dynamic JavaScript utility that calculates the header height (`offsetHeight`) and sets a `--nav-height` CSS root variable. Hero sections and containers dynamically recalculate spacing using `calc(var(--nav-height) + offset)`, resolving overlap bugs when nav menus wrap.
+
+- **🎬 Smooth Page Transitions**:
+  - Implemented a lightweight CSS/JS animation class `.page-fade` to introduce smooth fade-in and fade-out animations. Link click interceptors apply transitions seamlessly when routing inside the SPA or redirecting to static pages like `acm-chapter.html`.
+
+---
+
 ## 👤 User Roles & Capabilities
 
 ### 👑 Admin

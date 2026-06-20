@@ -665,17 +665,18 @@ a.faculty-contact-item:hover { color: var(--accent); }
 /* ---- Giant ITE Main Title ---- */
 .hero-main-title {
   font-family: var(--font-display);
-  font-size: clamp(6.5rem, 16vw, 12rem);
+  font-size: clamp(7rem, 18vw, 13.5rem); /* Increased size for massive impact */
   font-weight: 900;
-  line-height: 0.95;
+  line-height: 0.9;
   color: #FFFFFF;
   letter-spacing: -0.04em; /* Tight letter spacing like mockup */
   margin-top: 15px;
-  background: linear-gradient(180deg, #FFFFFF 20%, rgba(255, 255, 255, 0.15) 85%);
+  background: linear-gradient(180deg, #FFFFFF 50%, rgba(255, 255, 255, 0.35) 95%); /* Higher opacity stops for a whiter look */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.85); /* Adds physical thickness and weight */
   background-clip: text;
-  filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.65)); /* Fix shadow rendering on gradient text */
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.7)); /* Stronger shadow contrast */
   margin-bottom: 5px;
 }
 

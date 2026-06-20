@@ -53,15 +53,17 @@ ITE.Pages.Home = (function () {
     document.getElementById('page-content').innerHTML = `
 <div class="home-page">
 <!-- NAVBAR -->
-<nav class="home-nav">
+<nav class="home-nav home-nav--hero">
   <div class="home-nav-logo">
     ${ITE.App.renderLogo(34)}
     <div><div class="home-nav-brand">ITE Startup Launch Pad</div><div class="home-nav-sub">VNIT Nagpur</div></div>
   </div>
   <div class="home-nav-links">
-    <a class="home-nav-link" href="#/faculty">Faculty</a>
-    <button class="home-nav-link" onclick="document.getElementById('resources').scrollIntoView({behavior:'smooth'})">Resources</button>
+    <button class="home-nav-link" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">About ITE</button>
+    <button class="home-nav-link" onclick="document.getElementById('faculty').scrollIntoView({behavior:'smooth'})">Mentors</button>
     <button class="home-nav-link" onclick="document.getElementById('prev-startups').scrollIntoView({behavior:'smooth'})">Startups</button>
+    <button class="home-nav-link" onclick="document.getElementById('resources').scrollIntoView({behavior:'smooth'})">Resources</button>
+    <button class="home-nav-link" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Timeline</button>
     ${_navThemeBtn()}
     <a href="#/login" class="btn btn-ghost btn-sm">Login</a>
     <a href="#/register" class="btn btn-primary btn-sm">Get Started</a>
@@ -72,20 +74,51 @@ ITE.Pages.Home = (function () {
   <div class="hero-img-bg" style="background-image:url('assets/Main_Bldg_Final_1.jpg.jpeg')"></div>
   <div class="hero-img-overlay"></div>
   <div class="hero-content hero-content--light">
-    <div class="hero-badge hero-badge--dark">${ITE.App.renderLogo(18)} VNIT Nagpur &nbsp;·&nbsp; ITE Program 2024-25</div>
-    <div class="hero-course-label hero-course-label--light">ITE – Introduction to Entrepreneurship</div>
-    <h1 class="hero-title hero-title--light">Launch Your Venture<br>from VNIT</h1>
-    <div class="hero-tagline hero-tagline--light">From Idea to Impact</div>
-    <p class="hero-desc hero-desc--light">A centralized management platform for the VNIT Introduction to Entrepreneurship course, streamlining student onboarding, team formation, mentorship, venture development, and final evaluations.</p>
+    <div class="hero-badge hero-badge--dark">${ITE.App.renderLogo(18)} ITE Program 2024-25</div>
+    
+    <div class="hero-main-title">ITE</div>
+    <div class="hero-title-divider"><span class="hero-title-dot"></span></div>
+    
+    <h1 class="hero-title hero-title--light">Transform Ideas <span class="accent-blue">into Ventures</span> at VNIT</h1>
+    <p class="hero-desc hero-desc--light">A practical entrepreneurship program that helps students learn by building real startups and creating real impact.</p>
+    
     <div class="hero-cta">
-      <a href="#/register" class="btn btn-primary btn-xl">Register for the Program</a>
-      <a href="#/login" class="btn btn-ghost-light btn-xl">Sign In</a>
+      <a href="#/register" class="btn btn-primary btn-xl">Join the Program &rarr;</a>
+      <button class="btn btn-ghost-light btn-xl" onclick="document.getElementById('prev-startups').scrollIntoView({behavior:'smooth'})">Explore Startups</button>
     </div>
-    <div class="hero-stats hero-stats--light">
-      <div class="hero-stat text-center"><div class="hero-stat-val">7+</div><div class="hero-stat-lbl">Ventures Incubated</div></div>
-      <div class="hero-stat text-center"><div class="hero-stat-val">50+</div><div class="hero-stat-lbl">Founders Guided</div></div>
-      <div class="hero-stat text-center"><div class="hero-stat-val">4</div><div class="hero-stat-lbl">Cohorts Graduated</div></div>
-      <div class="hero-stat text-center"><div class="hero-stat-val">₹2.5M+</div><div class="hero-stat-lbl">Capital Secured</div></div>
+    
+    <div class="hero-stats-pill">
+      <div class="hero-stat-pill-item">
+        <div class="stat-pill-icon">👥</div>
+        <div>
+          <div class="hero-stat-val">7+</div>
+          <div class="hero-stat-lbl">Ventures Incubated</div>
+        </div>
+      </div>
+      <div class="hero-stat-pill-divider"></div>
+      <div class="hero-stat-pill-item">
+        <div class="stat-pill-icon">🎓</div>
+        <div>
+          <div class="hero-stat-val">50+</div>
+          <div class="hero-stat-lbl">Founders Guided</div>
+        </div>
+      </div>
+      <div class="hero-stat-pill-divider"></div>
+      <div class="hero-stat-pill-item">
+        <div class="stat-pill-icon">👥</div>
+        <div>
+          <div class="hero-stat-val">4</div>
+          <div class="hero-stat-lbl">Cohorts Completed</div>
+        </div>
+      </div>
+      <div class="hero-stat-pill-divider"></div>
+      <div class="hero-stat-pill-item">
+        <div class="stat-pill-icon">₹</div>
+        <div>
+          <div class="hero-stat-val">₹2.5M+</div>
+          <div class="hero-stat-lbl">Capital Secured</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>

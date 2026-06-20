@@ -50,7 +50,7 @@
   background: rgba(24,24,40,0.7);
   border: 1px solid rgba(255,255,255,0.06);
 }
-.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
 .card-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--text-primary); }
 .card-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
 
@@ -77,7 +77,7 @@
 .stat-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 5px; }
 
 /* ---- Grids ---- */
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 14px; margin-bottom: 22px; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 22px; }
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px,1fr)); gap: 16px; }
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .three-col { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
@@ -141,6 +141,11 @@ select.form-control {
 }
 .data-table tr:last-child td { border-bottom: none; }
 .data-table tbody tr:hover td { background: var(--bg-secondary); }
+
+@media (max-width: 768px) {
+  .table-wrapper { overflow-x: auto; border: none; }
+  .data-table { min-width: 600px; /* Let it scroll instead of breaking layout */ }
+}
 
 /* ---- Modal ---- */
 .modal-overlay {
@@ -328,9 +333,9 @@ select.form-control {
 .invite-card {
   background: var(--card); border: 1.5px solid var(--accent);
   border-radius: var(--radius); padding: 16px 18px; margin-bottom: 10px;
-  animation: slideUp 0.3s ease;
+  animation: slideUp 0.3s ease; display: flex; flex-direction: column; gap: 10px;
 }
-.invite-actions { display: flex; gap: 8px; margin-top: 12px; }
+.invite-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
 
 /* ---- Task card ---- */
 .task-card {
@@ -358,7 +363,7 @@ select.form-control {
   .stat-value { font-size: 1.45rem !important; }
 }
 @media (max-width: 480px) {
-  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .stats-grid { grid-template-columns: 1fr; }
   .stat-card { padding: 12px 14px; }
   .stat-icon { width: 32px; height: 32px; font-size: 1rem; margin-bottom: 8px; }
   .stat-value { font-size: 1.25rem !important; }

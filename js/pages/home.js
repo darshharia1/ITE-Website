@@ -50,6 +50,9 @@ ITE.Pages.Home = (function () {
   function render() {
     const startups = ITE.Data.getPrevStartups();
     const latest5 = startups.slice(0,5);
+    const currentYear = new Date().getFullYear();
+    const nextYearStr = (currentYear + 1).toString().slice(-2);
+    const dynamicYear = `${currentYear}-${nextYearStr}`;
     document.getElementById('page-content').innerHTML = `
 <div class="home-page">
 <!-- NAVBAR -->
@@ -72,7 +75,7 @@ ITE.Pages.Home = (function () {
   <div class="hero-img-bg" style="background-image:url('assets/Main_Bldg_Final_1.jpg.jpeg')"></div>
   <div class="hero-img-overlay"></div>
   <div class="hero-content hero-content--light">
-    <div class="hero-badge hero-badge--dark">${ITE.App.renderLogo(18)} VNIT Nagpur &nbsp;·&nbsp; ITE Program 2024-25</div>
+    <div class="hero-badge hero-badge--dark">${ITE.App.renderLogo(18)} VNIT Nagpur &nbsp;·&nbsp; ITE Program ${dynamicYear}</div>
     <div class="hero-course-label hero-course-label--light">ITE – Introduction to Entrepreneurship</div>
     <h1 class="hero-title hero-title--light">Launch Your Venture<br>from VNIT</h1>
     <div class="hero-tagline hero-tagline--light">From Idea to Impact</div>

@@ -30,7 +30,7 @@ ${pendingInvites.length>0?`
   ${pendingInvites.map(inv=>{
     const fromUser=ITE.Data.getUserById(inv.fromUserId);
     const invTeam=ITE.Data.getTeamById(inv.teamId);
-    return`<div class="invite-card"><div style="display:flex;align-items:flex-start;justify-content:space-between"><div><div style="font-weight:600;color:var(--text-primary)">${invTeam?.startupName||'Unknown Team'}</div><div style="font-size:.8rem;color:var(--text-secondary);margin-top:3px">Invitation to join as <strong>${inv.role}</strong> by ${fromUser?.name||'CEO'}</div></div><span class="badge badge-blue">${inv.role}</span></div><div class="invite-actions"><button class="btn btn-success btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','accepted')">Accept</button><button class="btn btn-danger btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','rejected')">Decline</button></div></div>`;
+    return`<div class="invite-card"><div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px"><div><div style="font-weight:600;color:var(--text-primary)">${invTeam?.startupName||'Unknown Team'}</div><div style="font-size:.8rem;color:var(--text-secondary);margin-top:3px">Invitation to join as <strong>${inv.role}</strong> by ${fromUser?.name||'CEO'}</div></div><span class="badge badge-blue">${inv.role}</span></div><div class="invite-actions"><button class="btn btn-success btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','accepted')">Accept</button><button class="btn btn-danger btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','rejected')">Decline</button></div></div>`;
   }).join('')}
 </div>`:''
 }
@@ -90,7 +90,7 @@ ${user.isCEO&&team&&!team.startupName?`<div class="card mt-6" style="border-colo
     ITE.App.pc().innerHTML = `
 ${pendingInvites.length>0?`<div style="margin-bottom:16px">${pendingInvites.map(inv=>{
   const ft=ITE.Data.getTeamById(inv.teamId);
-  return`<div class="invite-card"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div style="font-weight:600">${ft?.startupName||'Team'} – ${inv.role} Invitation</div><div style="font-size:.8rem;color:var(--text-secondary);margin-top:2px">Invited by ${ITE.Data.getUserById(inv.fromUserId)?.name||'CEO'}</div></div><span class="badge badge-blue">${inv.role}</span></div><div class="invite-actions"><button class="btn btn-success btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','accepted')">Accept</button><button class="btn btn-danger btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','rejected')">Decline</button></div></div>`;
+  return`<div class="invite-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px"><div><div style="font-weight:600">${ft?.startupName||'Team'} – ${inv.role} Invitation</div><div style="font-size:.8rem;color:var(--text-secondary);margin-top:2px">Invited by ${ITE.Data.getUserById(inv.fromUserId)?.name||'CEO'}</div></div><span class="badge badge-blue">${inv.role}</span></div><div class="invite-actions"><button class="btn btn-success btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','accepted')">Accept</button><button class="btn btn-danger btn-sm" onclick="ITE.Pages.Student._respondInvite('${inv.id}','rejected')">Decline</button></div></div>`;
 }).join('')}</div>`:''}
 
 <!-- Hero banner -->

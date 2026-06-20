@@ -47,37 +47,51 @@
 /* Background image layer */
 .hero-img-bg {
   position: absolute; inset: 0;
+  z-index: 0;
   background-size: cover; background-position: center 30%;
   background-repeat: no-repeat;
-  /* Very subtle scale — removed drift to keep it grounded */
+  filter: brightness(1.1) contrast(1.1);
 }
-/* Dark gradient overlay — heavier at bottom for stats bar legibility */
+/* Dark gradient overlay — radial centered gradient to let central building lights shine through */
 .hero-img-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(3,6,16,0.72) 0%,
-    rgba(3,6,16,0.50) 35%,
-    rgba(3,6,16,0.62) 65%,
-    rgba(3,6,16,0.90) 100%
+  z-index: 1;
+  background: radial-gradient(
+    circle at center,
+    rgba(3,6,16,0.15) 0%,
+    rgba(3,6,16,0.65) 50%,
+    rgba(3,6,16,0.92) 100%
   );
+}
+
+/* Warm building aura centered behind the ITE text */
+.hero-aura {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background: radial-gradient(circle, rgba(255, 230, 150, 0.15) 0%, transparent 60%);
+  mix-blend-mode: screen;
+  pointer-events: none;
 }
 
 /* ---- Giant ITE massive text (gradient fade, always visible) ---- */
 .hero-massive-text {
   position: relative;
-  z-index: 10;           /* Above the dark overlay */
+  z-index: 10;           /* Above the dark overlay and aura */
   font-family: var(--font-display);
   font-size: clamp(12rem, 20vw, 25rem);
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.05em;
-  /* Vertical gradient: bright white at top, fades to near-transparent at bottom */
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.1) 100%);
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.8) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;    /* Fallback */
+  filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.25));
   margin-bottom: 0px;    /* Tight — no gap pushing headline down */
   user-select: none;
   animation: fadeInDown 0.55s ease 0.1s both;

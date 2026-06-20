@@ -67,10 +67,10 @@ ITE.Pages.Home = (function () {
     <a href="#/register" class="btn btn-primary btn-sm">Get Started</a>
   </div>
 </nav>
-<!-- HERO -->
 <section class="hero-section">
   <div class="hero-img-bg" style="background-image:url('assets/Main_Bldg_Final_1.jpg.jpeg')"></div>
   <div class="hero-img-overlay"></div>
+  <div class="hero-aura"></div>
 
   <!-- Badge pill -->
   <div class="hero-badge hero-badge--dark" style="position:relative;z-index:10;margin-bottom:8px;">

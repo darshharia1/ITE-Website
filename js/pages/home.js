@@ -69,103 +69,71 @@ ITE.Pages.Home = (function () {
 </nav>
 <!-- HERO -->
 <section class="hero-section">
-  <!-- Layer 0: Background image -->
   <div class="hero-img-bg" style="background-image:url('assets/Main_Bldg_Final_1.jpg.jpeg')"></div>
-  <!-- Layer 1: Dark gradient overlay -->
   <div class="hero-img-overlay"></div>
 
-  <!-- Layer 2: Massive ITE text (absolute, centered behind content) -->
-  <div class="hero-ite-text" aria-hidden="true">ITE</div>
-
-  <!-- Layer 3: Badge pill (top-center, above ITE text) -->
-  <div class="hero-badge hero-badge--dark">
-    ${ITE.App.renderLogo(14)}&nbsp;&nbsp;ITE Program &middot; VNIT Nagpur &middot; 2024&ndash;25
+  <!-- Badge pill -->
+  <div class="hero-badge hero-badge--dark" style="position:relative;z-index:1;margin-bottom:16px;">
+    ${ITE.App.renderLogo(16)}&nbsp; ITE Program 2024-25
   </div>
 
-  <!-- Layer 4: Headline + description + CTAs -->
+  <!-- Giant clipped ITE letterforms -->
+  <div class="hero-ite-text">ITE</div>
+
+  <!-- Text content block -->
   <div class="hero-content hero-content--light">
     <h1 class="hero-title hero-title--light">
-      Transform Ideas <span class="accent">into Ventures</span><br>at VNIT Nagpur
+      Transform Ideas <span class="accent">into Ventures</span> at VNIT
     </h1>
     <p class="hero-desc hero-desc--light">
-      A practical entrepreneurship program where students build real startups,
-      gain mentorship, and create lasting impact from campus.
+      A practical entrepreneurship program that helps students learn by building real startups and creating real impact.
     </p>
     <div class="hero-cta">
-      <a href="#/register" class="btn btn-primary btn-lg">Join the Program &nbsp;&rarr;</a>
+      <a href="#/register" class="btn btn-primary btn-lg">Join the Program &nbsp;&#8594;</a>
       <a href="#/all-startups" class="btn btn-ghost-light btn-lg">Explore Startups</a>
     </div>
   </div>
 
-  <!-- Layer 5: Stats bar anchored to bottom -->
+  <!-- Floating stats bar pinned to bottom -->
   <div class="hero-stats hero-stats--light">
-
-    <!-- Stat 1: Ventures Incubated – Lucide "Rocket" -->
     <div class="hero-stat">
       <div class="hero-stat-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4.5 16.5c-1.5 1.5-1 5.5-1 5.5s4-.5 5.5-2l4-4"/>
-          <path d="m12 15 4-4"/>
-          <path d="M9 12c-2 0-4-1-4-3s2-3 4-3 4 1 4 3-2 3-4 3Z" fill="none"/>
-          <path d="M14.5 9.5 19 5"/>
-          <path d="M14 12c2 2 3 4 3 6a3 3 0 0 1-6 0"/>
-          <path d="M20.5 3.5c.8.8 1 2.5.5 4L17 11.5"/>
-          <circle cx="19" cy="5" r="1.5" fill="currentColor" stroke="none"/>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </div>
       <div class="hero-stat-text">
         <div class="hero-stat-val">7+</div>
         <div class="hero-stat-lbl">Ventures Incubated</div>
       </div>
     </div>
-
-    <!-- Stat 2: Founders Guided – Lucide "Users" -->
     <div class="hero-stat">
       <div class="hero-stat-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-          <circle cx="9" cy="7" r="4"/>
-          <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a2 2 0 0 1-.019 3.138l-8.5 7.107a2 2 0 0 1-2.54 0l-8.5-7.107a2 2 0 0 1-.019-3.138l8.673-7.228a2 2 0 0 1 2.458 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
       </div>
       <div class="hero-stat-text">
         <div class="hero-stat-val">50+</div>
         <div class="hero-stat-lbl">Founders Guided</div>
       </div>
     </div>
-
-    <!-- Stat 3: Cohorts Completed – Lucide "GraduationCap" -->
     <div class="hero-stat">
       <div class="hero-stat-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-          <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </div>
       <div class="hero-stat-text">
         <div class="hero-stat-val">4</div>
         <div class="hero-stat-lbl">Cohorts Completed</div>
       </div>
     </div>
-
-    <!-- Stat 4: Capital Secured – Lucide "TrendingUp" -->
     <div class="hero-stat">
       <div class="hero-stat-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
-          <polyline points="16 7 22 7 22 13"/>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12"/><path d="M6 8h12"/><path d="m6 13 8.5 8"/><path d="M6 13h3c6.667 0 6.667-10 0-10"/></svg>
       </div>
       <div class="hero-stat-text">
         <div class="hero-stat-val">&#8377;2.5M+</div>
         <div class="hero-stat-lbl">Capital Secured</div>
       </div>
     </div>
-
   </div>
 </section>
-
 
 <!-- RESOURCES -->
 <section class="home-section" id="resources">

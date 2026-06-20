@@ -42,8 +42,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  /* Reserve space at the bottom for the stats bar (~90px tall) */
-  padding-bottom: 90px;
+  padding: 0;
 }
 /* Background image layer */
 .hero-img-bg {
@@ -52,178 +51,151 @@
   background-repeat: no-repeat;
   /* Very subtle scale — removed drift to keep it grounded */
 }
-/* Dark gradient overlay — lighter in middle so ITE text's mix-blend-mode pops */
+/* Dark gradient overlay — heavier at bottom for stats bar legibility */
 .hero-img-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(3,6,16,0.65) 0%,
-    rgba(3,6,16,0.38) 40%,
-    rgba(3,6,16,0.55) 65%,
-    rgba(3,6,16,0.92) 100%
+    rgba(3,6,16,0.72) 0%,
+    rgba(3,6,16,0.50) 35%,
+    rgba(3,6,16,0.62) 65%,
+    rgba(3,6,16,0.90) 100%
   );
 }
 
-/* ---- Giant ITE clip-text (absolute, behind content) ---- */
+/* ---- Giant ITE clip-text ---- */
 .hero-ite-text {
-  /* Centered absolutely so it never displaces the headline */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -52%);
-  z-index: 1;
-
+  position: relative; z-index: 1;
   font-family: var(--font-display);
-  font-size: clamp(10rem, 22vw, 20rem);
+  font-size: 15rem; /* Massive size */
   font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  white-space: nowrap;
-  user-select: none;
-
-  /* Background-clip text trick — NO filter here, filter breaks it */
-  background: linear-gradient(
-    160deg,
-    rgba(255,255,255,0.97) 0%,
-    rgba(200,220,255,0.85) 40%,
-    rgba(255,255,255,0.60) 100%
-  );
+  line-height: 0.9;
+  letter-spacing: -2px;
+  /* Clip the campus image through the letterforms */
+  background-image: url('assets/Main_Bldg_Final_1.jpg.jpeg');
+  background-size: cover;
+  background-position: center 30%;
   -webkit-background-clip: text;
   background-clip: text;
+  color: transparent;
   -webkit-text-fill-color: transparent;
-
-  /* Let image show through by blending with the bg photo */
-  mix-blend-mode: overlay;
-
-  animation: fadeInDown 0.9s cubic-bezier(0.16,1,0.3,1) 0.05s both;
-  pointer-events: none;
+  /* Keep it mostly white with just a hint of the image showing through */
+  filter: brightness(2.4);
+  margin-bottom: -0.06em;
+  user-select: none;
+  animation: fadeInDown 0.7s ease 0.1s both;
 }
 
 /* ---- Hero body text block ---- */
 .hero-content {
-  position: relative; z-index: 2;
+  position: relative; z-index: 1;
   display: flex; flex-direction: column; align-items: center;
   text-align: center;
   max-width: 720px;
   padding: 0 24px;
-  /* Push content slightly below vertical center to give ITE room above */
-  margin-top: 8vh;
 }
 .hero-content--light { color: #FFF; }
 
-/* Badge pill — positioned top-center, floats above ITE text */
+/* Badge pill above ITE letters */
 .hero-badge {
-  position: relative; z-index: 3;
   display: inline-flex; align-items: center; gap: 8px;
   padding: 6px 16px;
-  background: rgba(37,99,235,0.18);
-  border: 1px solid rgba(59,130,246,0.40);
+  background: rgba(37,99,235,0.22);
+  border: 1px solid rgba(37,99,235,0.45);
   border-radius: 4px;
   font-size: 0.78rem; font-weight: 600; color: #93C5FD;
-  letter-spacing: 0.05em; text-transform: uppercase;
-  /* small gap below badge before ITE text */
-  margin-bottom: 6px;
+  margin-bottom: 32px;
+  letter-spacing: 0.04em;
   animation: fadeInDown 0.6s ease both;
 }
 .hero-badge svg path { fill: #60A5FA; }
-.hero-badge--dark { /* inherits */ }
+.hero-badge--dark { /* inherits above */ }
 
 /* Labels above hero title */
 .hero-course-label {
-  display: none;
+  display: none; /* hidden — ITE text replaces this visual */
 }
 
-/* ---- Main headline ---- */
+/* Main headline */
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(1.55rem, 3.5vw, 2.6rem);
+  font-size: clamp(1.6rem, 3.8vw, 2.75rem);
   font-weight: 800;
-  line-height: 1.14;
+  line-height: 1.12;
   color: var(--text-primary);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   animation: fadeInDown 0.6s ease 0.25s both;
 }
 .hero-title--light { color: #FFFFFF; }
-.hero-title .accent { color: #60A5FA; }
+.hero-title .accent { color: #3B82F6; }
 
-.hero-tagline { display: none; }
+.hero-tagline {
+  display: none; /* replaced by new headline */
+}
 
 .hero-desc {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.62);
-  max-width: 500px;
-  margin: 0 auto 30px;
-  line-height: 1.74;
+  font-size: 1rem; color: rgba(255,255,255,0.68);
+  max-width: 520px;
+  margin: 0 auto 32px;
+  line-height: 1.72;
   animation: fadeInDown 0.6s ease 0.35s both;
 }
-.hero-desc--light { color: rgba(255,255,255,0.65); }
+.hero-desc--light { color: rgba(255,255,255,0.7); }
 
-/* CTA row */
+/* CTA buttons row */
 .hero-cta {
   display: flex; align-items: center; justify-content: center;
   gap: 12px; flex-wrap: wrap;
   animation: fadeInDown 0.6s ease 0.45s both;
 }
 
-/* ---- Floating Stats Bar ---- */
+/* ---- Floating Stats Bar (anchored to bottom of hero) ---- */
 .hero-stats {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  z-index: 4;
-  display: flex; align-items: stretch; justify-content: center;
-  background: rgba(6, 9, 22, 0.80);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(255,255,255,0.07);
-  padding: 0;
+  z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+  gap: 0;
+  background: rgba(8, 12, 28, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 18px 48px;
   animation: fadeInDown 0.6s ease 0.6s both;
 }
 .hero-stats--light { /* inherits */ }
-
-/* Each stat cell */
+/* Vertical dividers between stat items */
 .hero-stat {
   flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 22px 32px;
-  border-right: 1px solid rgba(255,255,255,0.06);
-  transition: background 0.15s ease;
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 28px;
+  border-right: 1px solid rgba(255,255,255,0.08);
 }
 .hero-stat:last-child { border-right: none; }
-.hero-stat:hover { background: rgba(255,255,255,0.03); }
-
-/* Icon container – square with subtle blue tint */
+/* Minimalist stroke icon container */
 .hero-stat-icon {
-  width: 40px; height: 40px; flex-shrink: 0;
-  background: rgba(37,99,235,0.14);
-  border: 1px solid rgba(59,130,246,0.28);
+  width: 38px; height: 38px; flex-shrink: 0;
+  background: rgba(37,99,235,0.18);
+  border: 1px solid rgba(37,99,235,0.35);
   border-radius: 4px;
   display: flex; align-items: center; justify-content: center;
   color: #60A5FA;
 }
-.hero-stat-icon svg {
-  width: 20px; height: 20px;
-  display: block;
-}
-
-.hero-stat-text { display: flex; flex-direction: column; }
+.hero-stat-icon svg { width: 18px; height: 18px; }
+.hero-stat-text {}
 .hero-stat-val {
   font-family: var(--font-display);
-  font-size: 1.4rem; font-weight: 800;
+  font-size: 1.375rem; font-weight: 800;
   color: #FFFFFF; line-height: 1;
 }
 .hero-stat-lbl {
-  font-size: 0.7rem;
-  color: rgba(255,255,255,0.45);
-  margin-top: 3px;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
+  font-size: 0.72rem; color: rgba(255,255,255,0.5);
+  margin-top: 2px; font-weight: 500;
+  letter-spacing: 0.02em;
 }
-/* Colour overrides (already white, kept for compat) */
+/* Remove old inline-centred stats styling */
 .hero-stats--light .hero-stat-val { color: #FFFFFF; }
-.hero-stats--light .hero-stat-lbl { color: rgba(255,255,255,0.45); }
+.hero-stats--light .hero-stat-lbl { color: rgba(255,255,255,0.5); }
 
 /* Home Sections */
 .home-section { padding: 76px 48px; }
@@ -506,34 +478,25 @@
   .home-nav-brand { font-size: clamp(0.75rem, 3.5vw, 0.875rem); }
   .home-nav-logo { gap: 8px; }
 
-  /* Hero – full-screen, static stats bar below content on mobile */
-  .hero-section {
-    padding-bottom: 0;          /* stats bar is static on mobile, not absolute */
-    min-height: 100svh;
-  }
-  .hero-ite-text {
-    font-size: clamp(5.5rem, 26vw, 8rem);
-    transform: translate(-50%, -54%);   /* shift up a touch to clear headline */
-  }
-  .hero-content {
-    padding: 0 20px;
-    margin-top: 6vh;
-  }
-  .hero-title { font-size: clamp(1.35rem, 5.5vw, 1.85rem); }
+  /* Hero – remove old padding-based offset; hero is full-screen with no top padding */
+  .hero-section { padding: 0; }
+  .hero-ite-text { font-size: clamp(6rem, 24vw, 9rem); }
   .hero-stats {
     position: static;
     flex-wrap: wrap;
-    padding: 0;
+    padding: 16px 16px;
     gap: 0;
   }
   .hero-stat {
     flex: 0 0 50%;
-    padding: 14px 18px;
+    padding: 12px 16px;
     border-right: none;
     border-bottom: 1px solid rgba(255,255,255,0.07);
   }
-  .hero-stat:nth-child(odd)  { border-right: 1px solid rgba(255,255,255,0.07); }
+  .hero-stat:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.07); }
   .hero-stat:nth-last-child(-n+2) { border-bottom: none; }
+  .hero-content { padding: 0 16px; }
+  .hero-title { font-size: clamp(1.4rem, 5.5vw, 1.9rem); }
   .home-section { padding: 52px 20px; }
   .auth-page { grid-template-columns: 1fr; }
   .auth-left { display: none; }

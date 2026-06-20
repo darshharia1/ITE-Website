@@ -434,15 +434,17 @@
   .footer-container { 
     display: flex;
     flex-direction: column; 
-    align-items: center;
+    align-items: flex-start;
     gap: 28px; 
+    max-width: fit-content;
+    margin: 0 auto;
   }
   .footer-divider { display: none; }
   
   .footer-partners { 
     display: flex;
     flex-direction: column; 
-    align-items: center; 
+    align-items: flex-start; 
     gap: 28px; 
     width: 100%;
   }
@@ -451,14 +453,21 @@
   .home-footer-logo, .vnit-footer-link, .acm-footer-link { 
     display: inline-flex;
     align-items: center;
-    justify-content: center; 
+    justify-content: flex-start; 
     text-align: left;
     gap: 12px;
+  }
+  .home-footer-logo svg {
+    width: 44px !important;
+    height: 44px !important;
+    flex-shrink: 0;
   }
   .home-footer-name, .home-footer-sub, .vnit-footer-text, .acm-footer-text { 
     text-align: left; 
   }
   .vnit-footer-logo, .acm-footer-logo {
+    width: 44px !important;
+    height: 44px !important;
     flex-shrink: 0;
   }
 }

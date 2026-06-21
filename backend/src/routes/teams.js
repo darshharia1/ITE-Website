@@ -19,6 +19,51 @@ const respondSchema = z.object({
 });
 
 /**
+ * GET /api/teams/invitations
+ * Fetch all invitations relevant to the user (incoming and outgoing)
+ */
+router.get('/invitations', authenticateToken, async (req, res) => {
+  try {
+    const user_id = req.user.id;
+    
+    // Get user email
+    const userRes = await db.query('SELECT email FROM users WHERE id = $1', [user_id]);
+    if (userRes.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+    const userEmail = userRes.rows[0].email.toLowerCase();
+
+    // Get user team_id if any
+    const teamRes = await db.query('SELECT team_id FROM team_members WHERE user_id = $1', [user_id]);
+    const team_id = teamRes.rows.length > 0 ? teamRes.rows[0].team_id : null;
+
+    // Query invitations
+    let queryText = `
+      SELECT i.*, t.team_name, u.full_name as inviter_name
+      FROM invitations i
+      JOIN teams t ON i.team_id = t.id
+      JOIN users u ON i.inviter_id = u.id
+      WHERE LOWER(i.invitee_email) = $1
+    `;
+    let queryParams = [userEmail];
+
+    if (team_id) {
+      queryText += ' OR i.team_id = $2';
+      queryParams.push(team_id);
+    } else {
+      queryText += ' OR i.inviter_id = $2';
+      queryParams.push(user_id);
+    }
+
+    const { rows } = await db.query(queryText, queryParams);
+    res.json(rows);
+  } catch (err) {
+    console.error('Fetch invitations error:', err);
+    res.status(500).json({ error: 'Failed to fetch invitations due to a server error.' });
+  }
+});
+
+/**
  * POST /api/teams/invitations
  * Invite another user via email to join a team
  */

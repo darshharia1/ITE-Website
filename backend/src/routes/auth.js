@@ -101,20 +101,35 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// GET /api/auth/me - Get current authenticated user details
+// GET /api/auth/me - Get current authenticated user details (enriched with team info)
 router.get('/me', authenticateToken, async (req, res) => {
   try {
     const { rows } = await db.query(
-      'SELECT id, email, full_name, role, created_at FROM users WHERE id = $1',
+      `SELECT
+         u.id,
+         u.email,
+         u.full_name,
+         u.role,
+         u.created_at,
+         tm.team_id,
+         tm.role        AS team_role,
+         t.mentor_id,
+         CASE WHEN t.ceo_id = u.id THEN true ELSE false END AS is_ceo
+       FROM users u
+       LEFT JOIN team_members tm ON u.id = tm.user_id
+       LEFT JOIN teams t ON tm.team_id = t.id
+       WHERE u.id = $1`,
       [req.user.id]
     );
-    
+
     const user = rows[0];
     if (!user) {
       return res.status(404).json({ error: 'User not found.' });
     }
-    
-    res.json({ user });
+
+    // Remove any sensitive fields just in case
+    const { password_hash: _, ...safeUser } = user;
+    res.json({ user: safeUser });
   } catch (err) {
     console.error('Get profile error:', err);
     res.status(500).json({ error: 'Failed to retrieve profile details.' });

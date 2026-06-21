@@ -47,13 +47,8 @@ ITE.Pages.Home = (function () {
 </footer>`;
   }
 
-  async function render() {
-    let startups = [];
-    try {
-      startups = await ITE.Data.getPrevStartups();
-    } catch (err) {
-      console.error('Failed to load historical startups:', err);
-    }
+  function render() {
+    const startups = ITE.Data.getPrevStartups();
     const latest5 = startups.slice(0,5);
     const currentYear = new Date().getFullYear();
     const nextYearStr = (currentYear + 1).toString().slice(-2);
@@ -113,7 +108,23 @@ ITE.Pages.Home = (function () {
     <p class="section-desc">Crucial materials to structure, validate, and scale your venture.</p>
   </div>
   <div class="resources-grid">
-    ${[['📋','Investor Pitch Deck Template','A professional presentation framework modeled on successful early-stage ventures'],['📊','Market Analysis Framework','A systematic guide to evaluating Total Addressable Market (TAM) and target demographics'],['🎤','Customer Discovery Protocol','An empirical script designed for unbiased user research and qualitative interviews'],['💰','Financial Projections Worksheet','A structured template for three-year financial projections and cash flow analysis'],['📱','Product Development Canvas','A lean framework for scoping and building a Minimum Viable Product'],['⚖️','Regulatory and Legal Guide','A checklist of essential corporate registration steps for early-stage companies in India'],['🌐','Academic Cohort Syllabus','The official program handbook detailing evaluation milestones and timeline criteria'],['🤝','Venture Capital Primer','Strategic guidelines for engaging with angel networks and venture capitalists']].map(([ic,t,d])=>`<div class="resource-card"><div><div class="resource-title">${t}</div><div class="resource-desc">${d}</div></div></div>`).join('')}
+    ${[
+      ['📄', 'IDD401_Midterm2021 (1).pdf',                              '/assets/IDD401_Midterm2021 (1).pdf'],
+      ['📘', 'ENTREPRENEURSHIP-COMPREHENSIVE-NOTES.pdf',                '/assets/ENTREPRENEURSHIP-COMPREHENSIVE-NOTES.pdf'],
+      ['📙', 'ENTREPRENEURSHIP-TERMS-FRAMEWORK-REFERRENCE.pdf',         '/assets/ENTREPRENEURSHIP-TERMS-FRAMEWORK-REFERRENCE.pdf'],
+      ['📗', 'OC- VALUE PROPOSITION and CUSTOMER SEGMENTATION.pdf',     '/assets/OC- VALUE PROPOSITION and CUSTOMER SEGMENTATION.pdf'],
+      ['📕', 'OC ENTERPRENEUR.pdf',                                     '/assets/OC ENTERPRENEUR.pdf'],
+    ].map(([ic, title, href]) => `
+      <div class="resource-card">
+        <div>
+          <div class="resource-icon">${ic}</div>
+          <div class="resource-title">${title}</div>
+        </div>
+        <a class="resource-download-btn" href="${href}" download>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </a>
+      </div>`).join('')}
   </div>
 </section>
 <!-- PREVIOUS STARTUPS -->
@@ -178,16 +189,12 @@ ${_renderFooter()}
       const err = document.getElementById('login-err');
       const btn = document.getElementById('l-btn');
       btn.disabled = true; btn.textContent = 'Signing in...';
-      
-      const email = document.getElementById('l-email').value.trim();
-      const pass = document.getElementById('l-pass').value;
-
-      setTimeout(async () => {
-        const res = await ITE.Auth.login(email, pass);
+      setTimeout(() => {
+        const res = ITE.Auth.login(document.getElementById('l-email').value.trim(), document.getElementById('l-pass').value);
         if (res.success) {
-          ITE.App.toast('Welcome back, ' + (res.user.full_name || res.user.name || 'User').split(' ')[0] + '.', 'success');
+          ITE.App.toast('Welcome back, ' + res.user.name.split(' ')[0] + '.', 'success');
           document.getElementById('page-content').style.padding = '';
-          await ITE.App.route();
+          ITE.App.route();
         } else {
           err.style.display='block'; err.textContent = res.error;
           btn.disabled=false; btn.textContent='Sign In';
@@ -240,29 +247,20 @@ ${_renderFooter()}
       const err = document.getElementById('reg-err');
       const btn = document.getElementById('r-btn');
       btn.disabled=true; btn.textContent='Creating account...';
-      
-      const name = document.getElementById('r-name').value.trim();
-      const rollNo = document.getElementById('r-roll').value.trim();
-      const email = document.getElementById('r-email').value.trim();
-      const branch = document.getElementById('r-branch').value;
-      const skills = document.getElementById('r-skills').value;
-      const interests = document.getElementById('r-interests').value;
-      const password = document.getElementById('r-pass').value;
-
-      setTimeout(async () => {
-        const res = await ITE.Auth.register({
-          name,
-          rollNo,
-          email,
-          branch,
-          skills,
-          interests,
-          password
+      setTimeout(() => {
+        const res = ITE.Auth.register({
+          name: document.getElementById('r-name').value.trim(),
+          rollNo: document.getElementById('r-roll').value.trim(),
+          email: document.getElementById('r-email').value.trim(),
+          branch: document.getElementById('r-branch').value,
+          skills: document.getElementById('r-skills').value,
+          interests: document.getElementById('r-interests').value,
+          password: document.getElementById('r-pass').value,
         });
         if (res.success) {
           ITE.App.toast('Account created successfully.', 'success');
           document.getElementById('page-content').style.padding='';
-          await ITE.App.route();
+          ITE.App.route();
         } else {
           err.style.display='block'; err.textContent=res.error;
           btn.disabled=false; btn.textContent='Create Account';
@@ -272,14 +270,9 @@ ${_renderFooter()}
     ITE.App.applyTheme(localStorage.getItem('ite_theme') || 'light');
   }
 
-  async function renderAllStartups() {
+  function renderAllStartups() {
     const el = document.getElementById('page-content');
-    let all = [];
-    try {
-      all = await ITE.Data.getPrevStartups();
-    } catch (err) {
-      console.error('Failed to load historical startups:', err);
-    }
+    const all = ITE.Data.getPrevStartups();
     const batches = [...new Set(all.map(s=>s.batch))].sort().reverse();
 
     el.innerHTML = `<div class="all-startups-page">

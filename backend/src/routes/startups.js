@@ -40,18 +40,30 @@ router.get('/previous-startups', async (req, res) => {
   }
 });
 
-// GET startup by ID
+// GET startup by ID (with members)
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const { rows } = await db.query('SELECT * FROM teams WHERE id = $1', [id]);
-    if (rows.length === 0) return res.status(404).json({ error: 'Startup not found' });
-    res.json(rows[0]);
+    const teamRes = await db.query('SELECT * FROM teams WHERE id = $1', [id]);
+    if (teamRes.rows.length === 0) return res.status(404).json({ error: 'Startup not found' });
+    const team = teamRes.rows[0];
+
+    // Attach members (safe: only returns public info, no password)
+    const membersRes = await db.query(
+      `SELECT u.id, u.full_name, u.email, tm.role AS team_role
+       FROM team_members tm
+       JOIN users u ON u.id = tm.user_id
+       WHERE tm.team_id = $1`,
+      [id]
+    );
+    team.members = membersRes.rows;
+    res.json(team);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch startup' });
   }
 });
+
 
 // CREATE a new startup (protected)
 router.post('/', authenticateToken, async (req, res) => {

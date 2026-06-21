@@ -87,10 +87,18 @@ ITE.Data = (function () {
   }
 
   async function getUserById(id) {
-    const res = await ITE.Auth.fetchWithAuth(`/api/users/${id}`);
-    const u = await handleResponse(res);
-    return mapUser(u);
+    if (!id) return null;
+    try {
+      const res = await ITE.Auth.fetchWithAuth(`/api/users/${id}`);
+      if (!res.ok) return null;
+      const u = await res.json();
+      return mapUser(u);
+    } catch (err) {
+      console.error('getUserById failed:', err);
+      return null;
+    }
   }
+
 
   async function getUserByEmail(email) {
     const users = await getUsers();
@@ -155,20 +163,28 @@ ITE.Data = (function () {
   }
 
   async function getTeamById(id) {
-    const res = await ITE.Auth.fetchWithAuth(`/api/startups/${id}`);
-    const t = await handleResponse(res);
-    const team = mapTeam(t);
-    if (team) {
-      // Resolve members from the users list (junction table data is mapped to user properties)
-      const users = await getUsers();
-      const members = users.filter(u => u.teamId === id);
-      team.members = members.map(m => ({
-        userId: m.id,
-        role: m.teamRole || 'CTO'
-      }));
+    if (!id) return null;
+    try {
+      const res = await ITE.Auth.fetchWithAuth(`/api/startups/${id}`);
+      if (!res.ok) return null;
+      const t = await res.json();
+      const team = mapTeam(t);
+      if (team && Array.isArray(t.members)) {
+        // Backend now returns members inline — use them directly
+        team.members = t.members.map(m => ({
+          userId: m.id,
+          name: m.full_name || m.name || '',
+          email: m.email || '',
+          role: m.team_role || m.role || 'Member'
+        }));
+      }
+      return team;
+    } catch (err) {
+      console.error('getTeamById failed:', err);
+      return null;
     }
-    return team;
   }
+
 
   async function createTeam(data) {
     const res = await ITE.Auth.fetchWithAuth('/api/startups', {

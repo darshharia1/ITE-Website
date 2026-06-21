@@ -1,135 +1,125 @@
 /* =====================================================
    ITE STARTUP LAUNCH PAD – AUTH (auth.js)
-   Refactored for Asynchronous API Fetch Connections
+   Handles JWT storage, login, register, logout.
+   getCurrentUser() now delegates to ITE.Router cache
+   so we never make redundant /api/auth/me calls.
    ===================================================== */
 window.ITE = window.ITE || {};
 
 ITE.Auth = (function () {
+  'use strict';
+
   const TOKEN_KEY = 'token';
 
-  /**
-   * Helper to perform fetch calls with automatic JWT Bearer headers
-   */
+  /* ── fetchWithAuth ───────────────────────────────── */
   async function fetchWithAuth(path, options = {}) {
     const token = localStorage.getItem(TOKEN_KEY);
     const headers = {
       'Content-Type': 'application/json',
-      ...options.headers
+      ...options.headers,
     };
-    
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
+    if (token) headers['Authorization'] = `Bearer ${token}`;
 
-    const baseUrl = window.ITE.Config?.API_BASE_URL || 'http://localhost:3002';
-    const response = await fetch(`${baseUrl}${path}`, {
-      ...options,
-      headers
-    });
-
-    return response;
+    const baseUrl = window.ITE?.Config?.API_BASE_URL || 'http://localhost:3002';
+    return fetch(`${baseUrl}${path}`, { ...options, headers });
   }
 
-  /**
-   * Authenticate user with the backend
-   */
+  /* ── login ───────────────────────────────────────── */
   async function login(email, password) {
     try {
       const res = await fetchWithAuth('/api/auth/login', {
         method: 'POST',
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
-
       const data = await res.json();
+      if (!res.ok) return { success: false, error: data.error || 'Authentication failed.' };
 
-      if (!res.ok) {
-        return { success: false, error: data.error || 'Authentication failed.' };
-      }
-
-      // Store JWT token securely in localStorage
       localStorage.setItem(TOKEN_KEY, data.token);
+
+      // Prime the router cache immediately so the first route
+      // dispatch doesn't need to make a second fetch.
+      if (ITE.Router?.clearUserCache) ITE.Router.clearUserCache();
+
       return { success: true, user: data.user };
     } catch (err) {
-      console.error('Login request failed:', err);
+      console.error('[Auth] Login request failed:', err);
       return { success: false, error: 'Network error: Cannot reach the authentication server.' };
     }
   }
 
-  /**
-   * Register a new user with the whitelist-protected registry
-   */
+  /* ── register ────────────────────────────────────── */
   async function register(data) {
     const { email, password, name } = data;
-    if (!name || !email || !password) {
+    if (!name || !email || !password)
       return { success: false, error: 'Please fill in all required fields.' };
-    }
 
     try {
       const res = await fetchWithAuth('/api/auth/register', {
         method: 'POST',
-        body: JSON.stringify({ 
-          email, 
-          password, 
-          full_name: name 
-        })
+        body: JSON.stringify({ email, password, full_name: name }),
       });
-
       const responseData = await res.json();
-
-      if (!res.ok) {
-        return { success: false, error: responseData.error || 'Registration failed.' };
-      }
-
+      if (!res.ok) return { success: false, error: responseData.error || 'Registration failed.' };
       return { success: true, user: responseData };
     } catch (err) {
-      console.error('Registration request failed:', err);
+      console.error('[Auth] Registration request failed:', err);
       return { success: false, error: 'Network error: Cannot reach the registration server.' };
     }
   }
 
-  /**
-   * Log out user and clear JWT token
-   */
+  /* ── logout ──────────────────────────────────────── */
   function logout() {
     localStorage.removeItem(TOKEN_KEY);
+    // Clear cached user so the next visitor starts fresh
+    if (ITE.Router?.clearUserCache) ITE.Router.clearUserCache();
     window.location.hash = '#/';
     window.location.reload();
   }
 
+  /* ── getCurrentUser ──────────────────────────────── */
   /**
-   * Fetch current logged-in user profile details from backend
+   * Returns the current user object.
+   * Delegates to ITE.Router.getUser() when available so we
+   * only make one /api/auth/me call per session.
+   * Falls back to a direct fetch if the router isn't loaded yet.
    */
   async function getCurrentUser() {
     if (!isLoggedIn()) return null;
 
+    // Prefer router cache
+    if (ITE.Router?.getUser) return ITE.Router.getUser();
+
+    // Fallback: direct fetch (used by page modules before router loads)
     try {
       const res = await fetchWithAuth('/api/auth/me');
-      if (!res.ok) {
-        // Token is invalid/expired, log out
-        localStorage.removeItem(TOKEN_KEY);
-        return null;
-      }
+      if (!res.ok) { localStorage.removeItem(TOKEN_KEY); return null; }
       const data = await res.json();
-      return data.user;
+      const raw = data.user;
+      return {
+        id:         raw.id,
+        email:      raw.email,
+        name:       raw.full_name || raw.name || raw.email,
+        role:       raw.role,
+        teamId:     raw.team_id   || null,
+        teamRole:   raw.team_role || null,
+        mentorId:   raw.mentor_id || null,
+        isCEO:      raw.is_ceo    || false,
+        avatar:     (raw.full_name || raw.email || '?').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase(),
+        rollNo:     raw.roll_no   || '',
+        branch:     raw.branch    || '',
+        specialization: raw.specialization || '',
+        skills:     raw.skills    || [],
+      };
     } catch (err) {
-      console.error('Fetch profile details failed:', err);
+      console.error('[Auth] getCurrentUser fallback failed:', err);
       return null;
     }
   }
 
-  /**
-   * Sync check if user is logged in (has a local token)
-   */
+  /* ── isLoggedIn ──────────────────────────────────── */
   function isLoggedIn() {
     return !!localStorage.getItem(TOKEN_KEY);
   }
 
-  return { 
-    login, 
-    logout, 
-    getCurrentUser, 
-    isLoggedIn, 
-    register,
-    fetchWithAuth 
-  };
+  return { login, logout, getCurrentUser, isLoggedIn, register, fetchWithAuth };
 })();

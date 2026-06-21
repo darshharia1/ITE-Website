@@ -18,21 +18,38 @@ const userSchema = z.object({
   mentorId: z.string().uuid().optional(),
 });
 
+// Helper query fragment that enriches users with team/mentor data
+const ENRICHED_USER_COLS = `
+  u.id,
+  u.email,
+  u.full_name,
+  u.role,
+  u.created_at,
+  tm.team_id,
+  tm.role        AS team_role,
+  t.mentor_id,
+  CASE WHEN t.ceo_id = u.id THEN true ELSE false END AS is_ceo
+`;
+
 // GET all users (Protected)
 router.get('/', authenticateToken, async (req, res) => {
   const { role, id: userId } = req.user;
 
   try {
     if (role === 'admin') {
-      // Admin sees everyone (excluding password_hash)
+      // Admin sees everyone enriched with team info
       const { rows } = await db.query(
-        'SELECT id, email, full_name, role, created_at FROM users ORDER BY full_name ASC'
+        `SELECT ${ENRICHED_USER_COLS}
+         FROM users u
+         LEFT JOIN team_members tm ON u.id = tm.user_id
+         LEFT JOIN teams t ON tm.team_id = t.id
+         ORDER BY u.full_name ASC`
       );
       return res.json(rows);
     } else if (role === 'mentor') {
       // Mentor sees students belonging to their assigned teams
       const { rows } = await db.query(
-        `SELECT DISTINCT u.id, u.email, u.full_name, u.role, u.created_at
+        `SELECT ${ENRICHED_USER_COLS}
          FROM users u
          JOIN team_members tm ON u.id = tm.user_id
          JOIN teams t ON tm.team_id = t.id
@@ -53,13 +70,22 @@ router.get('/', authenticateToken, async (req, res) => {
   }
 });
 
-// GET user by id
+// GET user by id (enriched with team/mentor data)
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const { rows } = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+    const { rows } = await db.query(
+      `SELECT ${ENRICHED_USER_COLS}
+       FROM users u
+       LEFT JOIN team_members tm ON u.id = tm.user_id
+       LEFT JOIN teams t ON tm.team_id = t.id
+       WHERE u.id = $1`,
+      [id]
+    );
     if (rows.length === 0) return res.status(404).json({ error: 'User not found' });
-    res.json(rows[0]);
+    // Omit password_hash
+    const { password_hash: _, ...safe } = rows[0];
+    res.json(safe);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch user' });

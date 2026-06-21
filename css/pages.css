@@ -209,16 +209,26 @@
 .faculty-dept   { font-size: 0.72rem; background: var(--accent-light); color: var(--accent); padding: 2px 10px; border-radius: var(--radius-full); display: inline-block; }
 
 /* Resources Section */
-.resources-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px,1fr)); gap: 14px; max-width: 900px; margin: 0 auto; }
+.resources-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; max-width: 960px; margin: 0 auto; }
 .resource-card {
   background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 18px; display: flex; align-items: flex-start; gap: 12px;
-  transition: all var(--transition); cursor: pointer;
+  padding: 22px 18px 18px; display: flex; flex-direction: column; justify-content: space-between;
+  transition: all var(--transition); width: calc(33.333% - 12px);
+  box-sizing: border-box; min-width: 220px;
 }
-.resource-card:hover { border-color: var(--accent); transform: translateX(3px); box-shadow: var(--shadow-sm); }
-.resource-icon { width: 38px; height: 38px; border-radius: var(--radius-sm); background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.125rem; flex-shrink: 0; }
-.resource-title { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+@media (max-width: 768px) { .resource-card { width: 100%; } }
+.resource-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.resource-icon { width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; margin-bottom: 12px; }
+.resource-title { font-size: 0.82rem; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; word-break: break-all; line-height: 1.45; }
 .resource-desc  { font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; }
+.resource-download-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; margin-top: 16px; padding: 8px 16px;
+  background: var(--accent); color: #fff; font-size: 0.82rem; font-weight: 600;
+  border-radius: var(--radius-sm); text-decoration: none;
+  transition: background var(--transition), transform var(--transition);
+}
+.resource-download-btn:hover { background: var(--accent-hover, #2563eb); transform: scale(1.02); }
 
 /* Startups Preview (Home) */
 .startups-preview { max-width: 1100px; margin: 0 auto; }

@@ -108,7 +108,23 @@ ITE.Pages.Home = (function () {
     <p class="section-desc">Crucial materials to structure, validate, and scale your venture.</p>
   </div>
   <div class="resources-grid">
-    ${[['📋','Investor Pitch Deck Template','A professional presentation framework modeled on successful early-stage ventures'],['📊','Market Analysis Framework','A systematic guide to evaluating Total Addressable Market (TAM) and target demographics'],['🎤','Customer Discovery Protocol','An empirical script designed for unbiased user research and qualitative interviews'],['💰','Financial Projections Worksheet','A structured template for three-year financial projections and cash flow analysis'],['📱','Product Development Canvas','A lean framework for scoping and building a Minimum Viable Product'],['⚖️','Regulatory and Legal Guide','A checklist of essential corporate registration steps for early-stage companies in India'],['🌐','Academic Cohort Syllabus','The official program handbook detailing evaluation milestones and timeline criteria'],['🤝','Venture Capital Primer','Strategic guidelines for engaging with angel networks and venture capitalists']].map(([ic,t,d])=>`<div class="resource-card"><div><div class="resource-title">${t}</div><div class="resource-desc">${d}</div></div></div>`).join('')}
+    ${[
+      ['📄', 'IDD401_Midterm2021 (1).pdf',                              '/assets/IDD401_Midterm2021 (1).pdf'],
+      ['📘', 'ENTREPRENEURSHIP-COMPREHENSIVE-NOTES.pdf',                '/assets/ENTREPRENEURSHIP-COMPREHENSIVE-NOTES.pdf'],
+      ['📙', 'ENTREPRENEURSHIP-TERMS-FRAMEWORK-REFERRENCE.pdf',         '/assets/ENTREPRENEURSHIP-TERMS-FRAMEWORK-REFERRENCE.pdf'],
+      ['📗', 'OC- VALUE PROPOSITION and CUSTOMER SEGMENTATION.pdf',     '/assets/OC- VALUE PROPOSITION and CUSTOMER SEGMENTATION.pdf'],
+      ['📕', 'OC ENTERPRENEUR.pdf',                                     '/assets/OC ENTERPRENEUR.pdf'],
+    ].map(([ic, title, href]) => `
+      <div class="resource-card">
+        <div>
+          <div class="resource-icon">${ic}</div>
+          <div class="resource-title">${title}</div>
+        </div>
+        <a class="resource-download-btn" href="${href}" download>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </a>
+      </div>`).join('')}
   </div>
 </section>
 <!-- PREVIOUS STARTUPS -->

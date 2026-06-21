@@ -2,3 +2,6 @@ node_modules/
 .env
 node-v20.10.0-darwin-arm64/
 node.tar.gz
+
+# Logs
+logs/*.log

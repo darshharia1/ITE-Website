@@ -17,14 +17,12 @@ ITE.Pages.Mentor = (function () {
         return;
       }
       
-      const allTeams = await ITE.Data.getTeams();
-      const teams = allTeams.filter(t => t.mentorId === user.id);
+      // Fetch mentor-specific dashboard metrics
+      const dashData = await ITE.Data.getMentorDashboard();
       
+      const teams = await ITE.Data.getMentorTeams();
       const allStudents = await ITE.Data.getStudents();
       const students = allStudents.filter(s => s.mentorId === user.id);
-      
-      const anns = await ITE.Data.getAnnouncementsForUser(user);
-      const myAnns = anns.filter(a => a.createdByRole === 'mentor');
 
       // Resolve CEO details and member count for team cards
       const teamCardDataPromises = teams.map(async t => {
@@ -38,16 +36,26 @@ ITE.Pages.Mentor = (function () {
       });
       const resolvedTeams = await Promise.all(teamCardDataPromises);
 
+      // Map recent announcements from dashboard data
+      const recentAnns = dashData.recentAnnouncements.map(a => ({
+        id: a.id,
+        title: a.title,
+        content: a.content,
+        createdByRole: 'mentor',
+        createdByName: 'Faculty Mentor',
+        createdAt: a.created_at
+      }));
+
       ITE.App.pc().innerHTML = `
 <div class="page-header">
   <div class="page-title">Welcome, ${user.name.split(' ').slice(0,2).join(' ')}</div>
-  <div class="page-subtitle">${user.specialization||'Faculty Mentor'} · ${teams.length} team${teams.length!==1?'s':''} assigned</div>
+  <div class="page-subtitle">${user.specialization||'Faculty Mentor'} · ${dashData.stats.totalTeams} team${dashData.stats.totalTeams!==1?'s':''} assigned</div>
 </div>
 <div class="stats-grid">
   ${[
-    ['My Teams', teams.length],
+    ['My Teams', dashData.stats.totalTeams],
     ['Students', students.length],
-    ['Announcements Sent', myAnns.length],
+    ['Pending Grading', dashData.stats.pendingGrading],
     ['Avg Stage', teams.length ? (teams.reduce((sum, t) => sum + t.stage, 0) / teams.length).toFixed(1) : '—']
   ].map(([lbl, val]) => `<div class="stat-card"><div class="stat-value">${val}</div><div class="stat-label">${lbl}</div></div>`).join('')}
 </div>
@@ -61,12 +69,12 @@ ${resolvedTeams.length === 0 ? `
   <div class="cards-grid">${resolvedTeams.map(t => _teamCard(t)).join('')}</div>`}
 
 <div class="section-title mt-6">Recent Announcements</div>
-${anns.length === 0 ? `<p style="color:var(--text-muted);font-size:.875rem;padding: 10px 0">No announcements yet.</p>` :
-anns.slice(0, 3).map(a => `
-  <div class="ann-card ${a.createdByRole}-ann">
+${recentAnns.length === 0 ? `<p style="color:var(--text-muted);font-size:.875rem;padding: 10px 0">No announcements yet.</p>` :
+recentAnns.map(a => `
+  <div class="ann-card mentor-ann">
     <div class="ann-meta">
-      <span class="badge ${a.createdByRole === 'admin' ? 'badge-blue' : 'badge-green'}">${a.createdByRole.toUpperCase()}</span>
-      <span style="font-size:.72rem;color:var(--text-muted)">${a.createdByName}</span>
+      <span class="badge badge-green">MENTOR</span>
+      <span style="font-size:.72rem;color:var(--text-muted)">Faculty Mentor</span>
     </div>
     <div class="ann-title">${a.title}</div>
     <div class="ann-body">${a.content}</div>
@@ -103,8 +111,7 @@ anns.slice(0, 3).map(a => `
         return;
       }
       
-      const allTeams = await ITE.Data.getTeams();
-      const teams = allTeams.filter(t => t.mentorId === user.id);
+      const teams = await ITE.Data.getMentorTeams();
 
       if (teams.length === 0) {
         ITE.App.pc().innerHTML = `
@@ -239,7 +246,7 @@ ${teamViews.join('')}`;
     try {
       const t = await ITE.Data.getTeamById(teamId);
       if(!t||t.stage>=5){ITE.App.toast('Already at final stage.','warning');return;}
-      await ITE.Data.updateTeam(teamId, { stage: t.stage + 1 });
+      await ITE.Data.advanceTeamStage(teamId, t.stage + 1);
       ITE.App.toast(`${t.startupName} advanced to Stage ${t.stage+2}.`,'success');
       await renderTeams();
     } catch (err) {
@@ -257,8 +264,7 @@ ${teamViews.join('')}`;
         return;
       }
       
-      const allTeams = await ITE.Data.getTeams();
-      const teams = allTeams.filter(t => t.mentorId === user.id);
+      const teams = await ITE.Data.getMentorTeams();
       const anns = await ITE.Data.getAnnouncementsForUser(user);
 
       ITE.App.pc().innerHTML = `
@@ -299,9 +305,7 @@ ${teamViews.join('')}`;
 
   async function showMentorAnnModal() {
     try {
-      const user = await ITE.Auth.getCurrentUser();
-      const allTeams = await ITE.Data.getTeams();
-      const teams = allTeams.filter(t => t.mentorId === user.id);
+      const teams = await ITE.Data.getMentorTeams();
       
       if (teams.length === 0) {
         ITE.App.toast('You have no assigned teams to send announcements to.', 'warning');
@@ -329,8 +333,7 @@ ${teamViews.join('')}`;
     if(!title||!content){ITE.App.toast('Title & message required.','error');return;}
     
     try {
-      const u = await ITE.Auth.getCurrentUser();
-      await ITE.Data.createAnnouncement({title,content,recipients,createdBy:u.id,createdByName:u.name,createdByRole:'mentor'});
+      await ITE.Data.createMentorAnnouncement({ title, content, recipients });
       ITE.App.toast('Announcement sent!','success'); 
       ITE.App.closeModal(); 
       await renderAnnouncements();

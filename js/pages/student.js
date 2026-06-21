@@ -566,10 +566,19 @@ tasks.map(task => {
     ITE.App.showModal(`<div class="modal">
 <div class="modal-header"><div class="modal-title">Submit: ${taskTitle}</div><button class="modal-close btn">✕</button></div>
 <div class="modal-body">
-  <div class="form-group">
+  <div style="display:flex;gap:15px;margin-bottom:14px;border-bottom:1px solid var(--border-subtle);padding-bottom:10px">
+    <label style="cursor:pointer;font-weight:600"><input type="radio" name="sub-type" value="link" checked onchange="document.getElementById('group-link').style.display='block';document.getElementById('group-file').style.display='none'"> Submit URL Link</label>
+    <label style="cursor:pointer;font-weight:600"><input type="radio" name="sub-type" value="file" onchange="document.getElementById('group-link').style.display='none';document.getElementById('group-file').style.display='block'"> Upload Document/File</label>
+  </div>
+  <div id="group-link" class="form-group">
     <label class="form-label">Submission Link (Google Drive, GitHub, etc.) *</label>
-    <input type="url" id="sub-link" class="form-control" placeholder="https://docs.google.com/presentation/d/.../edit" required>
+    <input type="url" id="sub-link" class="form-control" placeholder="https://docs.google.com/presentation/d/.../edit">
     <div class="form-hint">Please enter a valid URL to your deliverables.</div>
+  </div>
+  <div id="group-file" class="form-group" style="display:none">
+    <label class="form-label">Choose File (PDF Pitch Deck, Proto Video, etc.) *</label>
+    <input type="file" id="sub-file" class="form-control">
+    <div class="form-hint">Your file will be uploaded securely to AWS S3.</div>
   </div>
 </div>
 <div class="modal-footer"><button class="btn btn-ghost" onclick="ITE.App.closeModal()">Cancel</button><button class="btn btn-primary" onclick="ITE.Pages.Student._submitTask('${taskId}')">Submit</button></div>
@@ -577,26 +586,47 @@ tasks.map(task => {
   }
 
   async function _submitTask(taskId) {
-    const link = document.getElementById('sub-link')?.value?.trim();
-    if (!link) {
-      ITE.App.toast('Please provide a submission link.', 'error');
-      return;
-    }
+    const isFile = document.querySelector('input[name="sub-type"]:checked')?.value === 'file';
     
-    try {
-      new URL(link);
-    } catch (_) {
-      ITE.App.toast('Please enter a valid URL (starting with http:// or https://).', 'error');
-      return;
-    }
-    
-    try {
-      await ITE.Data.createSubmission(taskId, link);
-      ITE.App.toast('Task submitted successfully.', 'success');
-      ITE.App.closeModal(); 
-      await renderTasks();
-    } catch (err) {
-      ITE.App.toast(err.message || 'Failed to submit task.', 'error');
+    if (isFile) {
+      const fileInput = document.getElementById('sub-file');
+      const file = fileInput?.files[0];
+      if (!file) {
+        ITE.App.toast('Please select a file to upload.', 'error');
+        return;
+      }
+      
+      try {
+        ITE.App.toast('Uploading file to S3...', 'info');
+        await ITE.Data.uploadSubmissionFile(taskId, file);
+        ITE.App.toast('Task submitted successfully.', 'success');
+        ITE.App.closeModal(); 
+        await renderTasks();
+      } catch (err) {
+        ITE.App.toast(err.message || 'Failed to upload task.', 'error');
+      }
+    } else {
+      const link = document.getElementById('sub-link')?.value?.trim();
+      if (!link) {
+        ITE.App.toast('Please provide a submission link.', 'error');
+        return;
+      }
+      
+      try {
+        new URL(link);
+      } catch (_) {
+        ITE.App.toast('Please enter a valid URL (starting with http:// or https://).', 'error');
+        return;
+      }
+      
+      try {
+        await ITE.Data.createSubmission(taskId, link);
+        ITE.App.toast('Task submitted successfully.', 'success');
+        ITE.App.closeModal(); 
+        await renderTasks();
+      } catch (err) {
+        ITE.App.toast(err.message || 'Failed to submit task.', 'error');
+      }
     }
   }
 

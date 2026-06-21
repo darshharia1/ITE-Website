@@ -13,7 +13,7 @@ const startupSchema = z.object({
   description: z.string().optional(),
   mentorId: z.string().uuid().optional(),
   ceoId: z.string().uuid().optional(),
-  stage: z.number().int().min(0).max(5).optional()
+  stage: z.number().int().min(1).max(6).optional()
 });
 
 // GET all startups
@@ -24,6 +24,19 @@ router.get('/', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch startups' });
+  }
+});
+
+// GET /previous-startups - Fetch historical previous startups ordered by batch_year DESC
+router.get('/previous-startups', async (req, res) => {
+  try {
+    const { rows } = await db.query(
+      'SELECT id, startup_name, description, batch_year, created_at FROM previous_startups ORDER BY batch_year DESC'
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error('Fetch previous startups error:', err);
+    res.status(500).json({ error: 'Failed to fetch previous startups due to a server error.' });
   }
 });
 
@@ -49,7 +62,7 @@ router.post('/', authenticateToken, async (req, res) => {
     const { rows } = await db.query(
       `INSERT INTO teams (startup_name, industry, problem_statement, description, mentor_id, ceo_id, stage)
        VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
-      [startupName, industry, problemStatement, description, mentorId, ceoId, stage ?? 0]
+      [startupName, industry, problemStatement, description, mentorId, ceoId, stage ?? 1]
     );
     res.status(201).json(rows[0]);
   } catch (err) {
@@ -63,14 +76,39 @@ router.put('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   const validation = startupSchema.partial().safeParse(req.body);
   if (!validation.success) return res.status(400).json({ error: validation.error.errors });
+  
+  const COLUMN_MAP = {
+    startupName: 'startup_name',
+    industry: 'industry',
+    problemStatement: 'problem_statement',
+    description: 'description',
+    mentorId: 'mentor_id',
+    ceoId: 'ceo_id',
+    stage: 'stage',
+    startupIdeaDescription: 'startup_idea_description'
+  };
+
   const fields = [];
   const values = [];
   let idx = 1;
   for (const [key, value] of Object.entries(validation.data)) {
-    fields.push(`"${key}" = $${idx}`);
-    values.push(value);
-    idx++;
+    const columnName = COLUMN_MAP[key];
+    if (columnName) {
+      if (columnName === 'startup_name') {
+        fields.push(`"startup_name" = $${idx}`);
+        values.push(value);
+        idx++;
+        fields.push(`"team_name" = $${idx}`);
+        values.push(value);
+        idx++;
+      } else {
+        fields.push(`"${columnName}" = $${idx}`);
+        values.push(value);
+        idx++;
+      }
+    }
   }
+
   if (fields.length === 0) return res.status(400).json({ error: 'No fields to update' });
   values.push(id);
   const setClause = fields.join(', ');
@@ -79,7 +117,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
     if (rows.length === 0) return res.status(404).json({ error: 'Startup not found' });
     res.json(rows[0]);
   } catch (err) {
-    console.error(err);
+    console.error('Update startup error:', err);
     res.status(500).json({ error: 'Failed to update startup' });
   }
 });
@@ -94,19 +132,6 @@ router.delete('/:id', authenticateToken, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to delete startup' });
-  }
-});
-
-// GET /previous-startups - Fetch historical previous startups ordered by batch_year DESC
-router.get('/previous-startups', async (req, res) => {
-  try {
-    const { rows } = await db.query(
-      'SELECT id, startup_name, description, batch_year, created_at FROM previous_startups ORDER BY batch_year DESC'
-    );
-    res.json(rows);
-  } catch (err) {
-    console.error('Fetch previous startups error:', err);
-    res.status(500).json({ error: 'Failed to fetch previous startups due to a server error.' });
   }
 });
 

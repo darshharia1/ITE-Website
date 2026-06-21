@@ -1,8 +1,17 @@
 // src/utils/logger.js
 const winston = require('winston');
 const path = require('path');
+const fs = require('fs');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
+
+// Define the logs directory path relative to the root of the project
+const logDir = path.join(__dirname, '..', '..', 'logs');
+
+// Auto-Create Directories on Boot
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir, { recursive: true });
+}
 
 // Define log level based on environment
 const level = NODE_ENV === 'development' ? 'debug' : 'info';
@@ -36,8 +45,6 @@ transports.push(
 
 // In production, also write logs to files
 if (NODE_ENV === 'production') {
-  const logDir = path.join(__dirname, '..', '..', 'logs');
-
   transports.push(
     // Write errors to error.log
     new winston.transports.File({

@@ -78,20 +78,40 @@ router.get('/', authenticateToken, async (req, res) => {
  * POST /api/announcements
  * Create a new announcement (Admin only)
  */
-router.post('/', authenticateToken, requireRole('admin'), async (req, res) => {
+router.post('/', authenticateToken, requireRole(['admin', 'mentor']), async (req, res) => {
   const validation = announcementSchema.safeParse(req.body);
   if (!validation.success) {
     return res.status(400).json({ error: validation.error.errors });
   }
 
   const { title, content, audience_scope, team_id } = validation.data;
+  const userRole = req.user.role;
+  const userId = req.user.id;
 
   try {
-    // If targeted to a specific team, check if team exists
-    if (audience_scope === 'team' && team_id) {
-      const teamCheck = await db.query('SELECT id FROM teams WHERE id = $1', [team_id]);
+    // Role-based validation and security check
+    if (userRole === 'mentor') {
+      if (audience_scope !== 'team') {
+        return res.status(403).json({ error: 'Access forbidden: Mentors can only create team-specific announcements.' });
+      }
+      if (!team_id) {
+        return res.status(400).json({ error: 'team_id is required for team-specific announcements.' });
+      }
+      // Check if team exists and belongs to the mentor
+      const teamCheck = await db.query('SELECT id, mentor_id FROM teams WHERE id = $1', [team_id]);
       if (teamCheck.rows.length === 0) {
         return res.status(404).json({ error: 'Target team not found.' });
+      }
+      if (teamCheck.rows[0].mentor_id !== userId) {
+        return res.status(403).json({ error: 'You are not authorized to post announcements to this team.' });
+      }
+    } else if (userRole === 'admin') {
+      // If targeted to a specific team, check if team exists
+      if (audience_scope === 'team' && team_id) {
+        const teamCheck = await db.query('SELECT id FROM teams WHERE id = $1', [team_id]);
+        if (teamCheck.rows.length === 0) {
+          return res.status(404).json({ error: 'Target team not found.' });
+        }
       }
     }
 
@@ -102,7 +122,7 @@ router.post('/', authenticateToken, requireRole('admin'), async (req, res) => {
       [title, content, audience_scope, audience_scope === 'team' ? team_id : null]
     );
 
-    // 4. If target audience is all students, trigger a non-blocking email broadcast
+    // If target audience is all students, trigger a non-blocking email broadcast
     if (audience_scope === 'all-students') {
       db.query("SELECT email FROM users WHERE role = 'student'")
         .then(async studentRes => {

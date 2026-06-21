@@ -239,6 +239,26 @@ ITE.Data = (function () {
     return handleResponse(res);
   }
 
+  async function uploadSubmissionFile(taskId, file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const token = localStorage.getItem('token');
+    const headers = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    
+    const baseUrl = window.ITE.Config?.API_BASE_URL || 'http://localhost:3002';
+    const res = await fetch(`${baseUrl}/api/tasks/${taskId}/upload`, {
+      method: 'POST',
+      headers,
+      body: formData
+    });
+    
+    return handleResponse(res);
+  }
+
   async function getSubmissions() {
     const tasks = await getTasks();
     const currentUser = await ITE.Auth.getCurrentUser();
@@ -315,6 +335,41 @@ ITE.Data = (function () {
     return handleResponse(res);
   }
 
+  /* ---- Mentor Specific Endpoints ---- */
+  async function getMentorTeams() {
+    const res = await ITE.Auth.fetchWithAuth('/api/mentor/teams');
+    const list = await handleResponse(res);
+    return list.map(mapTeam);
+  }
+
+  async function advanceTeamStage(id, stage) {
+    const res = await ITE.Auth.fetchWithAuth(`/api/mentor/teams/${id}/advance-stage`, {
+      method: 'POST',
+      body: JSON.stringify({ stage })
+    });
+    return handleResponse(res);
+  }
+
+  async function createMentorAnnouncement(data) {
+    const target_team_id = data.recipients.startsWith('team-') ? data.recipients.replace('team-', '') : null;
+    const mappedData = {
+      title: data.title,
+      content: data.content,
+      target_team_id
+    };
+    const res = await ITE.Auth.fetchWithAuth('/api/mentor/announcements', {
+      method: 'POST',
+      body: JSON.stringify(mappedData)
+    });
+    const a = await handleResponse(res);
+    return mapAnnouncement(a);
+  }
+
+  async function getMentorDashboard() {
+    const res = await ITE.Auth.fetchWithAuth('/api/mentor/dashboard');
+    return handleResponse(res);
+  }
+
   /* ---- Approved whitelist management (Admin only) ---- */
   async function getApproved() {
     const res = await ITE.Auth.fetchWithAuth('/api/admin/approved');
@@ -363,6 +418,8 @@ ITE.Data = (function () {
     getTasks, createSubmission, getSubmissions, getSubByStudentTask,
     getInvitations, createInvitation, respondToInvitation, getPendingInvites,
     getPrevStartups,
-    getApproved, uploadApprovedCSV, clearApproved
+    getApproved, uploadApprovedCSV, clearApproved,
+    getMentorTeams, advanceTeamStage, createMentorAnnouncement, getMentorDashboard,
+    uploadSubmissionFile
   };
 })();

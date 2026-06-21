@@ -24,6 +24,30 @@ app.use(urlencoded({ extended: true }));
 // Rate limit authentication routes
 app.use('/api/auth', authRateLimiter);
 
+// Serve frontend static files safely
+const path = require('path');
+const fs = require('fs');
+const frontendDir = path.resolve(__dirname, '..', '..');
+
+app.use('/css', express.static(path.join(frontendDir, 'css')));
+app.use('/js', express.static(path.join(frontendDir, 'js')));
+app.use('/assets', express.static(path.join(frontendDir, 'assets')));
+
+app.get('/acm-chapter.html', (req, res) => {
+  res.setHeader('Content-Type', 'text/html');
+  fs.createReadStream(path.join(frontendDir, 'acm-chapter.html')).pipe(res);
+});
+
+app.get('/', (req, res) => {
+  res.setHeader('Content-Type', 'text/html');
+  fs.createReadStream(path.join(frontendDir, 'index.html')).pipe(res);
+});
+
+app.get('/index.html', (req, res) => {
+  res.setHeader('Content-Type', 'text/html');
+  fs.createReadStream(path.join(frontendDir, 'index.html')).pipe(res);
+});
+
 // API routes
 const usersRouter = require('./routes/users');
 app.use('/api/users', usersRouter);
@@ -39,6 +63,8 @@ const announcementsRouter = require('./routes/announcements');
 app.use('/api/announcements', announcementsRouter);
 const adminRouter = require('./routes/admin');
 app.use('/api/admin', adminRouter);
+const mentorRouter = require('./routes/mentor');
+app.use('/api/mentor', mentorRouter);
 
 // Simple health check route
 app.get('/health', (req, res) => {

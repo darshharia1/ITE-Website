@@ -22,6 +22,13 @@ CREATE TABLE IF NOT EXISTS approved_students (
 CREATE TABLE IF NOT EXISTS teams (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     team_name VARCHAR(255) NOT NULL,
+    startup_name VARCHAR(255),
+    industry VARCHAR(255),
+    problem_statement TEXT,
+    description TEXT,
+    mentor_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    ceo_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    stage INTEGER DEFAULT 1,
     startup_idea_description TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
 );

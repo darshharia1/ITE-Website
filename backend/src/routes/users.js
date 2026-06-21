@@ -18,14 +18,38 @@ const userSchema = z.object({
   mentorId: z.string().uuid().optional(),
 });
 
-// GET all users
-router.get('/', async (req, res) => {
+// GET all users (Protected)
+router.get('/', authenticateToken, async (req, res) => {
+  const { role, id: userId } = req.user;
+
   try {
-    const { rows } = await db.query('SELECT * FROM users');
-    res.json(rows);
+    if (role === 'admin') {
+      // Admin sees everyone (excluding password_hash)
+      const { rows } = await db.query(
+        'SELECT id, email, full_name, role, created_at FROM users ORDER BY full_name ASC'
+      );
+      return res.json(rows);
+    } else if (role === 'mentor') {
+      // Mentor sees students belonging to their assigned teams
+      const { rows } = await db.query(
+        `SELECT DISTINCT u.id, u.email, u.full_name, u.role, u.created_at
+         FROM users u
+         JOIN team_members tm ON u.id = tm.user_id
+         JOIN teams t ON tm.team_id = t.id
+         WHERE t.mentor_id = $1 AND u.role = 'student'
+         ORDER BY u.full_name ASC`,
+        [userId]
+      );
+      return res.json(rows);
+    } else {
+      // Students or any other roles are blocked
+      return res.status(403).json({
+        error: "Access denied. You do not have permission to view the global user directory."
+      });
+    }
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to fetch users' });
+    console.error('Fetch users error:', err);
+    res.status(500).json({ error: 'Failed to fetch users due to a server error.' });
   }
 });
 

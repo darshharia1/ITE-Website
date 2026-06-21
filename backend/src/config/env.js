@@ -9,7 +9,8 @@ const REQUIRED_ENV_VARS = [
   'AWS_REGION',
   'AWS_ACCESS_KEY_ID',
   'AWS_SECRET_ACCESS_KEY',
-  'SES_FROM_EMAIL'
+  'SES_FROM_EMAIL',
+  'AWS_S3_BUCKET_NAME'
 ];
 
 const missingVars = [];
@@ -36,5 +37,6 @@ module.exports = {
   AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
   SES_FROM_EMAIL: process.env.SES_FROM_EMAIL,
+  AWS_S3_BUCKET_NAME: process.env.AWS_S3_BUCKET_NAME,
   NODE_ENV: process.env.NODE_ENV || 'development'
 };

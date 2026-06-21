@@ -97,4 +97,17 @@ router.delete('/:id', authenticateToken, async (req, res) => {
   }
 });
 
+// GET /previous-startups - Fetch historical previous startups ordered by batch_year DESC
+router.get('/previous-startups', async (req, res) => {
+  try {
+    const { rows } = await db.query(
+      'SELECT id, startup_name, description, batch_year, created_at FROM previous_startups ORDER BY batch_year DESC'
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error('Fetch previous startups error:', err);
+    res.status(500).json({ error: 'Failed to fetch previous startups due to a server error.' });
+  }
+});
+
 module.exports = router;

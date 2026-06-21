@@ -72,6 +72,8 @@ CREATE TABLE IF NOT EXISTS announcements (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
+    audience_scope VARCHAR(50) NOT NULL CHECK (audience_scope IN ('all-students', 'all-mentors', 'team')),
+    team_id UUID REFERENCES teams(id) ON DELETE CASCADE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
 );
 

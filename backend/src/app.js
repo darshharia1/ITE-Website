@@ -23,6 +23,14 @@ const startupsRouter = require('./routes/startups');
 app.use('/api/startups', startupsRouter);
 const authRouter = require('./routes/auth');
 app.use('/api/auth', authRouter);
+const teamsRouter = require('./routes/teams');
+app.use('/api/teams', teamsRouter);
+const tasksRouter = require('./routes/tasks');
+app.use('/api/tasks', tasksRouter);
+const announcementsRouter = require('./routes/announcements');
+app.use('/api/announcements', announcementsRouter);
+const adminRouter = require('./routes/admin');
+app.use('/api/admin', adminRouter);
 
 // Simple health check route
 app.get('/health', (req, res) => {

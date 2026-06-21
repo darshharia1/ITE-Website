@@ -4,6 +4,8 @@ const router = express.Router();
 const db = require('../config/db');
 const { authenticateToken, requireRole } = require('../middleware/auth');
 const { z } = require('zod');
+const { sendEmail } = require('../utils/mailer');
+const logger = require('../utils/logger');
 
 // Schema validation for creating an announcement
 const announcementSchema = z.object({
@@ -99,6 +101,32 @@ router.post('/', authenticateToken, requireRole('admin'), async (req, res) => {
        RETURNING id, title, content, audience_scope, team_id, created_at`,
       [title, content, audience_scope, audience_scope === 'team' ? team_id : null]
     );
+
+    // 4. If target audience is all students, trigger a non-blocking email broadcast
+    if (audience_scope === 'all-students') {
+      db.query("SELECT email FROM users WHERE role = 'student'")
+        .then(async studentRes => {
+          const studentEmails = studentRes.rows.map(r => r.email);
+          const emailPromises = studentEmails.map(email =>
+            sendEmail({
+              to: email,
+              subject: `New Announcement: ${title}`,
+              htmlBody: `
+                <h3>New Announcement Posted</h3>
+                <p><strong>Title:</strong> ${title}</p>
+                <p>${content.replace(/\n/g, '<br/>')}</p>
+                <hr/>
+                <p>Please check your student dashboard on the portal for updates.</p>
+                <p>Best regards,<br/>ITE Startup Launch Pad</p>
+              `
+            })
+          );
+          await Promise.allSettled(emailPromises);
+        })
+        .catch(emailQueryErr => {
+          logger.error('Failed to retrieve student emails for announcement broadcast:', emailQueryErr);
+        });
+    }
 
     res.status(201).json(rows[0]);
   } catch (err) {

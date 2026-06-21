@@ -4,6 +4,7 @@ const router = express.Router();
 const db = require('../config/db');
 const { authenticateToken } = require('../middleware/auth');
 const { z } = require('zod');
+const { sendEmail } = require('../utils/mailer');
 
 // Validation schema for sending an invitation
 const inviteSchema = z.object({
@@ -33,10 +34,11 @@ router.post('/invitations', authenticateToken, async (req, res) => {
 
   try {
     // 1. Verify the team exists
-    const teamCheck = await db.query('SELECT id FROM teams WHERE id = $1', [team_id]);
+    const teamCheck = await db.query('SELECT id, team_name FROM teams WHERE id = $1', [team_id]);
     if (teamCheck.rows.length === 0) {
       return res.status(404).json({ error: 'Team not found.' });
     }
+    const teamName = teamCheck.rows[0].team_name;
 
     // 2. Verify the inviter is a member of that team
     const memberCheck = await db.query(
@@ -54,6 +56,21 @@ router.post('/invitations', authenticateToken, async (req, res) => {
        RETURNING id, team_id, inviter_id, invitee_email, status, created_at`,
       [team_id, inviter_id, normalizedEmail]
     );
+
+    // 4. Trigger invitation email asynchronously (non-blocking)
+    sendEmail({
+      to: normalizedEmail,
+      subject: `Invitation to join team "${teamName}"`,
+      htmlBody: `
+        <h3>Startup Team Invitation</h3>
+        <p>Hello,</p>
+        <p>You have been invited to join the startup team <strong>"${teamName}"</strong> on the ITE Launch Pad portal.</p>
+        <p>Please log in to your account dashboard to view and respond to this invitation.</p>
+        <p>Best regards,<br/>ITE Startup Launch Pad</p>
+      `
+    }).catch(() => {
+      // Failure is already logged by sendEmail utility, no-op here to keep response non-blocking
+    });
 
     res.status(201).json(rows[0]);
   } catch (err) {

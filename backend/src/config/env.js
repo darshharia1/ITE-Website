@@ -5,7 +5,11 @@ const REQUIRED_ENV_VARS = [
   'PORT',
   'DATABASE_URL',
   'JWT_SECRET',
-  'FRONTEND_URL'
+  'FRONTEND_URL',
+  'AWS_REGION',
+  'AWS_ACCESS_KEY_ID',
+  'AWS_SECRET_ACCESS_KEY',
+  'SES_FROM_EMAIL'
 ];
 
 const missingVars = [];
@@ -28,5 +32,9 @@ module.exports = {
   DATABASE_URL: process.env.DATABASE_URL,
   JWT_SECRET: process.env.JWT_SECRET,
   FRONTEND_URL: process.env.FRONTEND_URL,
+  AWS_REGION: process.env.AWS_REGION,
+  AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+  SES_FROM_EMAIL: process.env.SES_FROM_EMAIL,
   NODE_ENV: process.env.NODE_ENV || 'development'
 };

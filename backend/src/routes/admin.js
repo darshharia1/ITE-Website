@@ -100,4 +100,34 @@ router.post('/upload-approved', authenticateToken, requireRole('admin'), upload.
   }
 });
 
+/**
+ * GET /api/admin/approved
+ * Fetch all approved students (Admin only)
+ */
+router.get('/approved', authenticateToken, requireRole('admin'), async (req, res) => {
+  try {
+    const { rows } = await db.query(
+      'SELECT id, email, approved_at FROM approved_students ORDER BY approved_at DESC'
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error('Fetch approved students error:', err);
+    res.status(500).json({ error: 'Failed to fetch approved students.' });
+  }
+});
+
+/**
+ * DELETE /api/admin/approved
+ * Clear all approved students (Admin only)
+ */
+router.delete('/approved', authenticateToken, requireRole('admin'), async (req, res) => {
+  try {
+    await db.query('DELETE FROM approved_students');
+    res.json({ message: 'Approved students whitelist cleared successfully.' });
+  } catch (err) {
+    console.error('Clear approved students error:', err);
+    res.status(500).json({ error: 'Failed to clear approved students.' });
+  }
+});
+
 module.exports = router;

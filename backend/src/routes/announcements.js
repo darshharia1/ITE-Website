@@ -135,4 +135,20 @@ router.post('/', authenticateToken, requireRole('admin'), async (req, res) => {
   }
 });
 
+/**
+ * DELETE /api/announcements/:id
+ * Delete an announcement (Admin only)
+ */
+router.delete('/:id', authenticateToken, requireRole('admin'), async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { rowCount } = await db.query('DELETE FROM announcements WHERE id = $1', [id]);
+    if (rowCount === 0) return res.status(404).json({ error: 'Announcement not found.' });
+    res.json({ message: 'Announcement deleted.' });
+  } catch (err) {
+    console.error('Delete announcement error:', err);
+    res.status(500).json({ error: 'Failed to delete announcement.' });
+  }
+});
+
 module.exports = router;

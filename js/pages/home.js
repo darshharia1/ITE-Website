@@ -47,8 +47,13 @@ ITE.Pages.Home = (function () {
 </footer>`;
   }
 
-  function render() {
-    const startups = ITE.Data.getPrevStartups();
+  async function render() {
+    let startups = [];
+    try {
+      startups = await ITE.Data.getPrevStartups();
+    } catch (err) {
+      console.error('Failed to load historical startups:', err);
+    }
     const latest5 = startups.slice(0,5);
     const currentYear = new Date().getFullYear();
     const nextYearStr = (currentYear + 1).toString().slice(-2);
@@ -173,12 +178,16 @@ ${_renderFooter()}
       const err = document.getElementById('login-err');
       const btn = document.getElementById('l-btn');
       btn.disabled = true; btn.textContent = 'Signing in...';
-      setTimeout(() => {
-        const res = ITE.Auth.login(document.getElementById('l-email').value.trim(), document.getElementById('l-pass').value);
+      
+      const email = document.getElementById('l-email').value.trim();
+      const pass = document.getElementById('l-pass').value;
+
+      setTimeout(async () => {
+        const res = await ITE.Auth.login(email, pass);
         if (res.success) {
-          ITE.App.toast('Welcome back, ' + res.user.name.split(' ')[0] + '.', 'success');
+          ITE.App.toast('Welcome back, ' + (res.user.full_name || res.user.name || 'User').split(' ')[0] + '.', 'success');
           document.getElementById('page-content').style.padding = '';
-          ITE.App.route();
+          await ITE.App.route();
         } else {
           err.style.display='block'; err.textContent = res.error;
           btn.disabled=false; btn.textContent='Sign In';
@@ -231,20 +240,29 @@ ${_renderFooter()}
       const err = document.getElementById('reg-err');
       const btn = document.getElementById('r-btn');
       btn.disabled=true; btn.textContent='Creating account...';
-      setTimeout(() => {
-        const res = ITE.Auth.register({
-          name: document.getElementById('r-name').value.trim(),
-          rollNo: document.getElementById('r-roll').value.trim(),
-          email: document.getElementById('r-email').value.trim(),
-          branch: document.getElementById('r-branch').value,
-          skills: document.getElementById('r-skills').value,
-          interests: document.getElementById('r-interests').value,
-          password: document.getElementById('r-pass').value,
+      
+      const name = document.getElementById('r-name').value.trim();
+      const rollNo = document.getElementById('r-roll').value.trim();
+      const email = document.getElementById('r-email').value.trim();
+      const branch = document.getElementById('r-branch').value;
+      const skills = document.getElementById('r-skills').value;
+      const interests = document.getElementById('r-interests').value;
+      const password = document.getElementById('r-pass').value;
+
+      setTimeout(async () => {
+        const res = await ITE.Auth.register({
+          name,
+          rollNo,
+          email,
+          branch,
+          skills,
+          interests,
+          password
         });
         if (res.success) {
           ITE.App.toast('Account created successfully.', 'success');
           document.getElementById('page-content').style.padding='';
-          ITE.App.route();
+          await ITE.App.route();
         } else {
           err.style.display='block'; err.textContent=res.error;
           btn.disabled=false; btn.textContent='Create Account';
@@ -254,9 +272,14 @@ ${_renderFooter()}
     ITE.App.applyTheme(localStorage.getItem('ite_theme') || 'light');
   }
 
-  function renderAllStartups() {
+  async function renderAllStartups() {
     const el = document.getElementById('page-content');
-    const all = ITE.Data.getPrevStartups();
+    let all = [];
+    try {
+      all = await ITE.Data.getPrevStartups();
+    } catch (err) {
+      console.error('Failed to load historical startups:', err);
+    }
     const batches = [...new Set(all.map(s=>s.batch))].sort().reverse();
 
     el.innerHTML = `<div class="all-startups-page">

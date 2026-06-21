@@ -16,9 +16,33 @@ const submissionSchema = z.object({
  */
 router.get('/', authenticateToken, async (req, res) => {
   try {
-    const { rows } = await db.query(
-      'SELECT id, title, description, due_date, created_at FROM tasks ORDER BY due_date ASC'
+    const user_id = req.user.id;
+    
+    // Get team_id for the user
+    const memberCheck = await db.query(
+      'SELECT team_id FROM team_members WHERE user_id = $1',
+      [user_id]
     );
+    const team_id = memberCheck.rows[0]?.team_id || null;
+
+    let rows;
+    if (team_id) {
+      const result = await db.query(
+        `SELECT t.id, t.title, t.description, t.due_date, t.created_at,
+                ts.submission_link, ts.graded_status, ts.created_at as submitted_at
+         FROM tasks t
+         LEFT JOIN task_submissions ts ON t.id = ts.task_id AND ts.team_id = $1
+         ORDER BY t.due_date ASC`,
+        [team_id]
+      );
+      rows = result.rows;
+    } else {
+      const result = await db.query(
+        `SELECT id, title, description, due_date, created_at FROM tasks ORDER BY due_date ASC`
+      );
+      rows = result.rows;
+    }
+    
     res.json(rows);
   } catch (err) {
     console.error('Fetch tasks error:', err);

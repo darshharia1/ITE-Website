@@ -39,9 +39,9 @@ ITE.App = (function () {
   }
 
   /* ---- Router ---- */
-  function route() {
+  async function route() {
     const hash = window.location.hash.replace('#', '') || '/';
-    const user = ITE.Auth.getCurrentUser();
+    const user = await ITE.Auth.getCurrentUser();
     
     // Auto-close mobile sidebar on page navigation
     document.getElementById('sidebar')?.classList.remove('mobile-open');

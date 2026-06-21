@@ -77,8 +77,19 @@ All seeded testing accounts use the default password: **`password123`**
 
 ---
 
-## 6. GitHub Branch Updates
+## 6. Dark Mode Toggle & Theme Synchronization Fix
+* **Objective**: Resolve issues where the dark mode toggle button ceased to function due to dynamic DOM updates (like login redirections) detaching listeners, and prevent light-flash flicker on boot.
+* **Changes**:
+  * **File Created**: [theme.js](file:///Users/parthlande2006/.gemini/antigravity/scratch/ITE-Website/js/theme.js)
+  * **Flicker Mitigation**: Included in the `<head>` of [index.html](file:///Users/parthlande2006/.gemini/antigravity/scratch/ITE-Website/index.html) and [acm-chapter.html](file:///Users/parthlande2006/.gemini/antigravity/scratch/ITE-Website/acm-chapter.html) so it executes synchronously before rendering, reading the theme choice (`theme` or `ite_theme` local storage keys) and applying the `.dark` class + `data-theme` attribute to the `<html>` element instantly.
+  * **Event Delegation**: Implemented a single document-level listener catching clicks on all theme toggles (`#theme-toggle-app`, `.theme-toggle-btn`) dynamically, meaning listeners never detach during dynamic routing.
+  * **Dual LocalStorage Keys**: Keeps both the user's requested key `'theme'` and the legacy `'ite_theme'` synchronized automatically.
+
+---
+
+## 7. GitHub Branch Updates
 * **Action**: Committed all modifications and new code entities, and pushed them to the remote GitHub branch.
 * **Repository**: `github.com:parthlande24/ITE-Website.git`
 * **Branch**: `BACKEND`
-* **Commit Reference**: `569dd9a..7414999`
+* **Commit Reference**: `569dd9a..2d74e6a`
+

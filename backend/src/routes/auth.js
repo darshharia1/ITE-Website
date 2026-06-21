@@ -27,7 +27,7 @@ router.post('/register', async (req, res) => {
     );
 
     if (approvedCheck.rows.length === 0) {
-      return res.status(403).json({ error: 'This email is not pre-approved for signup.' });
+      return res.status(403).json({ error: "Your email is not on the approved whitelist for this year's batch." });
     }
 
     // b. Check if user already exists

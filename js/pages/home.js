@@ -47,8 +47,9 @@ ITE.Pages.Home = (function () {
 </footer>`;
   }
 
-  function render() {
-    const startups = ITE.Data.getPrevStartups();
+  async function render() {
+    let startups = [];
+    try { startups = await ITE.Data.getPrevStartups(); } catch(e) { startups = []; }
     const latest5 = startups.slice(0,5);
     const currentYear = new Date().getFullYear();
     const nextYearStr = (currentYear + 1).toString().slice(-2);
@@ -270,9 +271,10 @@ ${_renderFooter()}
     ITE.App.applyTheme(localStorage.getItem('ite_theme') || 'light');
   }
 
-  function renderAllStartups() {
+  async function renderAllStartups() {
     const el = document.getElementById('page-content');
-    const all = ITE.Data.getPrevStartups();
+    let all = [];
+    try { all = await ITE.Data.getPrevStartups(); } catch(e) { all = []; }
     const batches = [...new Set(all.map(s=>s.batch))].sort().reverse();
 
     el.innerHTML = `<div class="all-startups-page">

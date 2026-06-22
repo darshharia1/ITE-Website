@@ -50,7 +50,15 @@ ITE.Auth = (function () {
 
   // ── getCurrentUser — sync read from cache ────────────────────────────────
   function getCurrentUser() {
-    return _loadCached();
+    const cached = _loadCached();
+    if (cached && cached.email) {
+      // FIX: The backend DB seeds random UUIDs which mismatch the frontend localStorage UIDs.
+      // To ensure perfect sync on localhost without rewriting everything to hit the backend API,
+      // we grab the frontend's up-to-date localStorage version of the user by email.
+      const localUser = ITE.Data.getUserByEmail(cached.email);
+      if (localUser) return localUser;
+    }
+    return cached;
   }
 
   // ── refreshMe — fetch fresh user from server, update cache ───────────────

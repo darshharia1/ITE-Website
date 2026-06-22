@@ -105,7 +105,14 @@ ITE.Data = (function () {
   }
 
   /* ---- Users ---- */
-  const getUsers  = () => get(K.users) || [];
+  const getUsers  = () => {
+    const users = get(K.users) || [];
+    const teams = get(K.teams) || [];
+    return users.map(u => {
+      if (u && u.role === 'mentor') u.assignedTeams = teams.filter(t => t.mentorId === u.id).map(t => t.id);
+      return u;
+    });
+  };
   const saveUsers = (u) => set(K.users, u);
   const getUserById    = (id) => getUsers().find(u => u.id === id) || null;
   const getUserByEmail = (e)  => getUsers().find(u => u.email.toLowerCase() === e.toLowerCase()) || null;

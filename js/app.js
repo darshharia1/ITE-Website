@@ -68,6 +68,7 @@ ITE.App = (function () {
     if (hash === '/all-startups') { return ITE.Pages.Home.renderAllStartups(); }
     if (hash === '/faculty')      { return ITE.Pages.Home.renderFaculty(); }
     if (hash === '/about')        { return ITE.Pages.About.render(); }
+
     if (!user) {
       if (hash === '/login')    return ITE.Pages.Home.renderLogin();
       if (hash === '/register') return ITE.Pages.Home.renderRegister();

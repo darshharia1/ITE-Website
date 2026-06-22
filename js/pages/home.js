@@ -37,13 +37,13 @@ ITE.Pages.Home = (function () {
         <span class="vnit-footer-text">Visvesvaraya National Institute of Technology<br><strong>VNIT Nagpur</strong></span>
       </a>
       <div class="partner-divider"></div>
-      <a href="acm-chapter.html" class="acm-footer-link">
+      <a href="acm.html" class="acm-footer-link">
         <img src="assets/image_2f40b9.png" alt="ACM Student Chapter VNIT Logo" class="acm-footer-logo">
         <span class="acm-footer-text">Technical Collaborators<br><strong>ACM Student Chapter, VNIT</strong></span>
       </a>
     </div>
   </div>
-  <div class="home-footer-copy">© 2024 <a href="https://vnit.ac.in/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">VNIT Nagpur</a>. All rights reserved. Engineered with 🩵 by <a href="acm-chapter.html" style="color:inherit;text-decoration:underline;font-weight:600">ACM Student Chapter, VNIT</a>.</div>
+  <div class="home-footer-copy">© 2024 <a href="https://vnit.ac.in/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">VNIT Nagpur</a>. All rights reserved. Engineered with 🩵 by <a href="acm.html" style="color:inherit;text-decoration:underline;font-weight:600">ACM Student Chapter, VNIT</a>.</div>
 </footer>`;
   }
 
@@ -189,8 +189,8 @@ ${_renderFooter()}
       const err = document.getElementById('login-err');
       const btn = document.getElementById('l-btn');
       btn.disabled = true; btn.textContent = 'Signing in...';
-      setTimeout(() => {
-        const res = ITE.Auth.login(document.getElementById('l-email').value.trim(), document.getElementById('l-pass').value);
+      setTimeout(async () => {
+        const res = await ITE.Auth.login(document.getElementById('l-email').value.trim(), document.getElementById('l-pass').value);
         if (res.success) {
           ITE.App.toast('Welcome back, ' + res.user.name.split(' ')[0] + '.', 'success');
           document.getElementById('page-content').style.padding = '';

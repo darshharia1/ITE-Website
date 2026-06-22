@@ -43,8 +43,16 @@ class StageRequest(BaseModel):
 
 
 @router.get("")
-def list_teams(db: Session = Depends(get_db)):
-    return [team_to_dict(t) for t in db.query(Team).all()]
+def list_teams(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    query = db.query(Team)
+    if current_user.role == "student":
+        if current_user.team_id:
+            query = query.filter(Team.id == current_user.team_id)
+        else:
+            return []
+    elif current_user.role == "mentor":
+        query = query.filter(Team.mentor_id == current_user.id)
+    return [team_to_dict(t) for t in query.all()]
 
 
 @router.post("")

@@ -247,8 +247,8 @@ ${_renderFooter()}
       const err = document.getElementById('reg-err');
       const btn = document.getElementById('r-btn');
       btn.disabled=true; btn.textContent='Creating account...';
-      setTimeout(() => {
-        const res = ITE.Auth.register({
+      setTimeout(async () => {
+        const res = await ITE.Auth.register({
           name: document.getElementById('r-name').value.trim(),
           rollNo: document.getElementById('r-roll').value.trim(),
           email: document.getElementById('r-email').value.trim(),
@@ -258,9 +258,13 @@ ${_renderFooter()}
           password: document.getElementById('r-pass').value,
         });
         if (res.success) {
+          // Clear auto-login
+          sessionStorage.removeItem('ite_current_user');
+          sessionStorage.removeItem('ite_jwt');
+          
           ITE.App.toast('Account created successfully.', 'success');
           document.getElementById('page-content').style.padding='';
-          ITE.App.route();
+          window.location.hash = '#/login';
         } else {
           err.style.display='block'; err.textContent=res.error;
           btn.disabled=false; btn.textContent='Create Account';

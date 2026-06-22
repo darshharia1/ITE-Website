@@ -57,17 +57,24 @@ async def bulk_approved(file: UploadFile = File(...), db: Session = Depends(get_
         raise HTTPException(status_code=403, detail="Admin only")
     content = await file.read()
     reader = csv.DictReader(io.StringIO(content.decode()))
+    if reader.fieldnames:
+        reader.fieldnames = [str(f).strip().lower() for f in reader.fieldnames]
+        
     added = 0
     for row in reader:
-        email = row.get("email", "").strip()
+        email = row.get("email", row.get("email address", "")).strip()
         if not email:
             continue
+            
+        name = row.get("name", row.get("student name", "")).strip()
+        roll_no = row.get("roll_no", row.get("rollno", row.get("enrollment no.", ""))).strip()
+        
         exists = db.query(ApprovedStudent).filter(ApprovedStudent.email == email).first()
         if not exists:
             db.add(ApprovedStudent(
                 id=str(uuid.uuid4()),
-                name=row.get("name", "").strip(),
-                roll_no=row.get("rollNo", row.get("roll_no", "")).strip(),
+                name=name,
+                roll_no=roll_no,
                 email=email,
             ))
             added += 1

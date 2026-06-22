@@ -451,16 +451,37 @@ ${mentors.map(m=>{const mteams=teams.filter(t=>t.mentorId===m.id);return`<div cl
     }
   }
 
-  function _processCSV() {
+  async function _processCSV() {
     const file=document.getElementById('csv-file')?.files?.[0];
     if(!file){ITE.App.toast('Please select a CSV file.','error');return;}
+    
+    // Upload to backend
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      await ITE.API.upload('/users/approved', formData);
+    } catch(err) {
+      console.error(err);
+      ITE.App.toast('Failed to upload to backend: ' + err.message, 'error');
+      return;
+    }
+
     const reader=new FileReader();
     reader.onload=e=>{
       const lines=e.target.result.split('\n').filter(l=>l.trim());
       const data=[];
       lines.slice(1).forEach(line=>{
         const parts=line.split(',').map(p=>p.trim().replace(/^["']|["']$/g,''));
-        if(parts.length>=3) data.push({name:parts[0],rollNo:parts[1],email:parts[2]});
+        if(parts.length>=3) {
+          // Check if parts[2] looks like an email. If parts has 4 (S.No included), email is parts[3]
+          let email = parts[2];
+          let name = parts[0];
+          let rollNo = parts[1];
+          if(parts.length === 4 && parts[3].includes('@')) {
+            name = parts[1]; rollNo = parts[2]; email = parts[3];
+          }
+          data.push({name, rollNo, email});
+        }
       });
       ITE.Data.saveApproved(data);
       const r=document.getElementById('csv-result');

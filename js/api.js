@@ -6,7 +6,7 @@
 window.ITE = window.ITE || {};
 
 ITE.API = (function () {
-  const BASE = 'http://localhost:8000/api';
+  const BASE = '/api';
   const TOKEN_KEY = 'ite_jwt';
 
   function getToken() {

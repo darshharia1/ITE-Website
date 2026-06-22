@@ -1,7 +1,25 @@
 services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ite_user
+      POSTGRES_PASSWORD: ite_password
+      POSTGRES_DB: ite_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
   ite-web:
     build: .
     ports:
       - "8000:8000"
     volumes:
       - .:/app
+    environment:
+      DATABASE_URL: postgresql://ite_user:ite_password@db:5432/ite_db
+    depends_on:
+      - db
+
+volumes:
+  pgdata:

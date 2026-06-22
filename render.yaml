@@ -1,0 +1,18 @@
+databases:
+  - name: ite-postgres
+    databaseName: ite_db
+    user: ite_user
+    plan: free
+
+services:
+  - type: web
+    name: ite-backend
+    env: docker
+    plan: free
+    dockerContext: .
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ite-postgres
+          property: connectionString

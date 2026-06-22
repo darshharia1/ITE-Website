@@ -1,0 +1,15 @@
+.git
+.gitignore
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+ite.db
+backend/ite.db
+docker-compose.yml
+render.yaml
+*.csv

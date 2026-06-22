@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# SQLite DB (regenerated from seed on startup)
+backend/ite.db
+backend/test.db
+
+# Environment
+backend/.env
+
+# Virtual environments
+venv/
+env/
+.venv/

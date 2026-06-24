@@ -34,6 +34,13 @@ def pending_invites(db: Session = Depends(get_db), current_user: User = Depends(
     ).all()
     return [inv_to_dict(i) for i in invs]
 
+@router.get("/sent")
+def sent_invites(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    invs = db.query(Invitation).filter(
+        Invitation.from_user_id == current_user.id
+    ).all()
+    return [inv_to_dict(i) for i in invs]
+
 
 @router.post("")
 def send_invite(body: SendInviteRequest, db: Session = Depends(get_db),

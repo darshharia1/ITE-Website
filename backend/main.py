@@ -16,7 +16,7 @@ from models import Base
 from seed import seed
 
 # ── Import all routers ────────────────────────────────────────────────────────
-from routers import auth, users, teams, invitations, tasks, submissions, announcements, prev_startups
+from routers import auth, users, teams, invitations, tasks, submissions, announcements, prev_startups, admin
 
 # ── Create tables & seed ──────────────────────────────────────────────────────
 Base.metadata.create_all(bind=engine)
@@ -49,6 +49,7 @@ app.include_router(tasks.router)
 app.include_router(submissions.router)
 app.include_router(announcements.router)
 app.include_router(prev_startups.router)
+app.include_router(admin.router)
 
 
 @app.get("/api/health")

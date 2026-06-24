@@ -27,13 +27,11 @@ ITE.Pages.Admin = (function () {
       ITE.App.pc().innerHTML = `
 <div class="page-header"><div class="page-title">Admin Dashboard</div><div class="page-subtitle">${new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</div></div>
 <div class="stats-grid">
-  ${[
-    ['Total Students', students.length, `${students.filter(s=>s?.teamId).length} in teams`, '#2563EB'],
-    ['Active Teams', teams.length, 'Startup ventures', '#10B981'],
-    ['Mentors', mentors.length, 'Faculty & industry', '#8B5CF6'],
-    ['Announcements', anns.length, 'Total posted', '#F59E0B'],
-    ['Tasks', tasks.length, `${subs.length} submissions`, '#EF4444']
-  ].map(([lbl,val,sub,col])=>`<div class="stat-card" style="--c:${col}"><div class="stat-value">${val}</div><div class="stat-label">${lbl}</div><div class="stat-sub">${sub}</div></div>`).join('')}
+  <div class="stat-card" style="--c:#2563EB"><div class="stat-value" id="dash-stat-students">-</div><div class="stat-label">Total Students</div><div class="stat-sub" id="dash-sub-students">Loading...</div></div>
+  <div class="stat-card" style="--c:#10B981"><div class="stat-value" id="dash-stat-teams">-</div><div class="stat-label">Active Teams</div><div class="stat-sub">Startup ventures</div></div>
+  <div class="stat-card" style="--c:#8B5CF6"><div class="stat-value" id="dash-stat-mentors">-</div><div class="stat-label">Mentors</div><div class="stat-sub">Faculty & industry</div></div>
+  <div class="stat-card" style="--c:#F59E0B"><div class="stat-value" id="dash-stat-anns">-</div><div class="stat-label">Announcements</div><div class="stat-sub">Total posted</div></div>
+  <div class="stat-card" style="--c:#EF4444"><div class="stat-value" id="dash-stat-tasks">-</div><div class="stat-label">Tasks</div><div class="stat-sub" id="dash-sub-tasks">Loading...</div></div>
 </div>
 <div class="two-col">
   <div class="card">
@@ -51,9 +49,35 @@ ITE.Pages.Admin = (function () {
   ${[...teams].sort((a,b)=>(b?.stage||0)-(a?.stage||0)).map((t,i)=>{const m=ITE.Data.getUserById(t?.mentorId);return`<tr><td><strong>#${i+1}</strong></td><td><div style="font-weight:600">${t?.startupName||'Unnamed'}</div></td><td><span class="badge badge-blue">${(t?.industry||'').split(' ')[0]||'Other'}</span></td><td>${m?m.name:'—'}</td><td><span class="badge ${(t?.stage||0)>=4?'badge-green':'badge-blue'}">${STAGES[t?.stage||0]?.label||'Stage'}</span></td><td><div class="mini-progress" style="min-width:90px">${STAGES.map((_,j)=>`<div class="mini-step ${j<(t?.stage||0)?'done':j===(t?.stage||0)?'active':''}"></div>`).join('')}</div></td></tr>`}).join('')}
   </tbody></table></div>
 </div>`;
+
+      fetchDashboardStats();
     } catch (e) {
       ITE.App.pc().innerHTML = `<div style="color:red; padding:20px; background:white;"><h3>Error boundary caught error:</h3><pre>${e.stack}</pre></div>`;
       console.error(e);
+    }
+  }
+
+  async function fetchDashboardStats() {
+    try {
+      const stats = await ITE.API.get('/admin/stats-summary');
+      if(stats) {
+        document.getElementById('dash-stat-students').textContent = stats.students.total;
+        document.getElementById('dash-sub-students').textContent = `${stats.students.in_teams} in teams`;
+        document.getElementById('dash-stat-teams').textContent = stats.teams;
+        document.getElementById('dash-stat-mentors').textContent = stats.mentors;
+        document.getElementById('dash-stat-anns').textContent = stats.announcements;
+        document.getElementById('dash-stat-tasks').textContent = stats.tasks.total;
+        document.getElementById('dash-sub-tasks').textContent = `${stats.tasks.submissions} submissions`;
+      }
+    } catch(err) {
+      console.error('Failed to load dashboard stats:', err);
+      document.getElementById('dash-stat-students').textContent = "0";
+      document.getElementById('dash-sub-students').textContent = "Error loading";
+      document.getElementById('dash-stat-teams').textContent = "0";
+      document.getElementById('dash-stat-mentors').textContent = "0";
+      document.getElementById('dash-stat-anns').textContent = "0";
+      document.getElementById('dash-stat-tasks').textContent = "0";
+      document.getElementById('dash-sub-tasks').textContent = "Error loading";
     }
   }
 

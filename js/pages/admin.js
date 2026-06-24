@@ -7,20 +7,10 @@ ITE.Pages = ITE.Pages || {};
 ITE.Pages.Admin = (function () {
 
   /* ---- Dashboard ---- */
-  function renderDashboard() {
+  async function renderDashboard() {
     try {
-      const students_raw = ITE.Data.getStudents();
-      const students = Array.isArray(students_raw) ? students_raw : (students_raw?.items || []);
-      const mentors_raw  = ITE.Data.getMentors();
-      const mentors = Array.isArray(mentors_raw) ? mentors_raw : (mentors_raw?.items || []);
       const teams_raw    = ITE.Data.getTeams();
       const teams = Array.isArray(teams_raw) ? teams_raw : (teams_raw?.items || []);
-      const anns_raw     = ITE.Data.getAnnouncements();
-      const anns = Array.isArray(anns_raw) ? anns_raw : (anns_raw?.items || []);
-      const tasks_raw    = ITE.Data.getTasks();
-      const tasks = Array.isArray(tasks_raw) ? tasks_raw : (tasks_raw?.items || []);
-      const subs_raw     = ITE.Data.getSubmissions();
-      const subs = Array.isArray(subs_raw) ? subs_raw : (subs_raw?.items || []);
       const STAGES = ITE.App.STAGES || [];
       const stageCounts = STAGES.map((_,i) => teams.filter(t=>t?.stage===i).length);
 
@@ -40,7 +30,7 @@ ITE.Pages.Admin = (function () {
   </div>
   <div class="card">
     <div class="card-header"><div class="card-title">Recent Announcements</div><a href="#/admin/announcements" class="btn btn-ghost btn-sm">View All</a></div>
-    ${anns.slice(0,4).map(a=>`<div class="ann-card ${a?.createdByRole}-ann"><div class="ann-meta"><span class="badge ${a?.createdByRole==='admin'?'badge-blue':'badge-green'}">${a?.createdByRole||'unknown'}</span><span style="font-size:.72rem;color:var(--text-muted)">${a?.createdByName||'Unknown'}</span></div><div class="ann-title">${a?.title||'Untitled'}</div><div class="ann-date">${a?.createdAt ? new Date(a.createdAt).toLocaleDateString('en-IN') : ''}</div></div>`).join('')}
+    <div id="dash-recent-anns"><div style="padding:20px;text-align:center;color:var(--text-muted);font-size:.85rem">Loading live announcements...</div></div>
   </div>
 </div>
 <div class="card mt-6">
@@ -50,10 +40,41 @@ ITE.Pages.Admin = (function () {
   </tbody></table></div>
 </div>`;
 
+      // Fire both API calls concurrently — single source of truth for announcements
       fetchDashboardStats();
+      fetchRecentAnnouncements();
     } catch (e) {
       ITE.App.pc().innerHTML = `<div style="color:red; padding:20px; background:white;"><h3>Error boundary caught error:</h3><pre>${e.stack}</pre></div>`;
       console.error(e);
+    }
+  }
+
+  async function fetchRecentAnnouncements() {
+    const container = document.getElementById('dash-recent-anns');
+    if (!container) return;
+    try {
+      // Same endpoint used by the main Announcements page — single source of truth
+      const anns = await ITE.API.get('/announcements');
+      // Sort newest-first and take top 4
+      const recent = (Array.isArray(anns) ? anns : [])
+        .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+        .slice(0, 4);
+      if (recent.length === 0) {
+        container.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:.85rem">No announcements yet.</div>`;
+        return;
+      }
+      container.innerHTML = recent.map(a => `
+        <div class="ann-card ${a?.createdByRole}-ann">
+          <div class="ann-meta">
+            <span class="badge ${a?.createdByRole==='admin'?'badge-blue':'badge-green'}">${(a?.createdByRole||'unknown').toUpperCase()}</span>
+            <span style="font-size:.72rem;color:var(--text-muted)">${a?.createdByName||'Unknown'}</span>
+          </div>
+          <div class="ann-title">${a?.title||'Untitled'}</div>
+          <div class="ann-date">${a?.createdAt ? new Date(a.createdAt).toLocaleDateString('en-IN') : ''}</div>
+        </div>`).join('');
+    } catch(err) {
+      console.error('Failed to load recent announcements:', err);
+      if (container) container.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:.85rem">Could not load announcements.</div>`;
     }
   }
 

@@ -146,13 +146,13 @@ myTeams.map(t=>_fullTeamView(t, user, students)).join('')}`;
       const user = ITE.Auth.getCurrentUser();
       const team = await ITE.API.get('/teams/' + teamId);
       const students = await ITE.API.get('/users/students');
-      const eligible = students.filter(s=>s.mentorId===user.id && (!s.teamId||s.teamId===teamId));
+      const eligible = students.filter(s => !s.teamId || s.teamId === teamId);
       
       ITE.App.showModal(`<div class="modal">
 <div class="modal-header"><div class="modal-title">Assign CEO – ${team?.startupName}</div><button class="modal-close btn">✕</button></div>
 <div class="modal-body">
   <p style="font-size:.875rem;color:var(--text-secondary);margin-bottom:14px">The selected student will be granted executive privileges to configure the startup profile and invite team members.</p>
-  ${eligible.length===0?`<div class="empty-state"><p>No eligible students. Students must be assigned under your mentorship.</p></div>`:
+  ${eligible.length===0?`<div class="empty-state"><p>No eligible students found. All registered students are already assigned to a team.</p></div>`:
   `<div class="form-group"><label class="form-label">Select Student</label><select id="ceo-sel" class="form-control"><option value="">Choose student…</option>${eligible.map(s=>`<option value="${s.id}">${s.name} (${s.rollNo}) · ${s.branch}</option>`).join('')}</select></div>`}
 </div>
 <div class="modal-footer"><button class="btn btn-ghost" onclick="ITE.App.closeModal()">Cancel</button><button class="btn btn-primary" onclick="ITE.Pages.Mentor._submitCEO('${teamId}')">Assign CEO</button></div>

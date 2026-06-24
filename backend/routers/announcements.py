@@ -26,25 +26,38 @@ class CreateAnnouncementRequest(BaseModel):
     teamId: Optional[str] = None
 
 
+from sqlalchemy import or_
+
 @router.get("")
 def list_announcements(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    all_anns = db.query(Announcement).order_by(Announcement.created_at.desc()).all()
-    result = []
-    for a in all_anns:
-        r = a.recipients
-        if r == "all":
-            result.append(ann_to_dict(a))
-        elif r == "students" and current_user.role == "student":
-            result.append(ann_to_dict(a))
-        elif r == "mentors" and current_user.role == "mentor":
-            result.append(ann_to_dict(a))
-        elif r.startswith("team-"):
-            team_id = r.replace("team-", "")
-            if current_user.team_id == team_id or current_user.role in ("admin", "mentor"):
-                result.append(ann_to_dict(a))
-        elif current_user.role == "admin":
-            result.append(ann_to_dict(a))
-    return result
+    query = db.query(Announcement)
+
+    if current_user.role == "admin":
+        # Admin can see all global and targeted announcements
+        pass
+    elif current_user.role == "mentor":
+        # Mentors see global, mentor-specific, and all team announcements
+        query = query.filter(
+            or_(
+                Announcement.recipients == "all",
+                Announcement.recipients == "mentors",
+                Announcement.recipients.startswith("team-")
+            )
+        )
+    elif current_user.role == "student":
+        # Students see global, student-specific, and their own team announcements
+        filters = [
+            Announcement.recipients == "all",
+            Announcement.recipients == "students"
+        ]
+        if current_user.team_id:
+            filters.append(Announcement.recipients == f"team-{current_user.team_id}")
+        query = query.filter(or_(*filters))
+
+    # Optimal SQL ordering and fetching
+    all_anns = query.order_by(Announcement.created_at.desc()).all()
+    
+    return [ann_to_dict(a) for a in all_anns]
 
 
 @router.post("")

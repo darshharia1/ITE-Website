@@ -295,22 +295,28 @@ ITE.Pages.Admin = (function () {
   }
 
   /* ---- Mentors ---- */
-  function renderMentors() {
-    const mentors=ITE.Data.getMentors();
-    const teams=ITE.Data.getTeams();
-    ITE.App.pc().innerHTML = `
+  async function renderMentors() {
+    ITE.App.pc().innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted)">Loading live mentor data...</div>`;
+    try {
+      const mentors = await ITE.API.get('/users/mentors');
+      const teams_raw = ITE.Data.getTeams();
+      const teams = Array.isArray(teams_raw) ? teams_raw : (teams_raw?.items || []);
+      ITE.App.pc().innerHTML = `
 <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px">
   <div><div class="page-title">Mentors</div><div class="page-subtitle">${mentors.length} faculty and industry mentors</div></div>
   <button class="btn btn-primary" onclick="ITE.Pages.Admin.showAddMentor()">Add Mentor</button>
 </div>
 <div class="cards-grid">
-${mentors.map(m=>{const mteams=teams.filter(t=>t.mentorId===m.id);return`<div class="card">
+${mentors.length===0?`<div class="empty-state card"><h3>No mentors added yet</h3></div>`:mentors.map(m=>{const mteams=teams.filter(t=>t.mentorId===m.id);return`<div class="card">
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:50px;height:50px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#FFF">${m.avatar}</div><div><div style="font-family:var(--font-display);font-size:1rem;font-weight:700">${m.name}</div><div style="font-size:.8rem;color:var(--text-muted)">${m.specialization||'Faculty Mentor'}</div></div></div>
   <div style="font-size:.8rem;color:var(--text-secondary);margin-bottom:10px">${m.email}</div>
   <div style="margin-bottom:12px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:5px">Teams (${mteams.length})</div>${mteams.length?mteams.map(t=>`<span class="badge badge-blue" style="margin:2px">${t.startupName}</span>`).join(''):`<span style="font-size:.8rem;color:var(--text-muted)">No assigned teams</span>`}</div>
-  <div style="display:flex;gap:7px"><button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Admin.showAssignTeam('${m.id}')">Assign Team</button><button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Admin.showEditMentor('${m.id}')">Edit</button><button class="btn btn-danger btn-sm" onclick="ITE.Pages.Admin._deleteMentor('${m.id}')">Remove</button></div>
+  <div style="display:flex;gap:7px"><button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Admin.showAssignTeam('${m.id}')">Assign Team</button><button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Admin.showEditMentor('${m.id}','${(m.name||'').replace(/'/g,'')}','${(m.email||'').replace(/'/g,'')}','${(m.specialization||'').replace(/'/g,'')}')" >Edit</button><button class="btn btn-danger btn-sm" onclick="ITE.Pages.Admin._deleteMentor('${m.id}')">Remove</button></div>
 </div>`}).join('')}
 </div>`;
+    } catch(err) {
+      ITE.App.pc().innerHTML = `<div class="empty-state card"><h3>Failed to load mentors</h3><p>${err.message}</p></div>`;
+    }
   }
 
   function showAddMentor() {
@@ -326,37 +332,46 @@ ${mentors.map(m=>{const mteams=teams.filter(t=>t.mentorId===m.id);return`<div cl
 </div>`);
   }
 
-  function _submitMentor() {
+  async function _submitMentor() {
     const name=document.getElementById('nm-name')?.value?.trim();
     const email=document.getElementById('nm-email')?.value?.trim();
     const spec=document.getElementById('nm-spec')?.value?.trim();
     const pass=document.getElementById('nm-pass')?.value;
     if(!name||!email){ITE.App.toast('Name and email are required.','error');return;}
-    if(ITE.Data.getUserByEmail(email)){ITE.App.toast('Email is already registered.','error');return;}
-    const av=name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
-    ITE.Data.createUser({name,email,password:pass||'mentor123',role:'mentor',avatar:av,specialization:spec,profileComplete:true,assignedTeams:[]});
-    ITE.App.toast('Mentor successfully added.','success'); ITE.App.closeModal(); renderMentors();
+    try {
+      await ITE.API.post('/users/mentors', { name, email, password: pass||'mentor123', specialization: spec });
+      ITE.App.toast('Mentor successfully added to live database.','success'); 
+      ITE.App.closeModal(); 
+      renderMentors();
+    } catch(err) {
+      ITE.App.toast(err.message,'error');
+    }
   }
 
-  function showEditMentor(id) {
-    const m = ITE.Data.getUserById(id); if(!m) return;
+  function showEditMentor(id, name='', email='', spec='') {
     ITE.App.showModal(`<div class="modal">
 <div class="modal-header"><div class="modal-title">Edit Mentor</div><button class="modal-close btn">✕</button></div>
 <div class="modal-body">
-  <div class="form-group"><label class="form-label">Full Name</label><input id="em-name" class="form-control" value="${m.name}"></div>
-  <div class="form-group"><label class="form-label">Email</label><input id="em-email" class="form-control" value="${m.email}" disabled></div>
-  <div class="form-group"><label class="form-label">Specialization</label><input id="em-spec" class="form-control" value="${m.specialization||''}"></div>
+  <div class="form-group"><label class="form-label">Full Name</label><input id="em-name" class="form-control" value="${name}"></div>
+  <div class="form-group"><label class="form-label">Email</label><input id="em-email" class="form-control" value="${email}" disabled></div>
+  <div class="form-group"><label class="form-label">Specialization</label><input id="em-spec" class="form-control" value="${spec}"></div>
 </div>
-<div class="modal-footer"><button class="btn btn-ghost" onclick="ITE.App.closeModal()">Cancel</button><button class="btn btn-primary" onclick="ITE.Pages.Admin._submitEditMentor('${m.id}')">Save</button></div>
+<div class="modal-footer"><button class="btn btn-ghost" onclick="ITE.App.closeModal()">Cancel</button><button class="btn btn-primary" onclick="ITE.Pages.Admin._submitEditMentor('${id}')">Save</button></div>
 </div>`);
   }
 
-  function _submitEditMentor(id) {
+  async function _submitEditMentor(id) {
     const name=document.getElementById('em-name')?.value?.trim();
     const spec=document.getElementById('em-spec')?.value?.trim();
     if(!name){ITE.App.toast('Name is required.','error');return;}
-    ITE.Data.updateUser(id, { name, specialization: spec });
-    ITE.App.toast('Mentor successfully updated.','success'); ITE.App.closeModal(); renderMentors();
+    try {
+      await ITE.API.patch('/users/' + id, { name, specialization: spec });
+      ITE.App.toast('Mentor successfully updated in live database.','success'); 
+      ITE.App.closeModal(); 
+      renderMentors();
+    } catch(err) {
+      ITE.App.toast(err.message,'error');
+    }
   }
 
   function showAssignTeam(mentorId) {
@@ -375,20 +390,28 @@ ${mentors.map(m=>{const mteams=teams.filter(t=>t.mentorId===m.id);return`<div cl
 </div>`);
   }
 
-  function _submitAssign(mId) {
+  async function _submitAssign(mId) {
     const tId=document.getElementById('at-team')?.value;
     if(!tId){ITE.App.toast('Please select a team.','error');return;}
-    const m=ITE.Data.getUserById(mId);
-    ITE.Data.updateUser(mId,{assignedTeams:[...(m?.assignedTeams||[]),tId]});
-    ITE.Data.updateTeam(tId,{mentorId:mId});
-    const team=ITE.Data.getTeamById(tId);
-    team?.members.forEach(mb=>ITE.Data.updateUser(mb.userId,{mentorId:mId}));
-    ITE.App.toast('Team successfully assigned.','success'); ITE.App.closeModal(); renderMentors();
+    try {
+      await ITE.API.patch(`/users/${mId}/assign-team?team_id=${tId}`, {});
+      ITE.App.toast('Team successfully assigned in live database.','success'); 
+      ITE.App.closeModal(); 
+      renderMentors();
+    } catch(err) {
+      ITE.App.toast(err.message,'error');
+    }
   }
 
-  function _deleteMentor(id) {
-    if(!confirm('Are you sure you want to remove this mentor?')) return;
-    ITE.Data.deleteUser(id); ITE.App.toast('Mentor successfully removed.','info'); renderMentors();
+  async function _deleteMentor(id) {
+    if(!confirm('Are you sure you want to remove this mentor? Their team assignments will be cleared.')) return;
+    try {
+      await ITE.API.del('/users/' + id);
+      ITE.App.toast('Mentor successfully removed from live database.','info'); 
+      renderMentors();
+    } catch(err) {
+      ITE.App.toast(err.message,'error');
+    }
   }
 
   /* ---- Announcements ---- */

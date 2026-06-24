@@ -2,8 +2,12 @@
 Seed script — mirrors the exact demo data from the frontend js/data.js
 Same emails, roles, teams, tasks, and announcements so the app works
 immediately on first run with the README credentials.
+
+In PRODUCTION (ENVIRONMENT=production) only the two real admin accounts
+are seeded — no demo users, teams, or tasks are created.
 """
 import uuid
+import os
 from sqlalchemy.orm import Session
 from models import User, ApprovedStudent, Team, Task, Announcement, PrevStartup, Base
 from auth import hash_password
@@ -14,10 +18,94 @@ def uid():
     return str(uuid.uuid4())
 
 
+# ── Real production admin accounts ────────────────────────────────────────────
+REAL_ADMINS = [
+    {
+        "email": "shashikant.chaudhary@vnit.ac.in",
+        "password": "vP7$kL9@mR2#qX5z",
+        "name": "Shashikant Chaudhary",
+        "avatar": "SC",
+    },
+    {
+        "email": "admin2@vnit.ac.in",
+        "password": "T4&bN8!cY6*wH3f",
+        "name": "admin",
+        "avatar": "AD",
+    },
+]
+
+# Emails that belong to demo accounts — deleted in production cleanup
+DEMO_EMAILS = {
+    "admin@vnit.ac.in",
+    "mentor-admin@vnit.ac.in",
+    "dr.sharma@vnit.ac.in",
+    "dr.patel@vnit.ac.in",
+    "aarav.mehta@students.vnit.ac.in",
+    "diya.singh@students.vnit.ac.in",
+    "rohan.kumar@students.vnit.ac.in",
+    "ananya.iyer@students.vnit.ac.in",
+    "karan.joshi@students.vnit.ac.in",
+    "nisha.verma@students.vnit.ac.in",
+    "arjun.nair@students.vnit.ac.in",
+    "pooja.desai@students.vnit.ac.in",
+    "vikram.rao@students.vnit.ac.in",
+    "priya.gupta@students.vnit.ac.in",
+}
+
+
+def _seed_real_admins(db: Session):
+    """Ensure the two real admin accounts exist (idempotent)."""
+    added = 0
+    for admin in REAL_ADMINS:
+        if not db.query(User).filter(User.email == admin["email"]).first():
+            db.add(User(
+                id=uid(),
+                email=admin["email"],
+                password_hash=hash_password(admin["password"]),
+                role="admin",
+                name=admin["name"],
+                avatar=admin["avatar"],
+                profile_complete=True,
+                created_at="2024-06-01",
+            ))
+            added += 1
+            print(f"[SEED] Admin created: {admin['name']} <{admin['email']}>")
+    if added:
+        db.commit()
+
+
+def _remove_demo_accounts(db: Session):
+    """Delete all demo users, teams, tasks, and approved students in production."""
+    removed = 0
+    for email in DEMO_EMAILS:
+        user = db.query(User).filter(User.email == email).first()
+        if user:
+            db.delete(user)
+            removed += 1
+    if removed:
+        db.commit()
+        print(f"[SEED] Removed {removed} demo account(s) from production database.")
+
+    # Also wipe demo teams, tasks, announcements, approved_students
+    for model in [Team, Task, Announcement, ApprovedStudent]:
+        count = db.query(model).delete()
+        if count:
+            print(f"[SEED] Cleared {count} row(s) from {model.__tablename__}.")
+    db.commit()
+
+
 def seed(db: Session):
-    # Already seeded?
-    if db.query(User).first():
+    is_production = os.getenv("ENVIRONMENT", "development").lower() == "production"
+
+    if is_production:
+        print("[SEED] Production mode — removing demo data, seeding real admins only.")
+        _remove_demo_accounts(db)
+        _seed_real_admins(db)
         return
+
+    # ── Development / local: seed full demo dataset ───────────────────────────
+    if db.query(User).first():
+        return  # Already seeded
 
     a1, a2 = uid(), uid()
     m1, m2 = uid(), uid()

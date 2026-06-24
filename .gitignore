@@ -20,3 +20,6 @@ backend/.env
 venv/
 env/
 .venv/
+
+# Local-only admin seeding script (contains credentials)
+backend/add_admins.py

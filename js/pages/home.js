@@ -92,10 +92,7 @@ ITE.Pages.Home = (function () {
       </div>
     </div>
     <div class="hero-stats hero-stats--light">
-      <div class="hero-stat text-center"><div class="hero-stat-val">7+</div><div class="hero-stat-lbl">Ventures Incubated</div></div>
-      <div class="hero-stat text-center"><div class="hero-stat-val">50+</div><div class="hero-stat-lbl">Founders Guided</div></div>
-      <div class="hero-stat text-center"><div class="hero-stat-val">4</div><div class="hero-stat-lbl">Cohorts Graduated</div></div>
-      <div class="hero-stat text-center"><div class="hero-stat-val">₹2.5M+</div><div class="hero-stat-lbl">Capital Secured</div></div>
+      <div class="hero-stat text-center"><div class="hero-stat-val">10+</div><div class="hero-stat-lbl">Cohorts Graduated</div></div>
     </div>
   </div>
 </section>

@@ -11,7 +11,14 @@ ITE.Pages.Student = (function () {
   async function renderDashboard() {
     ITE.App.pc().innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted)">Loading student dashboard...</div>`;
     try {
-      const user = ITE.Auth.getCurrentUser();
+      let user = ITE.Auth.getCurrentUser();
+      
+      // Refresh local user context to ensure sync with mentor/admin assignments
+      const updatedUser = await ITE.API.get('/auth/me');
+      if (updatedUser) {
+        ITE.Auth.updateCurrentUser(updatedUser);
+        user = updatedUser;
+      }
       const [teams, students, mentors, tasks, anns, pendingInvites, mySubmissions] = await Promise.all([
         ITE.API.get('/teams'),
         ITE.API.get('/users/students'),
@@ -81,7 +88,14 @@ ${user.isCEO&&team&&!team.startupName?`<div class="card mt-6" style="border-colo
   async function renderMyTeam() {
     ITE.App.pc().innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted)">Loading team...</div>`;
     try {
-      const user = ITE.Auth.getCurrentUser();
+      let user = ITE.Auth.getCurrentUser();
+      
+      // Refresh local user context to ensure sync with mentor/admin assignments
+      const updatedUser = await ITE.API.get('/auth/me');
+      if (updatedUser) {
+        ITE.Auth.updateCurrentUser(updatedUser);
+        user = updatedUser;
+      }
       if (!user.teamId) {
         ITE.App.pc().innerHTML = `
 <div class="page-header"><div class="page-title">My Team</div></div>

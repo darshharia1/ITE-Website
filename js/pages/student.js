@@ -286,7 +286,7 @@ ${pendingInvites.length>0?`<div style="margin-bottom:16px">${pendingInvites.map(
       const availableRoles = ['CTO','CFO','CMO'].filter(r=>!existingRoles.includes(r));
       if (!availableRoles.length) { ITE.App.toast('All executive roles are filled!','info'); return; }
       
-      const eligibleStudents = allStudents.filter(s=>s.id!==user.id && !(team.members||[]).some(m=>m.userId===s.id) && !s.teamId);
+      const eligibleStudents = allStudents.filter(s=>s.id!==user.id && !(team.members||[]).some(m=>m.userId===s.id) && (!s.teamId || s.teamId === 'null'));
       
       ITE.App.showModal(`<div class="modal">
 <div class="modal-header"><div class="modal-title">Invite Team Member</div><button class="modal-close btn">✕</button></div>

@@ -146,7 +146,7 @@ myTeams.map(t=>_fullTeamView(t, user, students)).join('')}`;
       const user = ITE.Auth.getCurrentUser();
       const team = await ITE.API.get('/teams/' + teamId);
       const students = await ITE.API.get('/users/students');
-      const eligible = students.filter(s => !s.teamId || s.teamId === teamId);
+      const eligible = students.filter(s => !s.teamId || s.teamId === 'null' || s.teamId === teamId);
       
       ITE.App.showModal(`<div class="modal">
 <div class="modal-header"><div class="modal-title">Assign CEO – ${team?.startupName}</div><button class="modal-close btn">✕</button></div>

@@ -173,10 +173,6 @@ ${_renderFooter()}
       <div class="form-group"><label class="form-label">Password</label><input id="l-pass" type="password" class="form-control" placeholder="Enter your password" required autocomplete="current-password"></div>
       <button type="submit" id="l-btn" class="btn btn-primary w-full" style="justify-content:center;padding:13px;font-size:1rem;margin-top:6px;">Sign In</button>
     </form>
-    <div class="auth-divider"><div class="auth-divider-line"></div><span class="auth-divider-text">Demo Accounts</span><div class="auth-divider-line"></div></div>
-    <div style="display:grid;gap:6px;">
-      ${[['Administrator','admin@vnit.ac.in','admin123'],['Faculty Mentor (Dr. Sharma)','dr.sharma@vnit.ac.in','mentor123'],['Student - CEO (Aarav)','aarav.mehta@students.vnit.ac.in','student123'],['Student - No Team (Pooja)','pooja.desai@students.vnit.ac.in','student123']].map(([l,e,p])=>`<button class="btn btn-ghost btn-sm" style="justify-content:flex-start;" onclick="document.getElementById('l-email').value='${e}';document.getElementById('l-pass').value='${p}'">${l}</button>`).join('')}
-    </div>
     <div class="auth-footer">Don't have an account? <a href="#/register">Register here</a></div>
   </div>
 </div></div>`;
@@ -215,9 +211,6 @@ ${_renderFooter()}
       <li>Mentors assigned by coordinators</li>
       <li>Team formation guided by faculty</li>
     </ul>
-    <div style="margin-top:20px;padding:14px;background:rgba(37,99,235,0.15);border-radius:10px;font-size:0.8rem;color:rgba(255,255,255,0.8);">
-      <strong style="color:#FFF">Demo:</strong> Use aarav.mehta@students.vnit.ac.in or any other approved email.
-    </div>
   </div>
 </div>
 <div class="auth-right">

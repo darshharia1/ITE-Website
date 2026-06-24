@@ -42,6 +42,7 @@ class UpdateTeamRequest(BaseModel):
     problemStatement: Optional[str] = None
     solution: Optional[str] = None
     industry: Optional[str] = None
+    ceoId: Optional[str] = None
     mentorId: Optional[str] = None
     members: Optional[List[dict]] = None
 
@@ -118,6 +119,7 @@ def update_team(team_id: str, body: UpdateTeamRequest, db: Session = Depends(get
     if body.problemStatement is not None: t.problem_statement = body.problemStatement
     if body.solution is not None:         t.solution = body.solution
     if body.industry is not None:         t.industry = body.industry
+    if body.ceoId is not None:            t.ceo_id = body.ceoId
     if body.mentorId is not None:         t.mentor_id = body.mentorId
     if body.members is not None:          t.members = body.members
     db.commit()

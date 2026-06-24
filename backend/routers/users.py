@@ -134,7 +134,7 @@ def get_user(user_id: str, db: Session = Depends(get_db), _: User = Depends(get_
 @router.patch("/{user_id}")
 def update_user(user_id: str, body: UpdateUserRequest, db: Session = Depends(get_db),
                 current_user: User = Depends(get_current_user)):
-    if current_user.id != user_id and current_user.role != "admin":
+    if current_user.id != user_id and current_user.role not in ("admin", "mentor"):
         raise HTTPException(status_code=403, detail="Forbidden")
     u = db.query(User).filter(User.id == user_id).first()
     if not u:

@@ -147,9 +147,9 @@ def update_user(user_id: str, body: UpdateUserRequest, db: Session = Depends(get
     if body.interests is not None:      u.interests = body.interests
     if body.specialization is not None: u.specialization = body.specialization
     if body.profileComplete is not None: u.profile_complete = body.profileComplete
-    if body.teamRole is not None:       u.team_role = body.teamRole
-    if body.teamId is not None:         u.team_id = body.teamId
-    if body.mentorId is not None:       u.mentor_id = body.mentorId
+    if body.teamRole is not None:       u.team_role = None if body.teamRole == 'null' else body.teamRole
+    if body.teamId is not None:         u.team_id = None if body.teamId == 'null' else body.teamId
+    if body.mentorId is not None:       u.mentor_id = None if body.mentorId == 'null' else body.mentorId
     if body.assignedTeams is not None:  u.assigned_teams = body.assignedTeams
     db.commit()
     return user_to_dict(u)

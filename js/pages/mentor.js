@@ -171,7 +171,7 @@ myTeams.map(t=>_fullTeamView(t, user, students)).join('')}`;
       
       // Remove previous CEO if exists
       if(team.ceoId && team.ceoId!==sId){
-        await ITE.API.patch(`/users/${team.ceoId}`, { teamId: null, teamRole: null });
+        await ITE.API.patch(`/users/${team.ceoId}`, { teamId: 'null', teamRole: 'null', mentorId: 'null' });
       }
       
       // Update team members array + ceoId

@@ -29,7 +29,7 @@ ITE.Pages.Student = (function () {
         ITE.API.get('/submissions/my')
       ]);
 
-      const team = user.teamId ? teams.find(t => t.id === user.teamId) : null;
+      const team = (user.teamId && user.teamId !== 'null') ? teams.find(t => t.id === user.teamId) : null;
       const mentor = user.mentorId ? mentors.find(m => m.id === user.mentorId) : null;
       
       const feedAnns = anns.filter(a => a.recipients === 'all' || a.recipients === 'students' || a.recipients === 'all-students' || (user.teamId && a.recipients === 'team-' + user.teamId));
@@ -96,7 +96,7 @@ ${user.teamRole==='CEO'&&team&&!team.startupName?`<div class="card mt-6" style="
         ITE.Auth.updateCurrentUser(updatedUser);
         user = updatedUser;
       }
-      if (!user.teamId) {
+      if (!user.teamId || user.teamId === 'null') {
         ITE.App.pc().innerHTML = `
 <div class="page-header"><div class="page-title">My Team</div></div>
 <div class="no-team-card">

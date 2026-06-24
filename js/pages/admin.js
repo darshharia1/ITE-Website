@@ -347,12 +347,18 @@ ${mentors.map(m=>{const mteams=teams.filter(t=>t.mentorId===m.id);return`<div cl
   }
 
   /* ---- Announcements ---- */
-  function renderAnnouncements() {
+  async function renderAnnouncements() {
     try {
+      ITE.App.pc().innerHTML = `<div style="padding: 40px; text-align: center; color: var(--text-muted);">Loading live announcements...</div>`;
       const user_raw=ITE.Auth.getCurrentUser();
       const user = user_raw || {};
-      const anns_raw=ITE.Data.getAnnouncements();
-      const anns = Array.isArray(anns_raw) ? anns_raw : (anns_raw?.items || []);
+      let anns = [];
+      try {
+        anns = await ITE.API.get('/announcements');
+      } catch (err) {
+        console.error('Failed to fetch live announcements:', err);
+        ITE.App.toast('Failed to load live announcements.', 'error');
+      }
       const teams_raw=ITE.Data.getTeams();
       const teams = Array.isArray(teams_raw) ? teams_raw : (teams_raw?.items || []);
       ITE.App.pc().innerHTML = `
@@ -366,7 +372,7 @@ ${mentors.map(m=>{const mteams=teams.filter(t=>t.mentorId===m.id);return`<div cl
     ${anns.length===0?`<div class="empty-state card"><h3>No announcements posted yet</h3></div>`:
     anns.map(a=>`<div class="ann-card ${a?.createdByRole}-ann">
       <div class="ann-meta"><span class="badge ${a?.createdByRole==='admin'?'badge-blue':'badge-green'}">${(a?.createdByRole||'unknown').toUpperCase()}</span><span style="font-size:.72rem;color:var(--text-muted)">${a?.createdByName||'Unknown'}</span><span style="font-size:.72rem;color:var(--text-muted)">· ${_recipLabel(a?.recipients||'',teams)}</span></div>
-      <div class="ann-title">${a?.title||'Untitled'}</div><div class="ann-body">${a?.content||''}</div>
+      <div class="ann-title">${a?.title||'Untitled'}</div><div class="ann-body">${a?.body||a?.content||''}</div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><div class="ann-date">${a?.createdAt ? new Date(a.createdAt).toLocaleString('en-IN') : ''}</div><button class="btn btn-danger btn-sm" onclick="ITE.Pages.Admin._deleteAnn('${a?.id}')">Delete</button></div>
     </div>`).join('')}
   </div>
@@ -383,8 +389,9 @@ ${mentors.map(m=>{const mteams=teams.filter(t=>t.mentorId===m.id);return`<div cl
 
   function _recipLabel(r,teams) {
     if(!r) return '';
-    if(r==='all-students') return 'All Students';
-    if(r==='all-mentors')  return 'All Mentors';
+    if(r==='all') return 'Everyone';
+    if(r==='all-students' || r==='students') return 'All Students';
+    if(r==='all-mentors' || r==='mentors')  return 'All Mentors';
     if(typeof r === 'string' && r.startsWith('team-')){const t=teams.find(t=>t?.id===r.replace('team-',''));return`Team: ${t?t.startupName:'Team'}`;}
     return r;
   }
@@ -396,24 +403,40 @@ ${mentors.map(m=>{const mteams=teams.filter(t=>t.mentorId===m.id);return`<div cl
 <div class="modal-body">
   <div class="form-group"><label class="form-label">Title</label><input id="an-title" class="form-control" placeholder="Announcement title"></div>
   <div class="form-group"><label class="form-label">Message</label><textarea id="an-body" class="form-control" rows="4" placeholder="Write your announcement message here"></textarea></div>
-  <div class="form-group"><label class="form-label">Recipients</label><select id="an-to" class="form-control"><option value="all-students">All Students</option><option value="all-mentors">All Mentors</option>${teams.map(t=>`<option value="team-${t.id}">Team: ${t.startupName}</option>`).join('')}</select></div>
+  <div class="form-group"><label class="form-label">Recipients</label><select id="an-to" class="form-control"><option value="all">Everyone</option><option value="students">All Students</option><option value="mentors">All Mentors</option>${teams.map(t=>`<option value="team-${t.id}">Team: ${t.startupName}</option>`).join('')}</select></div>
 </div>
 <div class="modal-footer"><button class="btn btn-ghost" onclick="ITE.App.closeModal()">Cancel</button><button class="btn btn-primary" onclick="ITE.Pages.Admin._submitAnn()">Post</button></div>
 </div>`);
   }
 
-  function _submitAnn() {
+  async function _submitAnn() {
     const title=document.getElementById('an-title')?.value?.trim();
     const content=document.getElementById('an-body')?.value?.trim();
-    const recipients=document.getElementById('an-to')?.value;
+    let recipients=document.getElementById('an-to')?.value;
     if(!title||!content){ITE.App.toast('Title and content are required.','error');return;}
-    const u=ITE.Auth.getCurrentUser();
-    ITE.Data.createAnnouncement({title,content,recipients,createdBy:u.id,createdByName:u.name,createdByRole:'admin'});
-    ITE.App.toast('Announcement successfully posted.','success'); ITE.App.closeModal(); renderAnnouncements();
+    try {
+      let teamId = null;
+      if(recipients.startsWith('team-')) {
+        teamId = recipients.replace('team-', '');
+      }
+      await ITE.API.post('/announcements', { title: title, body: content, recipients: recipients, teamId: teamId });
+      ITE.App.toast('Announcement successfully posted to live database.','success'); 
+      ITE.App.closeModal(); 
+      renderAnnouncements();
+    } catch(err) {
+      ITE.App.toast('Failed to post: ' + err.message, 'error');
+    }
   }
 
-  function _deleteAnn(id) {
-    ITE.Data.deleteAnnouncement(id); ITE.App.toast('Announcement successfully deleted.','info'); renderAnnouncements();
+  async function _deleteAnn(id) {
+    if(!confirm('Are you sure you want to delete this announcement?')) return;
+    try {
+      await ITE.API.del('/announcements/' + id);
+      ITE.App.toast('Announcement successfully deleted from live database.','info'); 
+      renderAnnouncements();
+    } catch(err) {
+      ITE.App.toast('Failed to delete: ' + err.message, 'error');
+    }
   }
 
   /* ---- CSV Upload ---- */

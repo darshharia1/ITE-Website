@@ -8,9 +8,9 @@ ITE.Pages.Admin = (function () {
 
   /* ---- Dashboard ---- */
   async function renderDashboard() {
+    ITE.App.pc().innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted)">Loading dashboard...</div>`;
     try {
-      const teams_raw    = ITE.Data.getTeams();
-      const teams = Array.isArray(teams_raw) ? teams_raw : (teams_raw?.items || []);
+      const teams = await ITE.API.get('/teams');
       const STAGES = ITE.App.STAGES || [];
       const stageCounts = STAGES.map((_,i) => teams.filter(t=>t?.stage===i).length);
 
@@ -26,7 +26,7 @@ ITE.Pages.Admin = (function () {
 <div class="two-col">
   <div class="card">
     <div class="card-header"><div class="card-title">Startup Stage Distribution</div></div>
-    ${STAGES.map((s,i)=>`<div class="analytics-bar"><div class="analytics-bar-label"><span>${s?.label||'Stage'}</span><span>${stageCounts[i]||0}</span></div><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:${teams.length?((stageCounts[i]||0)/teams.length*100):0}%;background:${i<2?'#10B981':i<4?'#2563EB':'#8B5CF6'}"></div></div></div>`).join('')}
+    ${teams.length === 0 ? `<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:.85rem">No startups to display yet.</div>` : STAGES.map((s,i)=>`<div class="analytics-bar"><div class="analytics-bar-label"><span>${s?.label||'Stage'}</span><span>${stageCounts[i]||0}</span></div><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:${teams.length?((stageCounts[i]||0)/teams.length*100):0}%;background:${i<2?'#10B981':i<4?'#2563EB':'#8B5CF6'}"></div></div></div>`).join('')}
   </div>
   <div class="card">
     <div class="card-header"><div class="card-title">Recent Announcements</div><a href="#/admin/announcements" class="btn btn-ghost btn-sm">View All</a></div>
@@ -35,9 +35,9 @@ ITE.Pages.Admin = (function () {
 </div>
 <div class="card mt-6">
   <div class="card-header"><div class="card-title">Team Rankings</div><a href="#/admin/startups" class="btn btn-ghost btn-sm">View All</a></div>
-  <div class="table-wrapper"><table class="data-table"><thead><tr><th>Rank</th><th>Startup</th><th>Industry</th><th>Mentor</th><th>Stage</th><th>Progress</th></tr></thead><tbody>
-  ${[...teams].sort((a,b)=>(b?.stage||0)-(a?.stage||0)).map((t,i)=>{const m=ITE.Data.getUserById(t?.mentorId);return`<tr><td><strong>#${i+1}</strong></td><td><div style="font-weight:600">${t?.startupName||'Unnamed'}</div></td><td><span class="badge badge-blue">${(t?.industry||'').split(' ')[0]||'Other'}</span></td><td>${m?m.name:'—'}</td><td><span class="badge ${(t?.stage||0)>=4?'badge-green':'badge-blue'}">${STAGES[t?.stage||0]?.label||'Stage'}</span></td><td><div class="mini-progress" style="min-width:90px">${STAGES.map((_,j)=>`<div class="mini-step ${j<(t?.stage||0)?'done':j===(t?.stage||0)?'active':''}"></div>`).join('')}</div></td></tr>`}).join('')}
-  </tbody></table></div>
+  ${teams.length === 0 ? `<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:.85rem">No teams available yet.</div>` : `<div class="table-wrapper"><table class="data-table"><thead><tr><th>Rank</th><th>Startup</th><th>Industry</th><th>Mentor</th><th>Stage</th><th>Progress</th></tr></thead><tbody>
+  ${[...teams].sort((a,b)=>(b?.stage||0)-(a?.stage||0)).map((t,i)=>{return`<tr><td><strong>#${i+1}</strong></td><td><div style="font-weight:600">${t?.startupName||'Unnamed'}</div></td><td><span class="badge badge-blue">${(t?.industry||'').split(' ')[0]||'Other'}</span></td><td>${t?.mentorName||'—'}</td><td><span class="badge ${(t?.stage||0)>=4?'badge-green':'badge-blue'}">${STAGES[t?.stage||0]?.label||'Stage'}</span></td><td><div class="mini-progress" style="min-width:90px">${STAGES.map((_,j)=>`<div class="mini-step ${j<(t?.stage||0)?'done':j===(t?.stage||0)?'active':''}"></div>`).join('')}</div></td></tr>`}).join('')}
+  </tbody></table></div>`}
 </div>`;
 
       // Fire both API calls concurrently — single source of truth for announcements

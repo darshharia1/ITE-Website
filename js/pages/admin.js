@@ -266,7 +266,7 @@ ITE.Pages.Admin = (function () {
     return list.map(s=>{
       const team=s.teamId?ITE.Data.getTeamById(s.teamId):null;
       const mentor=s.mentorId?ITE.Data.getUserById(s.mentorId):null;
-      return`<tr><td><div style="display:flex;align-items:center;gap:9px"><div style="width:34px;height:34px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#FFF;flex-shrink:0">${s.avatar}</div><div><div style="font-weight:600">${s.name}</div><div style="font-size:.72rem;color:var(--text-muted)">${s.email}</div></div></div></td><td>${s.rollNo||'—'}</td><td>${s.branch||'—'}</td><td>${team?team.startupName:`<span style="color:var(--text-muted)">Unassigned</span>`}</td><td>${s.teamRole?`<span class="badge badge-blue">${s.teamRole}</span>`:'—'}</td><td>${mentor?mentor.name:`<span style="color:var(--text-muted)">Unassigned</span>`}</td><td><span class="badge ${s.teamId?'badge-green':'badge-yellow'}">${s.teamId?'Assigned':'Unassigned'}</span></td><td><button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Admin.showEditStudent('${s.id}', '${(s.name||'').replace(/'/g,'')}', '${(s.rollNo||'').replace(/'/g,'')}', '${(s.branch||'').replace(/'/g,'')}', '${(s.email||'').replace(/'/g,'')}')">Edit</button></td></tr>`;
+      return`<tr><td><div style="display:flex;align-items:center;gap:9px"><div style="width:34px;height:34px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#FFF;flex-shrink:0">${s.avatar}</div><div><div style="font-weight:600">${s.name}</div><div style="font-size:.72rem;color:var(--text-muted)">${s.email}</div></div></div></td><td>${s.rollNo||'—'}</td><td>${s.branch||'—'}</td><td>${team?team.startupName:`<span style="color:var(--text-muted)">Unassigned</span>`}</td><td>${s.teamRole?`<span class="badge badge-blue">${s.teamRole}</span>`:'—'}</td><td>${mentor?mentor.name:`<span style="color:var(--text-muted)">Unassigned</span>`}</td><td><span class="badge ${s.teamId?'badge-green':'badge-yellow'}">${s.teamId?'Assigned':'Unassigned'}</span></td><td><div style="display:flex;gap:7px"><button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Admin.showEditStudent('${s.id}', '${(s.name||'').replace(/'/g,'')}', '${(s.rollNo||'').replace(/'/g,'')}', '${(s.branch||'').replace(/'/g,'')}', '${(s.email||'').replace(/'/g,'')}')">Edit</button><button class="btn btn-danger btn-sm" onclick="ITE.Pages.Admin._deleteStudent('${s.id}')">Remove</button></div></td></tr>`;
     }).join('');
   }
 
@@ -302,6 +302,17 @@ ITE.Pages.Admin = (function () {
       renderStudents();
     } catch(err) {
       ITE.App.toast(err.message,'error');
+    }
+  }
+
+  async function _deleteStudent(id) {
+    if(!confirm('Are you sure you want to remove this student?')) return;
+    try {
+      await ITE.API.del('/users/' + id);
+      ITE.App.toast('Student successfully removed.','info'); 
+      renderStudents();
+    } catch(err) {
+      ITE.App.toast('Failed to remove: ' + err.message, 'error');
     }
   }
 
@@ -591,7 +602,7 @@ ${mentors.length===0?`<div class="empty-state card"><h3>No mentors added yet</h3
     renderDashboard, renderStartups, renderStudents, renderMentors, renderAnnouncements, renderCSVUpload,
     showTeamDetail, advanceStage, showAddStartup, _submitAddStartup, deleteStartup, showEditStartup, _submitEditStartup,
     showAddMentor, _submitMentor, showAssignTeam, _submitAssign, _deleteMentor, showEditMentor, _submitEditMentor,
-    showEditStudent, _submitEditStudent,
+    showEditStudent, _submitEditStudent, _deleteStudent,
     showAnnModal, _submitAnn, _deleteAnn,
     _processCSV, _downloadSample, _clearApproved, _filterStudents,
   };

@@ -56,10 +56,7 @@ ITE.Data = (function () {
       {name:'Priya Gupta',rollNo:'24BCE010',email:'priya.gupta@students.vnit.ac.in'},
     ];
 
-    const teams = [
-      {id:t1,startupName:'AgriTech Connect',problemStatement:'Small and marginal farmers lack access to real-time market prices, weather data, and expert guidance, leading to poor yields and financial losses.',description:'AgriTech Connect is an AI-powered mobile platform bridging the gap between farmers and modern agricultural resources, providing personalized crop advisories, live market prices, and direct buyer connections.',industry:'Agriculture & Food Tech',mentorId:m1,ceoId:s1,members:[{userId:s1,role:'CEO'},{userId:s2,role:'CTO'},{userId:s3,role:'CFO'},{userId:s4,role:'CMO'}],stage:2,createdAt:'2024-07-01'},
-      {id:t2,startupName:'EduBridge',problemStatement:'Students in tier-2 and tier-3 cities lack access to quality personalized learning, leading to educational inequality.',description:'EduBridge is an adaptive learning platform using AI to personalize educational content and connect students with expert tutors across India.',industry:'Education Technology',mentorId:m2,ceoId:s5,members:[{userId:s5,role:'CEO'},{userId:s6,role:'CTO'},{userId:s7,role:'CFO'}],stage:4,createdAt:'2024-06-20'},
-    ];
+    const teams = [];
 
     const ann1 = uid(), ann2 = uid(), ann3 = uid(), ann4 = uid(), ann5 = uid();
     const announcements = [

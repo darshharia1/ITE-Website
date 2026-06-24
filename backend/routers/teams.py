@@ -10,14 +10,22 @@ import uuid
 router = APIRouter(prefix="/api/teams", tags=["teams"])
 
 
-def team_to_dict(t: Team) -> dict:
-    return {
+def team_to_dict(t: Team, db: Session = None) -> dict:
+    d = {
         "id": t.id, "startupName": t.startup_name,
         "problemStatement": t.problem_statement, "solution": t.solution,
         "industry": t.industry, "stage": t.stage,
         "ceoId": t.ceo_id, "mentorId": t.mentor_id,
         "members": t.members or [], "createdAt": t.created_at,
     }
+    if db:
+        if t.ceo_id:
+            ceo = db.query(User).filter(User.id == t.ceo_id).first()
+            if ceo: d["ceoName"] = ceo.name
+        if t.mentor_id:
+            mentor = db.query(User).filter(User.id == t.mentor_id).first()
+            if mentor: d["mentorName"] = mentor.name
+    return d
 
 
 class CreateTeamRequest(BaseModel):
@@ -52,7 +60,7 @@ def list_teams(db: Session = Depends(get_db), current_user: User = Depends(get_c
             return []
     elif current_user.role == "mentor":
         query = query.filter(Team.mentor_id == current_user.id)
-    return [team_to_dict(t) for t in query.all()]
+    return [team_to_dict(t, db) for t in query.all()]
 
 
 @router.post("")
@@ -80,7 +88,7 @@ def create_team(body: CreateTeamRequest, db: Session = Depends(get_db),
             ceo.team_role = "CEO"
             ceo.is_ceo = True
     db.commit()
-    return team_to_dict(t)
+    return team_to_dict(t, db)
 
 
 @router.get("/{team_id}")
@@ -88,7 +96,7 @@ def get_team(team_id: str, db: Session = Depends(get_db)):
     t = db.query(Team).filter(Team.id == team_id).first()
     if not t:
         raise HTTPException(status_code=404, detail="Team not found")
-    result = team_to_dict(t)
+    result = team_to_dict(t, db)
     # Enrich members with user data
     enriched = []
     for m in (t.members or []):
@@ -113,7 +121,7 @@ def update_team(team_id: str, body: UpdateTeamRequest, db: Session = Depends(get
     if body.mentorId is not None:         t.mentor_id = body.mentorId
     if body.members is not None:          t.members = body.members
     db.commit()
-    return team_to_dict(t)
+    return team_to_dict(t, db)
 
 
 @router.patch("/{team_id}/stage")
@@ -128,7 +136,7 @@ def advance_stage(team_id: str, body: StageRequest, db: Session = Depends(get_db
         raise HTTPException(status_code=400, detail="Stage must be 0–5")
     t.stage = body.stage
     db.commit()
-    return team_to_dict(t)
+    return team_to_dict(t, db)
 
 
 @router.delete("/{team_id}")

@@ -184,28 +184,7 @@ def seed(db: Session):
     db.add_all(approved)
 
     # ── Teams ──────────────────────────────────────────────────────────────────
-    teams = [
-        Team(id=t1, startup_name="AgriTech Connect",
-             problem_statement="Farmers lack real-time market price information, leading to exploitation by middlemen.",
-             solution="A mobile-first platform connecting farmers directly to buyers with live price feeds and logistics support.",
-             industry="Agriculture Technology", stage=3, ceo_id=s1, mentor_id=m1,
-             members=[
-                 {"userId": s1, "teamRole": "CEO", "isCEO": True},
-                 {"userId": s2, "teamRole": "CTO", "isCEO": False},
-                 {"userId": s3, "teamRole": "CFO", "isCEO": False},
-                 {"userId": s4, "teamRole": "CMO", "isCEO": False},
-             ]),
-        Team(id=t2, startup_name="EduBridge",
-             problem_statement="Rural students lack access to quality higher education guidance and mentorship.",
-             solution="AI-powered platform matching rural students with mentors, providing personalized study plans.",
-             industry="Education Technology", stage=1, ceo_id=s5, mentor_id=m2,
-             members=[
-                 {"userId": s5, "teamRole": "CEO", "isCEO": True},
-                 {"userId": s6, "teamRole": "CTO", "isCEO": False},
-                 {"userId": s7, "teamRole": "CFO", "isCEO": False},
-             ]),
-    ]
-    db.add_all(teams)
+    teams = []
 
     # ── Tasks ──────────────────────────────────────────────────────────────────
     tasks = [

@@ -103,10 +103,10 @@ ITE.Pages.Admin = (function () {
   }
 
   /* ---- Startups ---- */
-  function renderStartups() {
+  async function renderStartups() {
+    ITE.App.pc().innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted)">Loading live startups data...</div>`;
     try {
-      const teams_raw = ITE.Data.getTeams();
-      const teams = Array.isArray(teams_raw) ? teams_raw : (teams_raw?.items || []);
+      const teams = await ITE.API.get('/teams');
       ITE.App.pc().innerHTML = `
 <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px">
   <div><div class="page-title">Startups</div><div class="page-subtitle">${teams.length} startup ventures registered</div></div>
@@ -114,7 +114,7 @@ ITE.Pages.Admin = (function () {
 </div>
 <div class="cards-grid">
   ${teams.length===0?`<div class="empty-state card"><h3>No startups registered yet</h3></div>`:
-  teams.map(t=>{const m=ITE.Data.getUserById(t?.mentorId);const ceo=ITE.Data.getUserById(t?.ceoId);return`
+  teams.map(t=>{return`
 <div class="card" style="cursor:pointer" onclick="ITE.Pages.Admin.showTeamDetail('${t?.id}')">
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
     <div style="width:48px;height:48px;border-radius:50%;background:var(--accent-light);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:1.25rem">${(t?.startupName||'?')[0]}</div>
@@ -123,13 +123,13 @@ ITE.Pages.Admin = (function () {
   <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:14px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${t?.problemStatement||'No description'}</p>
   <div style="margin-top:auto">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-      <span style="font-size:.8rem;color:var(--text-muted)">CEO: ${ceo?ceo.name:'Unassigned'}</span>
+      <span style="font-size:.8rem;color:var(--text-muted)">CEO: ${t?.ceoName||'Unassigned'}</span>
       <span class="badge ${(t?.stage||0)>=4?'badge-green':'badge-blue'}">Stage ${(t?.stage||0)+1} of 6</span>
     </div>
     ${ITE.App.renderProgressTracker(t?.stage||0)}
     <div class="divider"></div>
     <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--text-muted)">
-      <span>Mentor: ${m?m.name:'Unassigned'}</span><span>${(t?.members||[]).length} members</span>
+      <span>Mentor: ${t?.mentorName||'Unassigned'}</span><span>${(t?.members||[]).length} members</span>
     </div>
   </div>
 </div>`}).join('')}
@@ -140,23 +140,23 @@ ITE.Pages.Admin = (function () {
     }
   }
 
-  function showTeamDetail(id) {
-    const t = ITE.Data.getTeamById(id); if(!t) return;
-    const m = ITE.Data.getUserById(t.mentorId);
-    const members = t.members.map(mb=>({...mb, user:ITE.Data.getUserById(mb.userId)}));
-    ITE.App.showModal(`<div class="modal modal-lg">
+  async function showTeamDetail(id) {
+    try {
+      const t = await ITE.API.get('/teams/' + id);
+      const members = t.members || [];
+      ITE.App.showModal(`<div class="modal modal-lg">
 <div class="modal-header"><div class="modal-title">${t.startupName}</div><button class="modal-close btn">✕</button></div>
 <div class="modal-body">
   <div style="display:grid;gap:14px">
     <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:4px">Industry</div><span class="badge badge-blue">${t.industry}</span></div>
-    <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:4px">Problem Statement</div><p style="font-size:.9rem;line-height:1.6;color:var(--text-primary)">${t.problemStatement}</p></div>
-    <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:4px">Description</div><p style="font-size:.875rem;line-height:1.6;color:var(--text-secondary)">${t.description||'Not provided.'}</p></div>
+    <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:4px">Problem Statement</div><p style="font-size:.9rem;line-height:1.6;color:var(--text-primary)">${t.problemStatement||'Not provided.'}</p></div>
+    <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:4px">Description</div><p style="font-size:.875rem;line-height:1.6;color:var(--text-secondary)">${t.solution||'Not provided.'}</p></div>
     <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:8px">Progress</div>${ITE.App.renderProgressTracker(t.stage)}</div>
     <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:8px">Team (${members.length})</div>
-      <div style="display:grid;gap:7px">${members.map(mb=>`<div class="member-card"><div class="member-avatar" style="background:${ITE.App.roleColor(mb.role)}">${mb.user?.avatar||'?'}</div><div class="member-info"><div class="member-name">${mb.user?.name||'?'}</div><div class="member-sub">${mb.user?.rollNo||''} · ${mb.user?.branch||''}</div></div><span class="badge" style="background:${ITE.App.roleColor(mb.role)}20;color:${ITE.App.roleColor(mb.role)}">${mb.role}</span></div>`).join('')}</div>
+      <div style="display:grid;gap:7px">${members.map(mb=>`<div class="member-card"><div class="member-avatar" style="background:${ITE.App.roleColor(mb.teamRole)}">${mb.user?.avatar||'?'}</div><div class="member-info"><div class="member-name">${mb.user?.name||'?'}</div><div class="member-sub">${mb.user?.roll_no||''} · ${mb.user?.branch||''}</div></div><span class="badge" style="background:${ITE.App.roleColor(mb.teamRole)}20;color:${ITE.App.roleColor(mb.teamRole)}">${mb.teamRole}</span></div>`).join('')}</div>
     </div>
-    <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:4px">Mentor</div><p style="font-size:.9rem">${m?m.name+' · '+(m.specialization||'Faculty'):'Unassigned'}</p></div>
-    ${t.stage<5?`<button class="btn btn-primary btn-sm" onclick="ITE.Pages.Admin.advanceStage('${t.id}')">Advance Stage</button>`:`<span class="badge badge-green">All Stages Completed</span>`}
+    <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:4px">Mentor</div><p style="font-size:.9rem">${t.mentorName||'Unassigned'}</p></div>
+    ${t.stage<5?`<button class="btn btn-primary btn-sm" onclick="ITE.Pages.Admin.advanceStage('${t.id}', ${t.stage})">Advance Stage</button>`:`<span class="badge badge-green">All Stages Completed</span>`}
   </div>
 </div>
 <div class="modal-footer">
@@ -165,26 +165,29 @@ ITE.Pages.Admin = (function () {
   <button class="btn btn-danger" onclick="ITE.Pages.Admin.deleteStartup('${t.id}')">Delete</button>
 </div>
 </div>`);
+    } catch(err) {
+      ITE.App.toast('Failed to load team details.', 'error');
+    }
   }
 
   async function deleteStartup(id) {
     if(!confirm('Are you sure you want to delete this startup?')) return;
     try {
       await ITE.API.del('/teams/' + id);
-      // Fallback for local UI state
-      const ts = ITE.Data.getTeams().filter(t => t.id !== id);
-      localStorage.setItem('ite_teams', JSON.stringify(ts));
-      ITE.App.toast('Startup successfully deleted.','info');
+      ITE.App.toast('Startup successfully deleted from live DB.','info');
       ITE.App.closeModal(); renderStartups();
     } catch(e) {
       ITE.App.toast(e.message, 'error');
     }
   }
 
-  function showEditStartup(id) {
-    const t = ITE.Data.getTeamById(id); if(!t) return;
-    const mentors = ITE.Data.getMentors();
-    ITE.App.showModal(`<div class="modal">
+  async function showEditStartup(id) {
+    try {
+      const [t, mentors] = await Promise.all([
+        ITE.API.get('/teams/' + id),
+        ITE.API.get('/users/mentors')
+      ]);
+      ITE.App.showModal(`<div class="modal">
 <div class="modal-header"><div class="modal-title">Edit Startup</div><button class="modal-close btn">✕</button></div>
 <div class="modal-body">
   <div id="es-err" class="form-error-box"></div>
@@ -195,6 +198,9 @@ ITE.Pages.Admin = (function () {
 </div>
 <div class="modal-footer"><button class="btn btn-ghost" onclick="ITE.App.closeModal()">Cancel</button><button class="btn btn-primary" onclick="ITE.Pages.Admin._submitEditStartup('${t.id}')">Save</button></div>
 </div>`);
+    } catch(err) {
+      ITE.App.toast('Failed to load team for editing.', 'error');
+    }
   }
 
   async function _submitEditStartup(id) {
@@ -205,23 +211,27 @@ ITE.Pages.Admin = (function () {
     if(!name||!ind||!prob){document.getElementById('es-err').style.display='block';document.getElementById('es-err').textContent='Please fill in all required fields.';return;}
     try {
       await ITE.API.patch('/teams/' + id, { startupName: name, industry: ind, problemStatement: prob, mentorId: mId });
-      ITE.Data.updateTeam(id, { startupName: name, industry: ind, problemStatement: prob, mentorId: mId });
-      ITE.App.toast('Startup successfully updated.','success'); ITE.App.closeModal(); renderStartups();
+      ITE.App.toast('Startup successfully updated in live DB.','success'); ITE.App.closeModal(); renderStartups();
     } catch(e) {
       ITE.App.toast(e.message, 'error');
     }
   }
 
-  function advanceStage(id) {
-    const t = ITE.Data.getTeamById(id); if(!t||t.stage>=5) return;
-    ITE.Data.updateTeam(id,{stage:t.stage+1});
-    ITE.App.toast(`${t.startupName} advanced to ${ITE.App.STAGES[t.stage+1].label}`,'success');
-    ITE.App.closeModal(); renderStartups();
+  async function advanceStage(id, currentStage) {
+    if(currentStage >= 5) return;
+    try {
+      await ITE.API.patch(`/teams/${id}/stage`, { stage: currentStage + 1 });
+      ITE.App.toast(`Stage advanced to ${ITE.App.STAGES[currentStage+1].label} in live DB.`,'success');
+      ITE.App.closeModal(); renderStartups();
+    } catch(err) {
+      ITE.App.toast(err.message, 'error');
+    }
   }
 
-  function showAddStartup() {
-    const mentors = ITE.Data.getMentors();
-    ITE.App.showModal(`<div class="modal">
+  async function showAddStartup() {
+    try {
+      const mentors = await ITE.API.get('/users/mentors');
+      ITE.App.showModal(`<div class="modal">
 <div class="modal-header"><div class="modal-title">Add New Startup</div><button class="modal-close btn">✕</button></div>
 <div class="modal-body">
   <div id="as-err" class="form-error-box"></div>
@@ -233,18 +243,32 @@ ITE.Pages.Admin = (function () {
 </div>
 <div class="modal-footer"><button class="btn btn-ghost" onclick="ITE.App.closeModal()">Cancel</button><button class="btn btn-primary" onclick="ITE.Pages.Admin._submitAddStartup()">Create</button></div>
 </div>`);
+    } catch(err) {
+      ITE.App.toast('Failed to load mentors.', 'error');
+    }
   }
 
-  function _submitAddStartup() {
+  async function _submitAddStartup() {
     const name=document.getElementById('as-name')?.value?.trim();
     const ind=document.getElementById('as-ind')?.value;
     const prob=document.getElementById('as-prob')?.value?.trim();
     const desc=document.getElementById('as-desc')?.value?.trim();
     const mId=document.getElementById('as-mentor')?.value;
     if(!name||!ind||!prob){document.getElementById('as-err').style.display='block';document.getElementById('as-err').textContent='Please fill in all required fields.';return;}
-    const team=ITE.Data.createTeam({startupName:name,industry:ind,problemStatement:prob,description:desc,mentorId:mId,ceoId:null,members:[],stage:0});
-    if(mId){const m=ITE.Data.getUserById(mId);if(m)ITE.Data.updateUser(mId,{assignedTeams:[...(m.assignedTeams||[]),team.id]});}
-    ITE.App.toast('Startup successfully created.','success'); ITE.App.closeModal(); renderStartups();
+    
+    try {
+      await ITE.API.post('/teams', { 
+        startupName: name, 
+        industry: ind, 
+        problemStatement: prob, 
+        solution: desc, 
+        mentorId: mId 
+      });
+      ITE.App.toast('Startup successfully created in live DB.','success');
+      ITE.App.closeModal(); renderStartups();
+    } catch(err) {
+      ITE.App.toast(err.message, 'error');
+    }
   }
 
   /* ---- Students ---- */
@@ -320,9 +344,10 @@ ITE.Pages.Admin = (function () {
   async function renderMentors() {
     ITE.App.pc().innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted)">Loading live mentor data...</div>`;
     try {
-      const mentors = await ITE.API.get('/users/mentors');
-      const teams_raw = ITE.Data.getTeams();
-      const teams = Array.isArray(teams_raw) ? teams_raw : (teams_raw?.items || []);
+      const [mentors, teams] = await Promise.all([
+        ITE.API.get('/users/mentors'),
+        ITE.API.get('/teams')
+      ]);
       ITE.App.pc().innerHTML = `
 <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px">
   <div><div class="page-title">Mentors</div><div class="page-subtitle">${mentors.length} faculty and industry mentors</div></div>
@@ -333,7 +358,7 @@ ${mentors.length===0?`<div class="empty-state card"><h3>No mentors added yet</h3
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:50px;height:50px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#FFF">${m.avatar}</div><div><div style="font-family:var(--font-display);font-size:1rem;font-weight:700">${m.name}</div><div style="font-size:.8rem;color:var(--text-muted)">${m.specialization||'Faculty Mentor'}</div></div></div>
   <div style="font-size:.8rem;color:var(--text-secondary);margin-bottom:10px">${m.email}</div>
   <div style="margin-bottom:12px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:5px">Teams (${mteams.length})</div>${mteams.length?mteams.map(t=>`<span class="badge badge-blue" style="margin:2px">${t.startupName}</span>`).join(''):`<span style="font-size:.8rem;color:var(--text-muted)">No assigned teams</span>`}</div>
-  <div style="display:flex;gap:7px"><button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Admin.showAssignTeam('${m.id}')">Assign Team</button><button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Admin.showEditMentor('${m.id}','${(m.name||'').replace(/'/g,'')}','${(m.email||'').replace(/'/g,'')}','${(m.specialization||'').replace(/'/g,'')}')" >Edit</button><button class="btn btn-danger btn-sm" onclick="ITE.Pages.Admin._deleteMentor('${m.id}')">Remove</button></div>
+  <div style="display:flex;gap:7px"><button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Admin.showAssignTeam('${m.id}', '${(m.name||'').replace(/'/g,'')}')">Assign Team</button><button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Admin.showEditMentor('${m.id}','${(m.name||'').replace(/'/g,'')}','${(m.email||'').replace(/'/g,'')}','${(m.specialization||'').replace(/'/g,'')}')" >Edit</button><button class="btn btn-danger btn-sm" onclick="ITE.Pages.Admin._deleteMentor('${m.id}')">Remove</button></div>
 </div>`}).join('')}
 </div>`;
     } catch(err) {
@@ -396,12 +421,12 @@ ${mentors.length===0?`<div class="empty-state card"><h3>No mentors added yet</h3
     }
   }
 
-  function showAssignTeam(mentorId) {
-    const mentor=ITE.Data.getUserById(mentorId);
-    const assigned=mentor?.assignedTeams||[];
-    const available=ITE.Data.getTeams().filter(t=>!assigned.includes(t.id));
-    ITE.App.showModal(`<div class="modal">
-<div class="modal-header"><div class="modal-title">Assign Team to ${mentor?.name}</div><button class="modal-close btn">✕</button></div>
+  async function showAssignTeam(mentorId, mentorName='') {
+    try {
+      const teams = await ITE.API.get('/teams');
+      const available = teams.filter(t => t.mentorId !== mentorId);
+      ITE.App.showModal(`<div class="modal">
+<div class="modal-header"><div class="modal-title">Assign Team to ${mentorName}</div><button class="modal-close btn">✕</button></div>
 <div class="modal-body">
   ${available.length === 0 
     ? `<div style="text-align:center; padding: 20px; color: var(--text-secondary);">No more unassigned teams available.</div>` 
@@ -410,6 +435,9 @@ ${mentors.length===0?`<div class="empty-state card"><h3>No mentors added yet</h3
 </div>
 <div class="modal-footer"><button class="btn btn-ghost" onclick="ITE.App.closeModal()">Cancel</button>${available.length > 0 ? `<button class="btn btn-primary" onclick="ITE.Pages.Admin._submitAssign('${mentorId}')">Assign</button>` : ''}</div>
 </div>`);
+    } catch(err) {
+      ITE.App.toast('Failed to load teams.', 'error');
+    }
   }
 
   async function _submitAssign(mId) {

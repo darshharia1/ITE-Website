@@ -54,7 +54,7 @@ ${pendingInvites.length>0?`
   ${[['Tasks',tasks.length,`${mySubmissions.length} submitted`,'#2563EB'],
      ['My Team',team?team.startupName:'Unassigned',team?ITE.App.STAGES[team.stage||0]?.label:'—','#10B981'],
      ['Announcements',feedAnns.length,'Unread feed','#8B5CF6'],
-     ['My Role',user.teamRole||'Student',user.isCEO?'CEO Privileges':'Member','#F59E0B']
+     ['My Role',user.teamRole||'Student',user.teamRole==='CEO'?'CEO Privileges':'Member','#F59E0B']
   ].map(([lbl,val,sub,col])=>`<div class="stat-card"><div class="stat-value" style="font-size:${String(val).length>10?'1.1rem':'1.875rem'}">${val}</div><div class="stat-label">${lbl}</div><div class="stat-sub">${sub}</div></div>`).join('')}
 </div>
 
@@ -78,7 +78,7 @@ ${pendingInvites.length>0?`
   </div>
 </div>
 
-${user.isCEO&&team&&!team.startupName?`<div class="card mt-6" style="border-color:var(--accent)"><div class="card-header"><div class="card-title">Startup Profile Setup Required</div></div><p style="font-size:.875rem;color:var(--text-secondary);margin-bottom:14px">As CEO, you are required to define the startup profile and invite team members.</p><button class="btn btn-primary" onclick="ITE.Pages.Student.showCreateStartup()">Create Startup Profile</button></div>`:''}`;
+${user.teamRole==='CEO'&&team&&!team.startupName?`<div class="card mt-6" style="border-color:var(--accent)"><div class="card-header"><div class="card-title">Startup Profile Setup Required</div></div><p style="font-size:.875rem;color:var(--text-secondary);margin-bottom:14px">As CEO, you are required to define the startup profile and invite team members.</p><button class="btn btn-primary" onclick="ITE.Pages.Student.showCreateStartup()">Create Startup Profile</button></div>`:''}`;
     } catch (err) {
       ITE.App.pc().innerHTML = `<div style="color:red; padding:20px; background:white;">Error: ${err.message}</div>`;
     }
@@ -158,7 +158,7 @@ ${pendingInvites.length>0?`<div style="margin-bottom:16px">${pendingInvites.map(
     <div class="card mb-4" style="margin-bottom:16px">
       <div class="card-header">
         <div class="card-title">Venture Details</div>
-        ${user.isCEO?`<button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Student.showEditStartup('${team.id}')">Edit</button>`:''}
+        ${user.teamRole==='CEO'?`<button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Student.showEditStartup('${team.id}')">Edit</button>`:''}
       </div>
       <div style="display:grid;gap:12px">
         <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px">Venture Name</div><div style="font-size:.9375rem;font-weight:600">${team.startupName||''}</div></div>
@@ -181,7 +181,7 @@ ${pendingInvites.length>0?`<div style="margin-bottom:16px">${pendingInvites.map(
     <div class="card mb-4" style="margin-bottom:16px">
       <div class="card-header">
         <div class="card-title">Team Directory</div>
-        ${user.isCEO?`<button class="btn btn-primary btn-sm" onclick="ITE.Pages.Student.showInviteMember()">Invite</button>`:''}
+        ${user.teamRole==='CEO'?`<button class="btn btn-primary btn-sm" onclick="ITE.Pages.Student.showInviteMember()">Invite</button>`:''}
       </div>
       <div style="display:grid;gap:8px">
         ${members.map(m=>`<div class="member-card"><div class="member-avatar" style="background:${ITE.App.roleColor(m.teamRole)}">${m.avatar||'?'}</div><div class="member-info"><div class="member-name">${m.name||''} ${m.userId===user.id?'<span style="font-size:.65rem;color:var(--accent)">(You)</span>':''}</div><div class="member-sub">${m.rollNo||''} · ${m.branch||''}</div></div><span class="badge" style="background:${ITE.App.roleColor(m.teamRole)}22;color:${ITE.App.roleColor(m.teamRole)}">${m.teamRole}</span></div>`).join('')}
@@ -197,7 +197,7 @@ ${pendingInvites.length>0?`<div style="margin-bottom:16px">${pendingInvites.map(
       </div>
     </div>`:''}
 
-    ${user.isCEO?`<div class="card" style="border-color:var(--accent)">
+    ${user.teamRole==='CEO'?`<div class="card" style="border-color:var(--accent)">
       <div class="card-header"><div class="card-title">Executive Controls</div></div>
       <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:12px">Invite team members and manage venture details.</p>
       <div style="display:grid;gap:8px">

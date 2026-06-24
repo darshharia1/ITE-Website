@@ -248,50 +248,61 @@ ITE.Pages.Admin = (function () {
   }
 
   /* ---- Students ---- */
-  function renderStudents() {
-    const students = ITE.Data.getStudents();
-    ITE.App.pc().innerHTML = `
-<div class="page-header"><div class="page-title">Students</div><div class="page-subtitle">${students.length} enrolled students</div></div>
+  let _currentStudents = [];
+  async function renderStudents() {
+    ITE.App.pc().innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted)">Loading live students data...</div>`;
+    try {
+      _currentStudents = await ITE.API.get('/users/students');
+      ITE.App.pc().innerHTML = `
+<div class="page-header"><div class="page-title">Students</div><div class="page-subtitle">${_currentStudents.length} enrolled students</div></div>
 <div class="card" style="margin-bottom:14px"><div class="search-bar" style="max-width:380px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="stu-search" placeholder="Search by name, roll number, or branch..." oninput="ITE.Pages.Admin._filterStudents()"></div></div>
-<div class="card"><div class="table-wrapper"><table class="data-table"><thead><tr><th>Student</th><th>Roll Number</th><th>Branch</th><th>Team</th><th>Role</th><th>Mentor</th><th>Status</th><th>Actions</th></tr></thead><tbody id="stu-tbody">${_studentRows(students)}</tbody></table></div></div>`;
+<div class="card"><div class="table-wrapper"><table class="data-table"><thead><tr><th>Student</th><th>Roll Number</th><th>Branch</th><th>Team</th><th>Role</th><th>Mentor</th><th>Status</th><th>Actions</th></tr></thead><tbody id="stu-tbody">${_studentRows(_currentStudents)}</tbody></table></div></div>`;
+    } catch(err) {
+      ITE.App.pc().innerHTML = `<div class="empty-state card"><h3>Failed to load students</h3><p>${err.message}</p></div>`;
+    }
   }
 
   function _studentRows(list) {
     return list.map(s=>{
       const team=s.teamId?ITE.Data.getTeamById(s.teamId):null;
       const mentor=s.mentorId?ITE.Data.getUserById(s.mentorId):null;
-      return`<tr><td><div style="display:flex;align-items:center;gap:9px"><div style="width:34px;height:34px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#FFF;flex-shrink:0">${s.avatar}</div><div><div style="font-weight:600">${s.name}</div><div style="font-size:.72rem;color:var(--text-muted)">${s.email}</div></div></div></td><td>${s.rollNo||'—'}</td><td>${s.branch||'—'}</td><td>${team?team.startupName:`<span style="color:var(--text-muted)">Unassigned</span>`}</td><td>${s.teamRole?`<span class="badge badge-blue">${s.teamRole}</span>`:'—'}</td><td>${mentor?mentor.name:`<span style="color:var(--text-muted)">Unassigned</span>`}</td><td><span class="badge ${s.teamId?'badge-green':'badge-yellow'}">${s.teamId?'Assigned':'Unassigned'}</span></td><td><button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Admin.showEditStudent('${s.id}')">Edit</button></td></tr>`;
+      return`<tr><td><div style="display:flex;align-items:center;gap:9px"><div style="width:34px;height:34px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#FFF;flex-shrink:0">${s.avatar}</div><div><div style="font-weight:600">${s.name}</div><div style="font-size:.72rem;color:var(--text-muted)">${s.email}</div></div></div></td><td>${s.rollNo||'—'}</td><td>${s.branch||'—'}</td><td>${team?team.startupName:`<span style="color:var(--text-muted)">Unassigned</span>`}</td><td>${s.teamRole?`<span class="badge badge-blue">${s.teamRole}</span>`:'—'}</td><td>${mentor?mentor.name:`<span style="color:var(--text-muted)">Unassigned</span>`}</td><td><span class="badge ${s.teamId?'badge-green':'badge-yellow'}">${s.teamId?'Assigned':'Unassigned'}</span></td><td><button class="btn btn-ghost btn-sm" onclick="ITE.Pages.Admin.showEditStudent('${s.id}', '${(s.name||'').replace(/'/g,'')}', '${(s.rollNo||'').replace(/'/g,'')}', '${(s.branch||'').replace(/'/g,'')}', '${(s.email||'').replace(/'/g,'')}')">Edit</button></td></tr>`;
     }).join('');
   }
 
   function _filterStudents() {
     const q=document.getElementById('stu-search')?.value?.toLowerCase()||'';
-    const f=ITE.Data.getStudents().filter(s=>s.name.toLowerCase().includes(q)||(s.rollNo||'').toLowerCase().includes(q)||(s.branch||'').toLowerCase().includes(q));
+    const f=_currentStudents.filter(s=>(s.name||'').toLowerCase().includes(q)||(s.rollNo||'').toLowerCase().includes(q)||(s.branch||'').toLowerCase().includes(q));
     const tb=document.getElementById('stu-tbody');
     if(tb) tb.innerHTML=_studentRows(f);
   }
 
-  function showEditStudent(id) {
-    const s = ITE.Data.getUserById(id); if(!s) return;
+  function showEditStudent(id, name='', rollNo='', branch='', email='') {
     ITE.App.showModal(`<div class="modal">
 <div class="modal-header"><div class="modal-title">Edit Student</div><button class="modal-close btn">✕</button></div>
 <div class="modal-body">
-  <div class="form-group"><label class="form-label">Full Name</label><input id="est-name" class="form-control" value="${s.name}"></div>
-  <div class="form-group"><label class="form-label">Roll Number</label><input id="est-roll" class="form-control" value="${s.rollNo||''}"></div>
-  <div class="form-group"><label class="form-label">Branch</label><input id="est-branch" class="form-control" value="${s.branch||''}"></div>
-  <div class="form-group"><label class="form-label">Email</label><input id="est-email" class="form-control" value="${s.email}" disabled></div>
+  <div class="form-group"><label class="form-label">Full Name</label><input id="est-name" class="form-control" value="${name}"></div>
+  <div class="form-group"><label class="form-label">Roll Number</label><input id="est-roll" class="form-control" value="${rollNo}"></div>
+  <div class="form-group"><label class="form-label">Branch</label><input id="est-branch" class="form-control" value="${branch}"></div>
+  <div class="form-group"><label class="form-label">Email</label><input id="est-email" class="form-control" value="${email}" disabled></div>
 </div>
-<div class="modal-footer"><button class="btn btn-ghost" onclick="ITE.App.closeModal()">Cancel</button><button class="btn btn-primary" onclick="ITE.Pages.Admin._submitEditStudent('${s.id}')">Save</button></div>
+<div class="modal-footer"><button class="btn btn-ghost" onclick="ITE.App.closeModal()">Cancel</button><button class="btn btn-primary" onclick="ITE.Pages.Admin._submitEditStudent('${id}')">Save</button></div>
 </div>`);
   }
 
-  function _submitEditStudent(id) {
+  async function _submitEditStudent(id) {
     const name=document.getElementById('est-name')?.value?.trim();
     const rollNo=document.getElementById('est-roll')?.value?.trim();
     const branch=document.getElementById('est-branch')?.value?.trim();
     if(!name){ITE.App.toast('Name is required.','error');return;}
-    ITE.Data.updateUser(id, { name, rollNo, branch });
-    ITE.App.toast('Student successfully updated.','success'); ITE.App.closeModal(); renderStudents();
+    try {
+      await ITE.API.patch('/users/' + id, { name, rollNo, branch });
+      ITE.App.toast('Student successfully updated in live database.','success'); 
+      ITE.App.closeModal(); 
+      renderStudents();
+    } catch(err) {
+      ITE.App.toast(err.message,'error');
+    }
   }
 
   /* ---- Mentors ---- */
@@ -508,10 +519,10 @@ ${mentors.length===0?`<div class="empty-state card"><h3>No mentors added yet</h3
   }
 
   /* ---- CSV Upload ---- */
-  function renderCSVUpload() {
+  async function renderCSVUpload() {
+    ITE.App.pc().innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted)">Loading live approved list...</div>`;
     try {
-      const approved_raw=ITE.Data.getApproved();
-      const approved = Array.isArray(approved_raw) ? approved_raw : (approved_raw?.items || []);
+      const approved = await ITE.API.get('/users/approved');
       ITE.App.pc().innerHTML = `
 <div class="page-header"><div class="page-title">CSV Upload</div><div class="page-subtitle">Manage the approved student list for registration</div></div>
 <div class="two-col">
@@ -546,41 +557,16 @@ ${mentors.length===0?`<div class="empty-state card"><h3>No mentors added yet</h3
     const file=document.getElementById('csv-file')?.files?.[0];
     if(!file){ITE.App.toast('Please select a CSV file.','error');return;}
     
-    // Upload to backend
     try {
       const formData = new FormData();
       formData.append("file", file);
-      await ITE.API.upload('/users/approved', formData);
+      const res = await ITE.API.upload('/users/approved', formData);
+      ITE.App.toast(`${res.added} students successfully imported to live DB.`,'success');
+      renderCSVUpload();
     } catch(err) {
       console.error(err);
-      ITE.App.toast('Failed to upload to backend: ' + err.message, 'error');
-      return;
+      ITE.App.toast('Failed to upload: ' + err.message, 'error');
     }
-
-    const reader=new FileReader();
-    reader.onload=e=>{
-      const lines=e.target.result.split('\n').filter(l=>l.trim());
-      const data=[];
-      lines.slice(1).forEach(line=>{
-        const parts=line.split(',').map(p=>p.trim().replace(/^["']|["']$/g,''));
-        if(parts.length>=3) {
-          // Check if parts[2] looks like an email. If parts has 4 (S.No included), email is parts[3]
-          let email = parts[2];
-          let name = parts[0];
-          let rollNo = parts[1];
-          if(parts.length === 4 && parts[3].includes('@')) {
-            name = parts[1]; rollNo = parts[2]; email = parts[3];
-          }
-          data.push({name, rollNo, email});
-        }
-      });
-      ITE.Data.saveApproved(data);
-      const r=document.getElementById('csv-result');
-      if(r)r.innerHTML=`<div class="info-box success">Imported <strong>${data.length}</strong> students successfully.</div>`;
-      ITE.App.toast(`${data.length} students successfully imported.`,'success');
-      renderCSVUpload();
-    };
-    reader.readAsText(file);
   }
 
   function _downloadSample() {
@@ -590,9 +576,15 @@ ${mentors.length===0?`<div class="empty-state card"><h3>No mentors added yet</h3
     a.download='ite_students_template.csv'; a.click();
   }
 
-  function _clearApproved() {
+  async function _clearApproved() {
     if(!confirm('Are you sure you want to clear all approved students?')) return;
-    ITE.Data.saveApproved([]); ITE.App.toast('Approved student list cleared.','info'); renderCSVUpload();
+    try {
+      await ITE.API.del('/users/approved');
+      ITE.App.toast('Approved student list cleared from live DB.','info'); 
+      renderCSVUpload();
+    } catch(err) {
+      ITE.App.toast('Failed to clear: ' + err.message, 'error');
+    }
   }
 
   return {

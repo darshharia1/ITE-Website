@@ -114,6 +114,15 @@ async def bulk_approved(file: UploadFile = File(...), db: Session = Depends(get_
     return {"added": added}
 
 
+@router.delete("/approved")
+def clear_approved(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+    db.query(ApprovedStudent).delete()
+    db.commit()
+    return {"success": True}
+
+
 @router.get("/{user_id}")
 def get_user(user_id: str, db: Session = Depends(get_db), _: User = Depends(get_current_user)):
     u = db.query(User).filter(User.id == user_id).first()

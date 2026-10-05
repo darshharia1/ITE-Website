@@ -19,27 +19,40 @@ from seed import seed
 # ── Import all routers ────────────────────────────────────────────────────────
 from routers import auth, users, teams, invitations, tasks, submissions, announcements, prev_startups, admin, mentor
 
-# ── Create tables & seed ──────────────────────────────────────────────────────
-Base.metadata.create_all(bind=engine)
+import time
 
-# Safely add team_id column if it is missing (to support migration on existing DBs)
-with engine.connect() as conn:
+# ── Create tables & seed (with retry for Render DNS lag) ────────────────────
+max_retries = 5
+for attempt in range(max_retries):
     try:
-        conn.execute(text("ALTER TABLE tasks ADD COLUMN team_id VARCHAR;"))
-        conn.commit()
-        print("[DB] Added team_id column to tasks table.")
-    except Exception:
-        pass
-    try:
-        conn.execute(text("ALTER TABLE submissions ALTER COLUMN grade TYPE VARCHAR USING grade::VARCHAR;"))
-        conn.commit()
-        print("[DB] Altered grade column to VARCHAR in submissions table.")
-    except Exception:
-        pass
+        Base.metadata.create_all(bind=engine)
 
-db = SessionLocal()
-seed(db)
-db.close()
+        # Safely add team_id column if it is missing (to support migration on existing DBs)
+        with engine.connect() as conn:
+            try:
+                conn.execute(text("ALTER TABLE tasks ADD COLUMN team_id VARCHAR;"))
+                conn.commit()
+                print("[DB] Added team_id column to tasks table.")
+            except Exception:
+                pass
+            try:
+                conn.execute(text("ALTER TABLE submissions ALTER COLUMN grade TYPE VARCHAR USING grade::VARCHAR;"))
+                conn.commit()
+                print("[DB] Altered grade column to VARCHAR in submissions table.")
+            except Exception:
+                pass
+
+        db = SessionLocal()
+        seed(db)
+        db.close()
+        print("[DB] Database initialized successfully.")
+        break
+    except Exception as e:
+        print(f"[DB] Connection failed on attempt {attempt + 1}: {e}")
+        if attempt < max_retries - 1:
+            time.sleep(5)
+        else:
+            print("[DB] Warning: Could not initialize database during startup.")
 
 # ── App ───────────────────────────────────────────────────────────────────────
 app = FastAPI(

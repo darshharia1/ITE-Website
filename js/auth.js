@@ -62,18 +62,10 @@ ITE.Auth = (function () {
 
   // ── getCurrentUser — sync read from cache ────────────────────────────────
   function getCurrentUser() {
-    const cached = _loadCached();
-    if (cached && cached.role === 'non-ite') {
-      return cached;
-    }
-    if (cached && cached.email) {
-      // FIX: The backend DB seeds random UUIDs which mismatch the frontend localStorage UIDs.
-      // To ensure perfect sync on localhost without rewriting everything to hit the backend API,
-      // we grab the frontend's up-to-date localStorage version of the user by email.
-      const localUser = ITE.Data.getUserByEmail(cached.email);
-      if (localUser) return localUser;
-    }
-    return cached;
+    // Always return the backend-authenticated user from sessionStorage.
+    // This ensures admins/mentors (who may not exist in local data.js) are
+    // properly identified by their server-issued role.
+    return _loadCached() || null;
   }
 
   // ── refreshMe — fetch fresh user from server, update cache ───────────────
@@ -98,11 +90,6 @@ ITE.Auth = (function () {
 
     const avatar = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
     try {
-      const res = await ITE.API.post('/auth/login', { email, password: 'REGISTER' })
-        .catch(() => null);
-      // Backend registration endpoint — use /api/users/register if available,
-      // otherwise fall back to creating via admin (handled server-side).
-      // For now, send to a dedicated register route.
       const created = await ITE.API.post('/auth/register', {
         email, password, name, rollNo, branch, avatar,
         skills: skills ? skills.split(',').map(s => s.trim()).filter(Boolean) : [],

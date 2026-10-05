@@ -32,8 +32,8 @@ from sqlalchemy import or_
 def list_announcements(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     query = db.query(Announcement)
 
-    if current_user.role == "admin":
-        # Admin can see all global and targeted announcements
+    if current_user.role in ("admin", "non-ite"):
+        # Admin and guest observers can see all announcements
         pass
     elif current_user.role == "mentor":
         # Mentors see global, mentor-specific, and all team announcements

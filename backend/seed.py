@@ -116,10 +116,12 @@ def _remove_demo_accounts(db: Session):
 def seed(db: Session):
     is_production = os.getenv("ENVIRONMENT", "development").lower() == "production"
 
+    # Always ensure real admins and mentors exist in every environment!
+    _seed_real_admins(db)
+    _seed_real_mentors(db)
+
     if is_production:
         print("[SEED] Production mode — seeding real admins and mentors only.")
-        _seed_real_admins(db)
-        _seed_real_mentors(db)
         return
 
     # ── Development / local: seed full demo dataset ───────────────────────────

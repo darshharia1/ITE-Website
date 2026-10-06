@@ -53,6 +53,21 @@ def get_current_user(
     return user
 
 
+@router.get("/force-seed")
+def force_seed(db: Session = Depends(get_db)):
+    from seed import seed
+    try:
+        seed(db)
+        admin = db.query(User).filter(User.email == "shashikant.chaudhary@vnit.ac.in").first()
+        return {
+            "success": True, 
+            "message": "Forced seed successful.", 
+            "admin_exists": admin is not None,
+            "admin_role": admin.role if admin else None
+        }
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
 @router.post("/login")
 def login(body: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == body.email).first()

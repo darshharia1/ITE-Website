@@ -34,6 +34,18 @@ REAL_ADMINS = [
     },
 ]
 
+# ── Real production mentor accounts ───────────────────────────────────────────
+REAL_MENTORS = [
+    {
+        "email": "mentor1@vnit.ac.in",
+        "password": "mentorPassword1!",
+        "name": "Dr. Mentor One",
+        "avatar": "M1",
+        "specialization": "Product & Market Strategy",
+    },
+    # Add more mentors here as needed for the live website
+]
+
 # Emails that belong to demo accounts — deleted in production cleanup
 DEMO_EMAILS = {
     "admin@vnit.ac.in",
@@ -74,6 +86,28 @@ def _seed_real_admins(db: Session):
         db.commit()
 
 
+def _seed_real_mentors(db: Session):
+    """Ensure the real mentor accounts exist (idempotent)."""
+    added = 0
+    for mentor in REAL_MENTORS:
+        if not db.query(User).filter(User.email == mentor["email"]).first():
+            db.add(User(
+                id=uid(),
+                email=mentor["email"],
+                password_hash=hash_password(mentor["password"]),
+                role="mentor",
+                name=mentor["name"],
+                avatar=mentor["avatar"],
+                specialization=mentor.get("specialization"),
+                profile_complete=True,
+                created_at="2024-06-01",
+            ))
+            added += 1
+            print(f"[SEED] Mentor created: {mentor['name']} <{mentor['email']}>")
+    if added:
+        db.commit()
+
+
 def _remove_demo_accounts(db: Session):
     """No-op to prevent accidental deletion of production data."""
     pass
@@ -83,12 +117,13 @@ def seed(db: Session):
     is_production = os.getenv("ENVIRONMENT", "development").lower() == "production"
 
     if is_production:
-        print("[SEED] Production mode — seeding real admins only.")
+        print("[SEED] Production mode — seeding real admins and mentors only.")
         _seed_real_admins(db)
+        _seed_real_mentors(db)
         return
 
     # ── Development / local: seed full demo dataset ───────────────────────────
-    if db.query(User).first():
+    if db.query(User).filter(User.email == "admin@vnit.ac.in").first():
         return  # Already seeded
 
     a1, a2 = uid(), uid()
